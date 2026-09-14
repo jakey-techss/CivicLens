@@ -1,444 +1,867 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Explore — CivicLens</title>
-  <meta
-    name="description"
-    content="Explore cities built, redesigned, and imagined by the CivicLens community."
-  />
+    <title>Explore — CivicLens</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
-    rel="stylesheet"
-  />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/explore.css" />
+    <link rel="stylesheet" href="/css/explore.css">
 </head>
 
 <body>
 
-  <!-- NAVIGATION -->
-  <header class="site-header">
+    <!-- Background -->
+    <div class="background-blobs" aria-hidden="true">
+        <div class="blob blob-green"></div>
+        <div class="blob blob-yellow"></div>
+        <div class="blob blob-purple"></div>
+    </div>
+
+
+    <!-- NAVBAR -->
     <nav class="navbar">
 
-      <a href="#" class="brand">
-        <span class="brand-mark">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </span>
-
-        <span class="brand-name">Civic<span>Lens</span></span>
-      </a>
-
-      <div class="nav-links">
-        <a href="#" class="active">Explore</a>
-        <a href="#">Learn</a>
-        <a href="#">About</a>
-      </div>
-
-      <div class="nav-actions">
-        <a href="#" class="login-link">Log in</a>
-        <a href="#" class="create-button">
-          Create a city
-          <span>↗</span>
+        <a href="index.html" class="logo">
+            <span class="logo-mark">
+                <span></span>
+                <span></span>
+            </span>
+            <span>CivicLens</span>
         </a>
-      </div>
 
-      <button class="mobile-menu-button" aria-label="Open menu">
-        <span></span>
-        <span></span>
-      </button>
+        <div class="nav-links">
+            <a href="index.html#how-it-works">How it works</a>
+            <a href="explore.html" class="active">Explore</a>
+            <a href="index.html#about">About</a>
+        </div>
+
+        <div class="nav-actions">
+            <a href="login.html" class="login-link">Log in</a>
+            <a href="login.html?mode=signup" class="nav-button">
+                Create a city
+            </a>
+        </div>
 
     </nav>
-  </header>
 
 
-  <main>
+    <main>
 
-    <!-- HERO -->
-    <section class="hero">
+        <!-- HERO -->
+        <section class="explore-hero">
 
-      <div class="hero-content">
+            <div class="hero-copy">
 
-        <div class="eyebrow">
-          <span class="eyebrow-dot"></span>
-          THE CIVICLENS COMMUNITY
-        </div>
+                <div class="eyebrow">
+                    <span>🌎</span>
+                    THE CIVICLENS COMMUNITY
+                </div>
 
-        <h1>
-          See what people
-          <em>build.</em>
-        </h1>
+                <h1>
+                    Look around.<br>
+                    See what people
+                    <span>built.</span>
+                </h1>
 
-        <p class="hero-description">
-          Explore cities imagined by the community, experiment with real-world
-          places, and see how different choices can shape the way a city works.
-        </p>
+                <p>
+                    Explore cities imagined by other people, peek at how they
+                    made decisions, and get ideas for your own corner of the world.
+                </p>
 
-        <div class="hero-actions">
-          <button class="primary-button" id="exploreButton">
-            Explore cities
-            <span>↓</span>
-          </button>
+                <div class="hero-actions">
+                    <a href="#cities" class="primary-button">
+                        Start exploring
+                        <span>→</span>
+                    </a>
 
-          <a href="#" class="text-button">
-            How CivicLens works
-            <span>→</span>
-          </a>
-        </div>
+                    <a href="login.html?mode=signup" class="secondary-link">
+                        Build your own city
+                    </a>
+                </div>
 
-      </div>
+            </div>
 
-      <div class="hero-meta">
 
-        <div class="hero-stat">
-          <strong id="cityCount">12,480</strong>
-          <span>cities created</span>
-        </div>
+            <!-- HERO MAP -->
+            <div class="hero-map-area">
 
-        <div class="hero-divider"></div>
+                <div class="sparkle sparkle-one">✦</div>
+                <div class="sparkle sparkle-two">✦</div>
+                <div class="sparkle sparkle-three">✦</div>
 
-        <div class="hero-stat">
-          <strong>38</strong>
-          <span>countries represented</span>
-        </div>
+                <div class="map-card">
 
-        <div class="hero-divider"></div>
+                    <div class="map-header">
+                        <div>
+                            <span class="map-label">COMMUNITY MAP</span>
+                            <strong>Newark, NJ</strong>
+                        </div>
 
-        <div class="hero-stat">
-          <strong>91K</strong>
-          <span>community interactions</span>
-        </div>
+                        <span class="live-pill">
+                            ● LIVE
+                        </span>
+                    </div>
 
-      </div>
+                    <div class="mini-map">
 
-    </section>
+                        <div class="map-road road-a"></div>
+                        <div class="map-road road-b"></div>
+                        <div class="map-road road-c"></div>
+                        <div class="map-road road-d"></div>
+                        <div class="map-road road-e"></div>
 
+                        <div class="map-block block-1"></div>
+                        <div class="map-block block-2"></div>
+                        <div class="map-block block-3"></div>
+                        <div class="map-block block-4"></div>
+                        <div class="map-block block-5"></div>
+                        <div class="map-block block-6"></div>
+                        <div class="map-block block-7"></div>
 
-    <!-- FEATURED -->
-    <section class="featured-section">
+                        <div class="map-park">
+                            <span>🌳</span>
+                            <span>🌳</span>
+                            <span>🌳</span>
+                        </div>
 
-      <div class="section-heading">
+                        <div class="map-water"></div>
 
-        <div>
-          <div class="section-label">COMMUNITY PICKS</div>
-          <h2>Cities worth seeing.</h2>
-        </div>
+                        <div class="map-marker marker-one">
+                            <span>🏫</span>
+                        </div>
 
-        <button class="arrow-button" id="featuredNext" aria-label="Next featured city">
-          →
-        </button>
+                        <div class="map-marker marker-two">
+                            <span>🌳</span>
+                        </div>
 
-      </div>
+                        <div class="map-marker marker-three">
+                            <span>🏠</span>
+                        </div>
 
+                    </div>
 
-      <div class="featured-grid" id="featuredGrid"></div>
+                    <div class="map-footer">
+                        <span>👀 1,284 views</span>
+                        <span>♥ 184 likes</span>
+                    </div>
 
-    </section>
+                </div>
 
 
-    <!-- EXPLORE -->
-    <section class="explore-section" id="explore">
+                <div class="floating-note note-one">
+                    <span class="note-icon yellow">💡</span>
+                    <div>
+                        <small>COMMUNITY IDEA</small>
+                        <strong>More green space</strong>
+                    </div>
+                </div>
 
-      <div class="explore-heading">
+                <div class="floating-note note-two">
+                    <span class="note-icon green">↗</span>
+                    <div>
+                        <small>QUALITY OF LIFE</small>
+                        <strong>+18%</strong>
+                    </div>
+                </div>
 
-        <div>
-          <div class="section-label">COMMUNITY</div>
+            </div>
 
-          <h2>Explore the city library.</h2>
+        </section>
 
-          <p>
-            Browse what other people are building and get inspired by their
-            decisions.
-          </p>
-        </div>
 
-        <div class="result-count">
-          <strong id="resultCount">6</strong>
-          <span>cities</span>
-        </div>
+        <!-- FEATURED INTRO -->
+        <section class="featured-intro">
 
-      </div>
-
-
-      <!-- SEARCH -->
-      <div class="search-row">
-
-        <div class="search-box">
-
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="11" cy="11" r="7"></circle>
-            <path d="M16.5 16.5L21 21"></path>
-          </svg>
-
-          <input
-            type="search"
-            id="searchInput"
-            placeholder="Search cities, creators, or ideas..."
-          />
-
-          <kbd>⌘ K</kbd>
-
-        </div>
-
-        <button class="filter-button" id="filterButton">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M4 6h16"></path>
-            <path d="M7 12h10"></path>
-            <path d="M10 18h4"></path>
-          </svg>
-
-          Filters
-          <span class="filter-count" id="filterCount">0</span>
-        </button>
-
-        <select id="sortSelect" class="sort-select">
-          <option value="trending">Trending</option>
-          <option value="newest">Newest</option>
-          <option value="likes">Most liked</option>
-          <option value="population">Largest population</option>
-          <option value="quality">Highest quality of life</option>
-        </select>
-
-      </div>
-
-
-      <!-- FILTER PANEL -->
-      <div class="filter-panel" id="filterPanel">
-
-        <div class="filter-group">
-
-          <span class="filter-title">City type</span>
-
-          <div class="filter-options">
-
-            <button class="filter-pill active" data-type="all">
-              All cities
-            </button>
-
-            <button class="filter-pill" data-type="custom">
-              Custom
-            </button>
-
-            <button class="filter-pill" data-type="real">
-              Real-world
-            </button>
-
-          </div>
-
-        </div>
-
-
-        <div class="filter-group">
-
-          <span class="filter-title">Minimum quality of life</span>
-
-          <div class="range-wrapper">
-
-            <input
-              type="range"
-              id="qualityRange"
-              min="0"
-              max="100"
-              value="0"
-            />
-
-            <strong>
-              <span id="qualityValue">0</span>+
-            </strong>
-
-          </div>
-
-        </div>
-
-
-        <button class="clear-filters" id="clearFilters">
-          Clear filters
-        </button>
-
-      </div>
-
-
-      <!-- CITY GRID -->
-      <div class="city-grid" id="cityGrid"></div>
-
-
-      <!-- EMPTY -->
-      <div class="empty-state" id="emptyState">
-
-        <div class="empty-icon">⌕</div>
-
-        <h3>No cities found.</h3>
-
-        <p>
-          Try changing your search or removing a filter.
-        </p>
-
-        <button class="secondary-button" id="emptyReset">
-          Reset search
-        </button>
-
-      </div>
-
-
-      <div class="load-more-wrapper">
-        <button class="load-more" id="loadMore">
-          Load more cities
-          <span>↓</span>
-        </button>
-      </div>
-
-    </section>
-
-
-    <!-- CTA -->
-    <section class="create-section">
-
-      <div class="create-inner">
-
-        <div>
-          <div class="section-label">YOUR TURN</div>
-
-          <h2>
-            What would
-            <em>your</em>
-            city look like?
-          </h2>
-
-          <p>
-            Build from scratch or experiment with a real place.
-            Your decisions become the city.
-          </p>
-        </div>
-
-        <a href="#" class="large-create-button">
-          Start building
-          <span>↗</span>
-        </a>
-
-      </div>
-
-    </section>
-
-  </main>
-
-
-  <!-- CITY MODAL -->
-  <div class="modal-backdrop" id="cityModal">
-
-    <div class="city-modal">
-
-      <button class="modal-close" id="modalClose" aria-label="Close">
-        ×
-      </button>
-
-      <div class="modal-preview" id="modalPreview"></div>
-
-      <div class="modal-content">
-
-        <div class="modal-top">
-
-          <div>
-            <div class="modal-type" id="modalType"></div>
-            <h2 id="modalTitle"></h2>
-            <p id="modalCreator"></p>
-          </div>
-
-          <button class="modal-like" id="modalLike">
-            ♡
-            <span id="modalLikes"></span>
-          </button>
-
-        </div>
-
-        <p class="modal-description" id="modalDescription"></p>
-
-        <div class="modal-stats">
-
-          <div>
-            <span>Population</span>
-            <strong id="modalPopulation"></strong>
-          </div>
-
-          <div>
-            <span>Budget</span>
-            <strong id="modalBudget"></strong>
-          </div>
-
-          <div>
-            <span>Cost</span>
-            <strong id="modalCost"></strong>
-          </div>
-
-        </div>
-
-
-        <div class="modal-metrics">
-
-          <div class="modal-metric">
             <div>
-              <span>Quality of life</span>
-              <strong id="modalQuality"></strong>
+                <span class="section-kicker">PEOPLE ARE BUILDING</span>
+
+                <h2>
+                    A little inspiration<br>
+                    never hurt anyone.
+                </h2>
             </div>
 
-            <div class="metric-track">
-              <span id="modalQualityBar"></span>
-            </div>
-          </div>
+            <p>
+                These are cities people have created, changed, experimented
+                with, and shared. There is no perfect city — that's the point.
+            </p>
 
-          <div class="modal-metric">
-            <div>
-              <span>Education</span>
-              <strong id="modalEducation"></strong>
+        </section>
+
+
+        <!-- FEATURED CITY -->
+        <section class="featured-city">
+
+            <div class="featured-map">
+
+                <div class="featured-map-top">
+                    <span>FEATURED CITY</span>
+                    <span>Custom build</span>
+                </div>
+
+                <div class="big-map">
+
+                    <div class="big-road br-one"></div>
+                    <div class="big-road br-two"></div>
+                    <div class="big-road br-three"></div>
+                    <div class="big-road br-four"></div>
+                    <div class="big-road br-five"></div>
+
+                    <div class="big-block bb-one"></div>
+                    <div class="big-block bb-two"></div>
+                    <div class="big-block bb-three"></div>
+                    <div class="big-block bb-four"></div>
+                    <div class="big-block bb-five"></div>
+                    <div class="big-block bb-six"></div>
+                    <div class="big-block bb-seven"></div>
+                    <div class="big-block bb-eight"></div>
+
+                    <div class="big-park">
+                        <span>🌳</span>
+                        <span>🌳</span>
+                        <span>🌳</span>
+                        <span>🌳</span>
+                    </div>
+
+                    <div class="big-water"></div>
+
+                    <div class="city-pin pin-school">🏫</div>
+                    <div class="city-pin pin-park">🌳</div>
+                    <div class="city-pin pin-home">🏠</div>
+                    <div class="city-pin pin-shop">🛍️</div>
+
+                </div>
+
             </div>
 
-            <div class="metric-track">
-              <span id="modalEducationBar"></span>
-            </div>
-          </div>
 
-          <div class="modal-metric">
-            <div>
-              <span>Safety</span>
-              <strong id="modalSafety"></strong>
+            <div class="featured-info">
+
+                <div class="creator">
+                    <div class="avatar avatar-purple">A</div>
+
+                    <div>
+                        <small>CREATED BY</small>
+                        <strong>@asterbuilds</strong>
+                    </div>
+                </div>
+
+                <h3>Greenfield: A City That Breathes</h3>
+
+                <p>
+                    What happens when parks, schools, housing, and public
+                    transportation are designed together instead of separately?
+                </p>
+
+                <div class="featured-stats">
+
+                    <div>
+                        <span>💰</span>
+                        <small>Cost</small>
+                        <strong>$8.4B</strong>
+                    </div>
+
+                    <div>
+                        <span>👥</span>
+                        <small>Population</small>
+                        <strong>142K</strong>
+                    </div>
+
+                    <div>
+                        <span>😊</span>
+                        <small>Quality of life</small>
+                        <strong>91%</strong>
+                    </div>
+
+                </div>
+
+                <div class="featured-bottom">
+
+                    <div class="social-counts">
+                        <span>♥ 342</span>
+                        <span>💬 48</span>
+                    </div>
+
+                    <button class="view-button" data-city="Greenfield">
+                        View city →
+                    </button>
+
+                </div>
+
             </div>
 
-            <div class="metric-track">
-              <span id="modalSafetyBar"></span>
-            </div>
-          </div>
+        </section>
 
+
+        <!-- BROWSE -->
+        <section class="browse-section" id="cities">
+
+            <div class="browse-heading">
+
+                <div>
+                    <span class="section-kicker">GO POKE AROUND</span>
+                    <h2>What are people making?</h2>
+                </div>
+
+                <p>
+                    Browse real-world experiments and completely made-up
+                    cities. Click around. Steal ideas. That's allowed.
+                </p>
+
+            </div>
+
+
+            <!-- SEARCH -->
+            <div class="browse-controls">
+
+                <div class="search-box">
+                    <span>⌕</span>
+                    <input
+                        type="text"
+                        id="citySearch"
+                        placeholder="Search cities or creators..."
+                    >
+                </div>
+
+                <div class="filter-group">
+
+                    <button class="filter-button active" data-filter="all">
+                        Everything
+                    </button>
+
+                    <button class="filter-button" data-filter="custom">
+                        ✨ Custom
+                    </button>
+
+                    <button class="filter-button" data-filter="real">
+                        📍 Real world
+                    </button>
+
+                </div>
+
+                <select id="sortCities" class="sort-select">
+                    <option value="popular">Most popular</option>
+                    <option value="recent">Recently added</option>
+                    <option value="likes">Most liked</option>
+                    <option value="population">Largest population</option>
+                </select>
+
+            </div>
+
+
+            <!-- CITY GRID -->
+            <div class="city-grid" id="cityGrid">
+
+                <!-- CARD 1 -->
+                <article
+                    class="city-card"
+                    data-type="custom"
+                    data-name="Sunrise Valley"
+                    data-creator="maya"
+                    data-likes="271"
+                    data-population="84000"
+                    data-date="6"
+                >
+
+                    <div class="city-preview preview-green">
+
+                        <div class="preview-road p-road-1"></div>
+                        <div class="preview-road p-road-2"></div>
+                        <div class="preview-road p-road-3"></div>
+
+                        <div class="preview-block pb-1"></div>
+                        <div class="preview-block pb-2"></div>
+                        <div class="preview-block pb-3"></div>
+                        <div class="preview-block pb-4"></div>
+                        <div class="preview-block pb-5"></div>
+
+                        <div class="preview-park">🌳 🌳</div>
+
+                        <span class="preview-tag">CUSTOM</span>
+
+                    </div>
+
+                    <div class="city-card-content">
+
+                        <div class="card-top">
+                            <span class="type-label custom-label">✨ Custom</span>
+                            <span class="views">👀 892</span>
+                        </div>
+
+                        <h3>Sunrise Valley</h3>
+
+                        <div class="creator-row">
+                            <div class="tiny-avatar avatar-yellow">M</div>
+                            <span>@maya.builds</span>
+                        </div>
+
+                        <div class="card-stats">
+                            <span>💰 $4.2B</span>
+                            <span>👥 84K</span>
+                            <span>😊 88%</span>
+                        </div>
+
+                        <div class="card-bottom">
+                            <span>♥ 271</span>
+                            <span>💬 31</span>
+                            <button class="small-view" data-city="Sunrise Valley">View →</button>
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- CARD 2 -->
+                <article
+                    class="city-card"
+                    data-type="real"
+                    data-name="Newark Reimagined"
+                    data-creator="jordan"
+                    data-likes="418"
+                    data-population="311000"
+                    data-date="5"
+                >
+
+                    <div class="city-preview preview-blue">
+
+                        <div class="preview-water"></div>
+
+                        <div class="preview-road p-road-4"></div>
+                        <div class="preview-road p-road-5"></div>
+                        <div class="preview-road p-road-6"></div>
+
+                        <div class="preview-block pb-6"></div>
+                        <div class="preview-block pb-7"></div>
+                        <div class="preview-block pb-8"></div>
+                        <div class="preview-block pb-9"></div>
+
+                        <div class="preview-park park-two">🌳</div>
+
+                        <span class="preview-tag">REAL WORLD</span>
+
+                    </div>
+
+                    <div class="city-card-content">
+
+                        <div class="card-top">
+                            <span class="type-label real-label">📍 Real world</span>
+                            <span class="views">👀 1.8K</span>
+                        </div>
+
+                        <h3>Newark Reimagined</h3>
+
+                        <div class="creator-row">
+                            <div class="tiny-avatar avatar-pink">J</div>
+                            <span>@jordan.civic</span>
+                        </div>
+
+                        <div class="card-stats">
+                            <span>💰 $7.8B</span>
+                            <span>👥 311K</span>
+                            <span>🛡️ 76%</span>
+                        </div>
+
+                        <div class="card-bottom">
+                            <span>♥ 418</span>
+                            <span>💬 67</span>
+                            <button class="small-view" data-city="Newark Reimagined">View →</button>
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- CARD 3 -->
+                <article
+                    class="city-card"
+                    data-type="custom"
+                    data-name="Harbor City"
+                    data-creator="leo"
+                    data-likes="195"
+                    data-population="51000"
+                    data-date="4"
+                >
+
+                    <div class="city-preview preview-yellow">
+
+                        <div class="preview-road p-road-7"></div>
+                        <div class="preview-road p-road-8"></div>
+
+                        <div class="preview-block pb-10"></div>
+                        <div class="preview-block pb-11"></div>
+                        <div class="preview-block pb-12"></div>
+                        <div class="preview-block pb-13"></div>
+
+                        <div class="preview-water water-two"></div>
+
+                        <span class="preview-tag">CUSTOM</span>
+
+                    </div>
+
+                    <div class="city-card-content">
+
+                        <div class="card-top">
+                            <span class="type-label custom-label">✨ Custom</span>
+                            <span class="views">👀 641</span>
+                        </div>
+
+                        <h3>Harbor City</h3>
+
+                        <div class="creator-row">
+                            <div class="tiny-avatar avatar-blue">L</div>
+                            <span>@leo.codes</span>
+                        </div>
+
+                        <div class="card-stats">
+                            <span>💰 $2.9B</span>
+                            <span>👥 51K</span>
+                            <span>🎓 84%</span>
+                        </div>
+
+                        <div class="card-bottom">
+                            <span>♥ 195</span>
+                            <span>💬 22</span>
+                            <button class="small-view" data-city="Harbor City">View →</button>
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- CARD 4 -->
+                <article
+                    class="city-card"
+                    data-type="real"
+                    data-name="Transit First"
+                    data-creator="sam"
+                    data-likes="523"
+                    data-population="224000"
+                    data-date="3"
+                >
+
+                    <div class="city-preview preview-purple">
+
+                        <div class="preview-road p-road-9"></div>
+                        <div class="preview-road p-road-10"></div>
+
+                        <div class="preview-block pb-14"></div>
+                        <div class="preview-block pb-15"></div>
+                        <div class="preview-block pb-16"></div>
+                        <div class="preview-block pb-17"></div>
+
+                        <div class="preview-transit">
+                            ●━━●━━●━━●
+                        </div>
+
+                        <span class="preview-tag">REAL WORLD</span>
+
+                    </div>
+
+                    <div class="city-card-content">
+
+                        <div class="card-top">
+                            <span class="type-label real-label">📍 Real world</span>
+                            <span class="views">👀 2.4K</span>
+                        </div>
+
+                        <h3>Transit First</h3>
+
+                        <div class="creator-row">
+                            <div class="tiny-avatar avatar-green">S</div>
+                            <span>@sam.plans</span>
+                        </div>
+
+                        <div class="card-stats">
+                            <span>💰 $9.1B</span>
+                            <span>👥 224K</span>
+                            <span>🚆 94%</span>
+                        </div>
+
+                        <div class="card-bottom">
+                            <span>♥ 523</span>
+                            <span>💬 82</span>
+                            <button class="small-view" data-city="Transit First">View →</button>
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- CARD 5 -->
+                <article
+                    class="city-card"
+                    data-type="custom"
+                    data-name="Little Planet"
+                    data-creator="zoe"
+                    data-likes="147"
+                    data-population="29000"
+                    data-date="2"
+                >
+
+                    <div class="city-preview preview-pink">
+
+                        <div class="preview-road p-road-11"></div>
+                        <div class="preview-road p-road-12"></div>
+
+                        <div class="preview-block pb-18"></div>
+                        <div class="preview-block pb-19"></div>
+                        <div class="preview-block pb-20"></div>
+
+                        <div class="preview-park park-three">🌳 🌳</div>
+
+                        <span class="preview-tag">CUSTOM</span>
+
+                    </div>
+
+                    <div class="city-card-content">
+
+                        <div class="card-top">
+                            <span class="type-label custom-label">✨ Custom</span>
+                            <span class="views">👀 404</span>
+                        </div>
+
+                        <h3>Little Planet</h3>
+
+                        <div class="creator-row">
+                            <div class="tiny-avatar avatar-purple">Z</div>
+                            <span>@zoe.makes</span>
+                        </div>
+
+                        <div class="card-stats">
+                            <span>💰 $1.6B</span>
+                            <span>👥 29K</span>
+                            <span>😊 93%</span>
+                        </div>
+
+                        <div class="card-bottom">
+                            <span>♥ 147</span>
+                            <span>💬 19</span>
+                            <button class="small-view" data-city="Little Planet">View →</button>
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- CARD 6 -->
+                <article
+                    class="city-card"
+                    data-type="real"
+                    data-name="More Parks Please"
+                    data-creator="alex"
+                    data-likes="389"
+                    data-population="178000"
+                    data-date="1"
+                >
+
+                    <div class="city-preview preview-green-blue">
+
+                        <div class="preview-road p-road-13"></div>
+                        <div class="preview-road p-road-14"></div>
+                        <div class="preview-road p-road-15"></div>
+
+                        <div class="preview-block pb-21"></div>
+                        <div class="preview-block pb-22"></div>
+                        <div class="preview-block pb-23"></div>
+
+                        <div class="preview-park park-four">
+                            🌳 🌳 🌳
+                        </div>
+
+                        <span class="preview-tag">REAL WORLD</span>
+
+                    </div>
+
+                    <div class="city-card-content">
+
+                        <div class="card-top">
+                            <span class="type-label real-label">📍 Real world</span>
+                            <span class="views">👀 1.2K</span>
+                        </div>
+
+                        <h3>More Parks Please</h3>
+
+                        <div class="creator-row">
+                            <div class="tiny-avatar avatar-blue">A</div>
+                            <span>@alex.designs</span>
+                        </div>
+
+                        <div class="card-stats">
+                            <span>💰 $6.5B</span>
+                            <span>👥 178K</span>
+                            <span>🌳 89%</span>
+                        </div>
+
+                        <div class="card-bottom">
+                            <span>♥ 389</span>
+                            <span>💬 54</span>
+                            <button class="small-view" data-city="More Parks Please">View →</button>
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+
+            <div class="no-results" id="noResults">
+                <div>🧐</div>
+                <h3>Hmm... nothing here.</h3>
+                <p>Try a different search or filter.</p>
+            </div>
+
+        </section>
+
+
+        <!-- WHY SHARE -->
+        <section class="share-section">
+
+            <div class="share-card">
+
+                <div class="share-icon">💭</div>
+
+                <span class="section-kicker">HAVE AN IDEA?</span>
+
+                <h2>
+                    Your city could be<br>
+                    someone's <span>inspiration.</span>
+                </h2>
+
+                <p>
+                    Build a city, experiment with real-world changes, and
+                    share what you discover with the CivicLens community.
+                </p>
+
+                <a href="login.html?mode=signup" class="share-button">
+                    Build a city
+                    <span>→</span>
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="footer">
+
+        <div class="footer-brand">
+            <a href="index.html" class="footer-logo">
+                <span class="logo-mark">
+                    <span></span>
+                    <span></span>
+                </span>
+                CivicLens
+            </a>
+
+            <p>
+                Built to make communities<br>
+                a little less confusing.
+            </p>
         </div>
 
-
-        <div class="modal-footer">
-
-          <div class="modal-comments">
-            💬 <span id="modalComments"></span>
-          </div>
-
-          <button class="view-city-button" id="viewCity">
-            View city
-            <span>→</span>
-          </button>
-
+        <div class="footer-right">
+            <span>© 2026 CivicLens</span>
+            <span>Made for curious people.</span>
         </div>
 
-      </div>
+    </footer>
+
+
+    <!-- CITY MODAL -->
+    <div class="city-modal" id="cityModal">
+
+        <div class="modal-overlay" id="modalOverlay"></div>
+
+        <div class="modal-content">
+
+            <button class="modal-close" id="modalClose">×</button>
+
+            <div class="modal-map" id="modalMap">
+                <div class="modal-map-road modal-road-one"></div>
+                <div class="modal-map-road modal-road-two"></div>
+                <div class="modal-map-road modal-road-three"></div>
+                <div class="modal-map-block modal-block-one"></div>
+                <div class="modal-map-block modal-block-two"></div>
+                <div class="modal-map-block modal-block-three"></div>
+                <div class="modal-map-block modal-block-four"></div>
+                <div class="modal-map-park">🌳 🌳 🌳</div>
+            </div>
+
+            <div class="modal-info">
+
+                <span class="section-kicker">CITY PREVIEW</span>
+
+                <h2 id="modalTitle">City Name</h2>
+
+                <p id="modalDescription">
+                    A community experiment made with CivicLens.
+                </p>
+
+                <div class="modal-stats">
+
+                    <div>
+                        <small>COST</small>
+                        <strong id="modalCost">$0</strong>
+                    </div>
+
+                    <div>
+                        <small>BUDGET</small>
+                        <strong id="modalBudget">$0</strong>
+                    </div>
+
+                    <div>
+                        <small>POPULATION</small>
+                        <strong id="modalPopulation">0</strong>
+                    </div>
+
+                    <div>
+                        <small>QUALITY OF LIFE</small>
+                        <strong id="modalQuality">0%</strong>
+                    </div>
+
+                    <div>
+                        <small>EDUCATION</small>
+                        <strong id="modalEducation">0%</strong>
+                    </div>
+
+                    <div>
+                        <small>SAFETY</small>
+                        <strong id="modalSafety">0%</strong>
+                    </div>
+
+                </div>
+
+                <div class="modal-social">
+                    <span>♥ <b id="modalLikes">0</b> likes</span>
+                    <span>💬 <b id="modalComments">0</b> comments</span>
+                </div>
+
+                <button class="modal-build">
+                    Create something like this →
+                </button>
+
+            </div>
+
+        </div>
 
     </div>
 
-  </div>
 
-
-  <script src="explore.js"></script>
+    <script src="/js/explore.js"></script>
 
 </body>
 </html>
