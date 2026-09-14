@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Explore — CivicLens</title>
+  <meta
+    name="description"
+    content="Explore cities built, redesigned, and imagined by the CivicLens community."
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="/css/explore.css" />
+</head>
+
+<body>
+
+  <!-- NAVIGATION -->
+  <header class="site-header">
+    <nav class="navbar">
+
+      <a href="#" class="brand">
+        <span class="brand-mark">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+
+        <span class="brand-name">Civic<span>Lens</span></span>
+      </a>
+
+      <div class="nav-links">
+        <a href="#" class="active">Explore</a>
+        <a href="#">Learn</a>
+        <a href="#">About</a>
+      </div>
+
+      <div class="nav-actions">
+        <a href="#" class="login-link">Log in</a>
+        <a href="#" class="create-button">
+          Create a city
+          <span>↗</span>
+        </a>
+      </div>
+
+      <button class="mobile-menu-button" aria-label="Open menu">
+        <span></span>
+        <span></span>
+      </button>
+
+    </nav>
+  </header>
+
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+
+      <div class="hero-content">
+
+        <div class="eyebrow">
+          <span class="eyebrow-dot"></span>
+          THE CIVICLENS COMMUNITY
+        </div>
+
+        <h1>
+          See what people
+          <em>build.</em>
+        </h1>
+
+        <p class="hero-description">
+          Explore cities imagined by the community, experiment with real-world
+          places, and see how different choices can shape the way a city works.
+        </p>
+
+        <div class="hero-actions">
+          <button class="primary-button" id="exploreButton">
+            Explore cities
+            <span>↓</span>
+          </button>
+
+          <a href="#" class="text-button">
+            How CivicLens works
+            <span>→</span>
+          </a>
+        </div>
+
+      </div>
+
+      <div class="hero-meta">
+
+        <div class="hero-stat">
+          <strong id="cityCount">12,480</strong>
+          <span>cities created</span>
+        </div>
+
+        <div class="hero-divider"></div>
+
+        <div class="hero-stat">
+          <strong>38</strong>
+          <span>countries represented</span>
+        </div>
+
+        <div class="hero-divider"></div>
+
+        <div class="hero-stat">
+          <strong>91K</strong>
+          <span>community interactions</span>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- FEATURED -->
+    <section class="featured-section">
+
+      <div class="section-heading">
+
+        <div>
+          <div class="section-label">COMMUNITY PICKS</div>
+          <h2>Cities worth seeing.</h2>
+        </div>
+
+        <button class="arrow-button" id="featuredNext" aria-label="Next featured city">
+          →
+        </button>
+
+      </div>
+
+
+      <div class="featured-grid" id="featuredGrid"></div>
+
+    </section>
+
+
+    <!-- EXPLORE -->
+    <section class="explore-section" id="explore">
+
+      <div class="explore-heading">
+
+        <div>
+          <div class="section-label">COMMUNITY</div>
+
+          <h2>Explore the city library.</h2>
+
+          <p>
+            Browse what other people are building and get inspired by their
+            decisions.
+          </p>
+        </div>
+
+        <div class="result-count">
+          <strong id="resultCount">6</strong>
+          <span>cities</span>
+        </div>
+
+      </div>
+
+
+      <!-- SEARCH -->
+      <div class="search-row">
+
+        <div class="search-box">
+
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="M16.5 16.5L21 21"></path>
+          </svg>
+
+          <input
+            type="search"
+            id="searchInput"
+            placeholder="Search cities, creators, or ideas..."
+          />
+
+          <kbd>⌘ K</kbd>
+
+        </div>
+
+        <button class="filter-button" id="filterButton">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 6h16"></path>
+            <path d="M7 12h10"></path>
+            <path d="M10 18h4"></path>
+          </svg>
+
+          Filters
+          <span class="filter-count" id="filterCount">0</span>
+        </button>
+
+        <select id="sortSelect" class="sort-select">
+          <option value="trending">Trending</option>
+          <option value="newest">Newest</option>
+          <option value="likes">Most liked</option>
+          <option value="population">Largest population</option>
+          <option value="quality">Highest quality of life</option>
+        </select>
+
+      </div>
+
+
+      <!-- FILTER PANEL -->
+      <div class="filter-panel" id="filterPanel">
+
+        <div class="filter-group">
+
+          <span class="filter-title">City type</span>
+
+          <div class="filter-options">
+
+            <button class="filter-pill active" data-type="all">
+              All cities
+            </button>
+
+            <button class="filter-pill" data-type="custom">
+              Custom
+            </button>
+
+            <button class="filter-pill" data-type="real">
+              Real-world
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div class="filter-group">
+
+          <span class="filter-title">Minimum quality of life</span>
+
+          <div class="range-wrapper">
+
+            <input
+              type="range"
+              id="qualityRange"
+              min="0"
+              max="100"
+              value="0"
+            />
+
+            <strong>
+              <span id="qualityValue">0</span>+
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <button class="clear-filters" id="clearFilters">
+          Clear filters
+        </button>
+
+      </div>
+
+
+      <!-- CITY GRID -->
+      <div class="city-grid" id="cityGrid"></div>
+
+
+      <!-- EMPTY -->
+      <div class="empty-state" id="emptyState">
+
+        <div class="empty-icon">⌕</div>
+
+        <h3>No cities found.</h3>
+
+        <p>
+          Try changing your search or removing a filter.
+        </p>
+
+        <button class="secondary-button" id="emptyReset">
+          Reset search
+        </button>
+
+      </div>
+
+
+      <div class="load-more-wrapper">
+        <button class="load-more" id="loadMore">
+          Load more cities
+          <span>↓</span>
+        </button>
+      </div>
+
+    </section>
+
+
+    <!-- CTA -->
+    <section class="create-section">
+
+      <div class="create-inner">
+
+        <div>
+          <div class="section-label">YOUR TURN</div>
+
+          <h2>
+            What would
+            <em>your</em>
+            city look like?
+          </h2>
+
+          <p>
+            Build from scratch or experiment with a real place.
+            Your decisions become the city.
+          </p>
+        </div>
+
+        <a href="#" class="large-create-button">
+          Start building
+          <span>↗</span>
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- CITY MODAL -->
+  <div class="modal-backdrop" id="cityModal">
+
+    <div class="city-modal">
+
+      <button class="modal-close" id="modalClose" aria-label="Close">
+        ×
+      </button>
+
+      <div class="modal-preview" id="modalPreview"></div>
+
+      <div class="modal-content">
+
+        <div class="modal-top">
+
+          <div>
+            <div class="modal-type" id="modalType"></div>
+            <h2 id="modalTitle"></h2>
+            <p id="modalCreator"></p>
+          </div>
+
+          <button class="modal-like" id="modalLike">
+            ♡
+            <span id="modalLikes"></span>
+          </button>
+
+        </div>
+
+        <p class="modal-description" id="modalDescription"></p>
+
+        <div class="modal-stats">
+
+          <div>
+            <span>Population</span>
+            <strong id="modalPopulation"></strong>
+          </div>
+
+          <div>
+            <span>Budget</span>
+            <strong id="modalBudget"></strong>
+          </div>
+
+          <div>
+            <span>Cost</span>
+            <strong id="modalCost"></strong>
+          </div>
+
+        </div>
+
+
+        <div class="modal-metrics">
+
+          <div class="modal-metric">
+            <div>
+              <span>Quality of life</span>
+              <strong id="modalQuality"></strong>
+            </div>
+
+            <div class="metric-track">
+              <span id="modalQualityBar"></span>
+            </div>
+          </div>
+
+          <div class="modal-metric">
+            <div>
+              <span>Education</span>
+              <strong id="modalEducation"></strong>
+            </div>
+
+            <div class="metric-track">
+              <span id="modalEducationBar"></span>
+            </div>
+          </div>
+
+          <div class="modal-metric">
+            <div>
+              <span>Safety</span>
+              <strong id="modalSafety"></strong>
+            </div>
+
+            <div class="metric-track">
+              <span id="modalSafetyBar"></span>
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+          <div class="modal-comments">
+            💬 <span id="modalComments"></span>
+          </div>
+
+          <button class="view-city-button" id="viewCity">
+            View city
+            <span>→</span>
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script src="explore.js"></script>
+
+</body>
+</html>
