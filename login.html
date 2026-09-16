@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Log in — CivicLens</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+
+<body>
+
+    <!-- BACKGROUND BLOBS -->
+    <div class="background-blobs" aria-hidden="true">
+        <div class="blob blob-green"></div>
+        <div class="blob blob-yellow"></div>
+        <div class="blob blob-purple"></div>
+    </div>
+
+
+    <!-- NAV -->
+    <header class="auth-nav">
+
+        <a href="index.html" class="logo">
+
+            <span class="logo-mark">
+                <span></span>
+                <span></span>
+            </span>
+
+            <span>CivicLens</span>
+
+        </a>
+
+        <a href="index.html" class="back-link">
+            ← Back to CivicLens
+        </a>
+
+    </header>
+
+
+    <!-- MAIN -->
+    <main class="auth-page">
+
+        <!-- LEFT SIDE -->
+        <section class="auth-intro">
+
+            <div class="intro-eyebrow">
+                <span>🌎</span>
+                WELCOME TO CIVICLENS
+            </div>
+
+            <h1>
+                Your city is
+                <span>waiting.</span>
+            </h1>
+
+            <p>
+                Explore communities, experiment with ideas, and build
+                cities of your own.
+            </p>
+
+
+            <!-- MINI MAP -->
+            <div class="auth-map-wrap">
+
+                <div class="sparkle sparkle-one">✦</div>
+                <div class="sparkle sparkle-two">✦</div>
+
+                <div class="auth-map">
+
+                    <div class="auth-road road-one"></div>
+                    <div class="auth-road road-two"></div>
+                    <div class="auth-road road-three"></div>
+                    <div class="auth-road road-four"></div>
+
+                    <div class="auth-block block-one"></div>
+                    <div class="auth-block block-two"></div>
+                    <div class="auth-block block-three"></div>
+                    <div class="auth-block block-four"></div>
+                    <div class="auth-block block-five"></div>
+
+                    <div class="auth-park">
+                        🌳 🌳
+                    </div>
+
+                    <div class="auth-water"></div>
+
+                    <div class="auth-pin pin-one">
+                        🏫
+                    </div>
+
+                    <div class="auth-pin pin-two">
+                        🏠
+                    </div>
+
+                    <div class="auth-pin pin-three">
+                        🌳
+                    </div>
+
+                </div>
+
+
+                <div class="map-note">
+                    <span>💡</span>
+
+                    <div>
+                        <small>THE CIVICLENS IDEA</small>
+                        <strong>Look closer.</strong>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="intro-note">
+                <span>✦</span>
+                No urban-planning degree required.
+            </div>
+
+        </section>
+
+
+        <!-- AUTH CARD -->
+        <section class="auth-section">
+
+            <div class="auth-card">
+
+                <!-- AUTH TABS -->
+                <div class="auth-tabs">
+
+                    <button
+                        class="auth-tab active"
+                        data-mode="login"
+                    >
+                        Log in
+                    </button>
+
+                    <button
+                        class="auth-tab"
+                        data-mode="signup"
+                    >
+                        Sign up
+                    </button>
+
+                </div>
+
+
+                <!-- LOGIN -->
+                <form
+                    id="loginForm"
+                    class="auth-form active"
+                    novalidate
+                >
+
+                    <div class="form-heading">
+
+                        <span class="form-emoji">👋</span>
+
+                        <div>
+                            <h2>Welcome back.</h2>
+
+                            <p>
+                                Ready to poke around your city?
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="loginEmail">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="loginEmail"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <div class="label-row">
+
+                            <label for="loginPassword">
+                                Password
+                            </label>
+
+                            <a href="#" id="forgotPassword">
+                                Forgot password?
+                            </a>
+
+                        </div>
+
+                        <div class="password-field">
+
+                            <input
+                                type="password"
+                                id="loginPassword"
+                                placeholder="Your password"
+                                autocomplete="current-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-target="loginPassword"
+                                aria-label="Show password"
+                            >
+                                👁
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <label class="checkbox-row">
+
+                        <input
+                            type="checkbox"
+                            id="rememberMe"
+                        >
+
+                        <span class="custom-checkbox"></span>
+
+                        <span>
+                            Remember me
+                        </span>
+
+                    </label>
+
+
+                    <button
+                        type="submit"
+                        class="submit-button"
+                    >
+                        Log in
+                        <span>→</span>
+                    </button>
+
+
+                    <div class="form-message" id="loginMessage"></div>
+
+
+                    <p class="switch-text">
+                        Don't have an account?
+
+                        <button
+                            type="button"
+                            class="switch-button"
+                            data-switch="signup"
+                        >
+                            Sign up
+                        </button>
+                    </p>
+
+                </form>
+
+
+                <!-- SIGN UP -->
+                <form
+                    id="signupForm"
+                    class="auth-form"
+                    novalidate
+                >
+
+                    <div class="form-heading">
+
+                        <span class="form-emoji">🌆</span>
+
+                        <div>
+                            <h2>Create your city.</h2>
+
+                            <p>
+                                Let's see what you come up with.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="signupName">
+                            Display name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="signupName"
+                            placeholder="What should people call you?"
+                            autocomplete="name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="signupEmail">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="signupEmail"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="signupPassword">
+                            Password
+                        </label>
+
+                        <div class="password-field">
+
+                            <input
+                                type="password"
+                                id="signupPassword"
+                                placeholder="At least 8 characters"
+                                autocomplete="new-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-target="signupPassword"
+                                aria-label="Show password"
+                            >
+                                👁
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="password-strength">
+
+                        <div class="strength-bars">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+
+                        <small id="strengthText">
+                            Use 8+ characters
+                        </small>
+
+                    </div>
+
+
+                    <label class="checkbox-row terms-row">
+
+                        <input
+                            type="checkbox"
+                            id="agreeTerms"
+                            required
+                        >
+
+                        <span class="custom-checkbox"></span>
+
+                        <span>
+                            I agree to the
+                            <a href="#">Terms</a>
+                            and
+                            <a href="#">Privacy Policy</a>.
+                        </span>
+
+                    </label>
+
+
+                    <button
+                        type="submit"
+                        class="submit-button"
+                    >
+                        Create account
+                        <span>→</span>
+                    </button>
+
+
+                    <div class="form-message" id="signupMessage"></div>
+
+
+                    <p class="switch-text">
+                        Already have an account?
+
+                        <button
+                            type="button"
+                            class="switch-button"
+                            data-switch="login"
+                        >
+                            Log in
+                        </button>
+                    </p>
+
+                </form>
+
+            </div>
+
+
+            <p class="security-note">
+                🔒 Your account keeps your cities and progress safe.
+            </p>
+
+        </section>
+
+    </main>
+
+
+    <script src="/js/login.js"></script>
+
+</body>
+</html>
