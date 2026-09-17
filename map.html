@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CivicLens — Newark Safety Hunt</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="css/map.css">
+</head>
+
+<body>
+
+    <!-- ==========================================
+         TOP NAVIGATION
+    =========================================== -->
+
+    <nav class="map-navbar">
+
+        <a href="dashboard.html" class="logo">
+
+            <span class="logo-mark">
+                <span class="logo-road"></span>
+                <span class="logo-dot"></span>
+            </span>
+
+            <span>
+                Civic<span>Lens</span>
+            </span>
+
+        </a>
+
+
+        <div class="world-title">
+
+            <span class="world-status-dot"></span>
+
+            <div>
+                <strong>Newark Safety Hunt</strong>
+                <small>Newark, New Jersey</small>
+            </div>
+
+        </div>
+
+
+        <div class="map-nav-actions">
+
+            <button class="nav-icon-button" title="Save">
+
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/>
+                    <path d="M17 21v-6H7v6"/>
+                    <path d="M7 3v5h8"/>
+                </svg>
+
+            </button>
+
+
+            <button class="nav-icon-button" title="Settings">
+
+                <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.8 1.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-2.5V20a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1-1.8-1.8.1-.1A1.7 1.7 0 0 0 8 15a1.7 1.7 0 0 0-1.6-1H6v-2.5h.2A1.7 1.7 0 0 0 7.8 10a1.7 1.7 0 0 0-.3-1.9l-.1-.1 1.8-1.8.1.1A1.7 1.7 0 0 0 11.2 7a1.7 1.7 0 0 0 1-1.6v-.2h2.5v.2a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1 1.8 1.8-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2V14h-.2a1.7 1.7 0 0 0-1.3 1Z"/>
+                </svg>
+
+            </button>
+
+
+            <button class="exit-button">
+                Exit World
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ==========================================
+         MAIN WORLD
+    =========================================== -->
+
+    <main class="world-layout">
+
+
+        <!-- ======================================
+             MAP AREA
+        ======================================= -->
+
+        <section class="map-area">
+
+
+            <!-- MAP TOOLBAR -->
+
+            <div class="map-toolbar">
+
+                <div class="map-toolbar-group">
+
+                    <button class="map-tool active">
+
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2C8.1 2 5 5.1 5 9c0 5.3 7 13 7 13s7-7.7 7-13c0-3.9-3.1-7-7-7Z"/>
+                            <circle cx="12" cy="9" r="2.5"/>
+                        </svg>
+
+                        Select
+
+                    </button>
+
+
+                    <button class="map-tool">
+
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 3v18"/>
+                            <path d="M3 12h18"/>
+                        </svg>
+
+                        Add Problem
+
+                    </button>
+
+
+                    <button class="map-tool">
+
+                        <svg viewBox="0 0 24 24">
+                            <path d="M4 18 20 6"/>
+                            <path d="M4 6h.01"/>
+                            <path d="M20 18h.01"/>
+                        </svg>
+
+                        Create Road
+
+                    </button>
+
+
+                    <button class="map-tool">
+
+                        <svg viewBox="0 0 24 24">
+                            <path d="M4 19V5"/>
+                            <path d="M4 5c4-3 8 3 16 0v11c-8 3-12-3-16 0"/>
+                        </svg>
+
+                        Add Area
+
+                    </button>
+
+                </div>
+
+
+                <div class="map-toolbar-group map-view-controls">
+
+                    <button class="map-tool">
+
+                        <svg viewBox="0 0 24 24">
+                            <path d="m12 2 3 7 7 3-7 3-3 7-3-7-7-3 7-3 3-7Z"/>
+                        </svg>
+
+                        AI Analyze
+
+                    </button>
+
+
+                    <button class="map-tool icon-only">
+
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 19V5"/>
+                            <path d="m6 11 6-6 6 6"/>
+                        </svg>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================
+                 MAP CANVAS
+            =================================== -->
+
+            <div class="map-canvas">
+
+
+                <!-- Fake map background.
+                     Your actual map/tile system will eventually
+                     replace this area. -->
+
+                <div class="map-grid"></div>
+
+
+                <!-- LAND AREAS -->
+
+                <div class="map-land land-1"></div>
+                <div class="map-land land-2"></div>
+                <div class="map-land land-3"></div>
+                <div class="map-land land-4"></div>
+
+
+                <!-- PARK -->
+
+                <div class="map-park park-1">
+                    <span>Vailsburg Park</span>
+                </div>
+
+                <div class="map-park park-2">
+                    <span>Community Garden</span>
+                </div>
+
+
+                <!-- ROADS -->
+
+                <div class="map-road road-1">
+                    <span>South Orange Ave</span>
+                </div>
+
+                <div class="map-road road-2">
+                    <span>Clinton Place</span>
+                </div>
+
+                <div class="map-road road-3"></div>
+
+                <div class="map-road road-4"></div>
+
+                <div class="map-road road-5"></div>
+
+
+                <!-- INTERSECTIONS -->
+
+                <div class="intersection intersection-1"></div>
+                <div class="intersection intersection-2"></div>
+                <div class="intersection intersection-3"></div>
+
+
+                <!-- COMMUNITY PROBLEM PINS -->
+
+                <button class="problem-pin danger pin-1">
+
+                    <span>!</span>
+
+                    <div class="pin-tooltip">
+                        Dangerous intersection
+                    </div>
+
+                </button>
+
+
+                <button class="problem-pin warning pin-2">
+
+                    <span>!</span>
+
+                    <div class="pin-tooltip">
+                        Poor sidewalk condition
+                    </div>
+
+                </button>
+
+
+                <button class="problem-pin info pin-3">
+
+                    <span>?</span>
+
+                    <div class="pin-tooltip">
+                        Missing crosswalk
+                    </div>
+
+                </button>
+
+
+                <button class="problem-pin danger pin-4">
+
+                    <span>!</span>
+
+                    <div class="pin-tooltip">
+                        High crash area
+                    </div>
+
+                </button>
+
+
+                <button class="problem-pin warning pin-5">
+
+                    <span>!</span>
+
+                    <div class="pin-tooltip">
+                        Street lighting problem
+                    </div>
+
+                </button>
+
+
+                <!-- USER LOCATION -->
+
+                <div class="user-location">
+
+                    <span></span>
+
+                </div>
+
+
+                <!-- MAP LABEL -->
+
+                <div class="map-location-label">
+
+                    <span class="label-city">
+                        Newark
+                    </span>
+
+                    <span class="label-state">
+                        New Jersey
+                    </span>
+
+                </div>
+
+
+                <!-- MAP ZOOM -->
+
+                <div class="zoom-controls">
+
+                    <button>+</button>
+
+                    <span></span>
+
+                    <button>−</button>
+
+                </div>
+
+
+                <!-- MAP LEGEND -->
+
+                <div class="map-legend">
+
+                    <strong>Map Legend</strong>
+
+                    <div class="legend-item">
+                        <span class="legend-dot red"></span>
+                        Safety problem
+                    </div>
+
+                    <div class="legend-item">
+                        <span class="legend-dot yellow"></span>
+                        Infrastructure
+                    </div>
+
+                    <div class="legend-item">
+                        <span class="legend-dot blue"></span>
+                        Question
+                    </div>
+
+                    <div class="legend-item">
+                        <span class="legend-road"></span>
+                        Road
+                    </div>
+
+                </div>
+
+
+                <!-- MAP SCALE -->
+
+                <div class="map-scale">
+                    <span></span>
+                    500 ft
+                </div>
+
+            </div>
+
+
+            <!-- ==================================
+                 BOTTOM MAP STATUS
+            =================================== -->
+
+            <div class="map-bottom-bar">
+
+                <div class="map-mode">
+
+                    <span class="mode-dot"></span>
+
+                    <strong>Real Life Mode</strong>
+
+                    <span class="mode-divider"></span>
+
+                    <span>Public data enabled</span>
+
+                </div>
+
+
+                <div class="map-coordinates">
+                    40.7357° N&nbsp;&nbsp; 74.1724° W
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ======================================
+             RIGHT SIDEBAR
+        ======================================= -->
+
+        <aside class="world-sidebar">
+
+
+            <!-- ==================================
+                 WORLD OVERVIEW
+            =================================== -->
+
+            <section class="sidebar-card overview-card">
+
+                <div class="card-eyebrow">
+                    WORLD OVERVIEW
+                </div>
+
+                <h2>
+                    Newark Safety Hunt
+                </h2>
+
+                <p class="overview-description">
+                    Explore transportation, infrastructure,
+                    safety, and community conditions throughout
+                    your world.
+                </p>
+
+
+                <div class="world-progress">
+
+                    <div class="progress-heading">
+
+                        <span>
+                            Investigation progress
+                        </span>
+
+                        <strong>
+                            68%
+                        </strong>
+
+                    </div>
+
+                    <div class="progress-track">
+
+                        <div
+                            class="progress-value"
+                            style="width:68%"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="overview-stats">
+
+                    <div>
+                        <strong>8</strong>
+                        <span>Problems</span>
+                    </div>
+
+                    <div>
+                        <strong>14</strong>
+                        <span>Analyses</span>
+                    </div>
+
+                    <div>
+                        <strong>6</strong>
+                        <span>Datasets</span>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ==================================
+                 EDIT WORLD
+            =================================== -->
+
+            <section class="sidebar-card">
+
+                <div class="sidebar-card-header">
+
+                    <div>
+                        <div class="card-eyebrow">
+                            EDIT WORLD
+                        </div>
+
+                        <h3>
+                            Build your community
+                        </h3>
+                    </div>
+
+                    <span class="edit-icon">✎</span>
+
+                </div>
+
+
+                <div class="edit-options">
+
+
+                    <button class="edit-option">
+
+                        <span class="edit-option-icon green">
+                            +
+                        </span>
+
+                        <span>
+                            <strong>
+                                Add a Problem
+                            </strong>
+
+                            <small>
+                                Report something happening here
+                            </small>
+                        </span>
+
+                        <b>→</b>
+
+                    </button>
+
+
+                    <button class="edit-option">
+
+                        <span class="edit-option-icon yellow">
+                            ╱
+                        </span>
+
+                        <span>
+                            <strong>
+                                Create a Road
+                            </strong>
+
+                            <small>
+                                Add or modify your road network
+                            </small>
+                        </span>
+
+                        <b>→</b>
+
+                    </button>
+
+
+                    <button class="edit-option">
+
+                        <span class="edit-option-icon blue">
+                            ◇
+                        </span>
+
+                        <span>
+                            <strong>
+                                Add an Area
+                            </strong>
+
+                            <small>
+                                Parks, schools, buildings & more
+                            </small>
+                        </span>
+
+                        <b>→</b>
+
+                    </button>
+
+
+                    <button class="edit-option">
+
+                        <span class="edit-option-icon purple">
+                            ✦
+                        </span>
+
+                        <span>
+                            <strong>
+                                Ask CivicLens AI
+                            </strong>
+
+                            <small>
+                                Find patterns in your world
+                            </small>
+                        </span>
+
+                        <b>→</b>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- ==================================
+                 COMMUNITY STATISTICS
+            =================================== -->
+
+            <section class="sidebar-card statistics-card">
+
+                <div class="sidebar-card-header">
+
+                    <div>
+
+                        <div class="card-eyebrow">
+                            COMMUNITY SNAPSHOT
+                        </div>
+
+                        <h3>
+                            What's happening here?
+                        </h3>
+
+                    </div>
+
+                    <span class="data-live">
+                        ● LIVE DATA
+                    </span>
+
+                </div>
+
+
+                <div class="stat-list">
+
+
+                    <!-- POPULATION -->
+
+                    <div class="community-stat">
+
+                        <div class="community-stat-icon population">
+                            👥
+                        </div>
+
+                        <div class="community-stat-content">
+
+                            <span>
+                                Population
+                            </span>
+
+                            <strong>
+                                305,344
+                            </strong>
+
+                        </div>
+
+                        <span class="stat-change positive">
+                            +1.2%
+                        </span>
+
+                    </div>
+
+
+                    <!-- HOMELESSNESS -->
+
+                    <div class="community-stat">
+
+                        <div class="community-stat-icon homelessness">
+                            🏠
+                        </div>
+
+                        <div class="community-stat-content">
+
+                            <span>
+                                Homelessness
+                            </span>
+
+                            <strong>
+                                1,842
+                            </strong>
+
+                        </div>
+
+                        <span class="stat-change neutral">
+                            People
+                        </span>
+
+                    </div>
+
+
+                    <!-- BUDGET -->
+
+                    <div class="community-stat">
+
+                        <div class="community-stat-icon budget">
+                            💰
+                        </div>
+
+                        <div class="community-stat-content">
+
+                            <span>
+                                City Budget
+                            </span>
+
+                            <strong>
+                                $366.2M
+                            </strong>
+
+                        </div>
+
+                        <span class="stat-change neutral">
+                            FY 2026
+                        </span>
+
+                    </div>
+
+
+                    <!-- DEBT -->
+
+                    <div class="community-stat">
+
+                        <div class="community-stat-icon debt">
+                            📉
+                        </div>
+
+                        <div class="community-stat-content">
+
+                            <span>
+                                Municipal Debt
+                            </span>
+
+                            <strong>
+                                $1.04B
+                            </strong>
+
+                        </div>
+
+                        <span class="stat-change negative">
+                            Total
+                        </span>
+
+                    </div>
+
+
+                    <!-- EDUCATION -->
+
+                    <div class="community-stat">
+
+                        <div class="community-stat-icon education">
+                            🎓
+                        </div>
+
+                        <div class="community-stat-content">
+
+                            <span>
+                                Education
+                            </span>
+
+                            <strong>
+                                78.4%
+                            </strong>
+
+                        </div>
+
+                        <span class="stat-change neutral">
+                            Graduation
+                        </span>
+
+                    </div>
+
+
+                    <!-- UNEMPLOYMENT -->
+
+                    <div class="community-stat">
+
+                        <div class="community-stat-icon unemployment">
+                            💼
+                        </div>
+
+                        <div class="community-stat-content">
+
+                            <span>
+                                Unemployment
+                            </span>
+
+                            <strong>
+                                7.1%
+                            </strong>
+
+                        </div>
+
+                        <span class="stat-change negative">
+                            Current
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SEE MORE -->
+
+                <button
+                    class="see-more-button"
+                    id="openStats"
+                >
+
+                    <span>
+                        See all community statistics
+                    </span>
+
+                    <strong>
+                        →
+                    </strong>
+
+                </button>
+
+            </section>
+
+
+            <!-- ==================================
+                 RECENT ACTIVITY
+            =================================== -->
+
+            <section class="sidebar-card activity-card">
+
+                <div class="sidebar-card-header">
+
+                    <div class="card-eyebrow">
+                        RECENT ACTIVITY
+                    </div>
+
+                    <button class="text-button">
+                        View all
+                    </button>
+
+                </div>
+
+
+                <div class="activity-list">
+
+                    <div class="activity">
+
+                        <span class="activity-marker red"></span>
+
+                        <div>
+                            <strong>
+                                Problem added
+                            </strong>
+
+                            <small>
+                                Dangerous intersection · 12m ago
+                            </small>
+                        </div>
+
+                    </div>
+
+
+                    <div class="activity">
+
+                        <span class="activity-marker blue"></span>
+
+                        <div>
+                            <strong>
+                                AI analysis completed
+                            </strong>
+
+                            <small>
+                                Crash patterns · 34m ago
+                            </small>
+                        </div>
+
+                    </div>
+
+
+                    <div class="activity">
+
+                        <span class="activity-marker yellow"></span>
+
+                        <div>
+                            <strong>
+                                Road edited
+                            </strong>
+
+                            <small>
+                                South Orange Ave · 1h ago
+                            </small>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </aside>
+
+    </main>
+
+
+    <!-- ==========================================
+         STATISTICS POPUP
+         
+         This is the full statistics window.
+         JavaScript can later toggle the "open"
+         class.
+    =========================================== -->
+
+    <div
+        class="stats-modal"
+        id="statsModal"
+        aria-hidden="true"
+    >
+
+        <div class="stats-modal-backdrop"></div>
+
+
+        <div class="stats-window">
+
+
+            <!-- MODAL HEADER -->
+
+            <header class="stats-window-header">
+
+                <div>
+
+                    <div class="card-eyebrow">
+                        CIVICLENS DATA
+                    </div>
+
+                    <h2>
+                        Community Statistics
+                    </h2>
+
+                    <p>
+                        Newark, New Jersey
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="close-stats"
+                    id="closeStats"
+                    aria-label="Close statistics"
+                >
+                    ×
+                </button>
+
+            </header>
+
+
+            <!-- DATA SOURCE -->
+
+            <div class="data-source-bar">
+
+                <span class="source-status"></span>
+
+                <span>
+                    Data collected from public sources
+                </span>
+
+                <span class="source-updated">
+                    Last updated recently
+                </span>
+
+            </div>
+
+
+            <!-- ==================================
+                 STATISTICS GRID
+            =================================== -->
+
+            <div class="full-stats-grid">
+
+
+                <!-- POPULATION -->
+
+                <article class="full-stat-card green">
+
+                    <div class="full-stat-top">
+
+                        <span class="full-stat-icon">
+                            👥
+                        </span>
+
+                        <span class="full-stat-category">
+                            DEMOGRAPHICS
+                        </span>
+
+                    </div>
+
+                    <span class="full-stat-label">
+                        Population
+                    </span>
+
+                    <strong class="full-stat-value">
+                        305,344
+                    </strong>
+
+                    <p>
+                        Estimated population of the community.
+                    </p>
+
+                    <div class="full-stat-footer">
+                        <span>Population trend</span>
+                        <strong>+1.2%</strong>
+                    </div>
+
+                </article>
+
+
+                <!-- HOMELESSNESS -->
+
+                <article class="full-stat-card pink">
+
+                    <div class="full-stat-top">
+
+                        <span class="full-stat-icon">
+                            🏠
+                        </span>
+
+                        <span class="full-stat-category">
+                            HOUSING
+                        </span>
+
+                    </div>
+
+                    <span class="full-stat-label">
+                        Homelessness
+                    </span>
+
+                    <strong class="full-stat-value">
+                        1,842
+                    </strong>
+
+                    <p>
+                        People experiencing homelessness
+                        according to available reporting.
+                    </p>
+
+                    <div class="full-stat-footer">
+                        <span>Measure</span>
+                        <strong>People</strong>
+                    </div>
+
+                </article>
+
+
+                <!-- BUDGET -->
+
+                <article class="full-stat-card yellow">
+
+                    <div class="full-stat-top">
+
+                        <span class="full-stat-icon">
+                            💰
+                        </span>
+
+                        <span class="full-stat-category">
+                            FINANCE
+                        </span>
+
+                    </div>
+
+                    <span class="full-stat-label">
+                        City Budget
+                    </span>
+
+                    <strong class="full-stat-value">
+                        $366.2M
+                    </strong>
+
+                    <p>
+                        Municipal operating budget for the
+                        selected fiscal year.
+                    </p>
+
+                    <div class="full-stat-footer">
+                        <span>Fiscal year</span>
+                        <strong>2026</strong>
+                    </div>
+
+                </article>
+
+
+                <!-- DEBT -->
+
+                <article class="full-stat-card blue">
+
+                    <div class="full-stat-top">
+
+                        <span class="full-stat-icon">
+                            📉
+                        </span>
+
+                        <span class="full-stat-category">
+                            FINANCE
+                        </span>
+
+                    </div>
+
+                    <span class="full-stat-label">
+                        Municipal Debt
+                    </span>
+
+                    <strong class="full-stat-value">
+                        $1.04B
+                    </strong>
+
+                    <p>
+                        Reported outstanding municipal
+                        obligations.
+                    </p>
+
+                    <div class="full-stat-footer">
+                        <span>Measure</span>
+                        <strong>Total</strong>
+                    </div>
+
+                </article>
+
+
+                <!-- EDUCATION -->
+
+                <article class="full-stat-card purple">
+
+                    <div class="full-stat-top">
+
+                        <span class="full-stat-icon">
+                            🎓
+                        </span>
+
+                        <span class="full-stat-category">
+                            EDUCATION
+                        </span>
+
+                    </div>
+
+                    <span class="full-stat-label">
+                        Graduation Rate
+                    </span>
+
+                    <strong class="full-stat-value">
+                        78.4%
+                    </strong>
+
+                    <p>
+                        High school graduation rate for
+                        the selected population.
+                    </p>
+
+                    <div class="full-stat-footer">
+                        <span>Measure</span>
+                        <strong>Graduation</strong>
+                    </div>
+
+                </article>
+
+
+                <!-- UNEMPLOYMENT -->
+
+                <article class="full-stat-card orange">
+
+                    <div class="full-stat-top">
+
+                        <span class="full-stat-icon">
+                            💼
+                        </span>
+
+                        <span class="full-stat-category">
+                            ECONOMY
+                        </span>
+
+                    </div>
+
+                    <span class="full-stat-label">
+                        Unemployment Rate
+                    </span>
+
+                    <strong class="full-stat-value">
+                        7.1%
+                    </strong>
+
+                    <p>
+                        Percentage of the labor force
+                        currently unemployed.
+                    </p>
+
+                    <div class="full-stat-footer">
+                        <span>Measure</span>
+                        <strong>Current</strong>
+                    </div>
+
+                </article>
+
+            </div>
+
+
+            <!-- ==================================
+                 ADDITIONAL DATA
+            =================================== -->
+
+            <section class="additional-data">
+
+                <div class="additional-header">
+
+                    <div>
+
+                        <div class="card-eyebrow">
+                            MORE DATA
+                        </div>
+
+                        <h3>
+                            Other things worth knowing
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="additional-grid">
+
+                    <div class="additional-stat">
+                        <span>Median household income</span>
+                        <strong>$48,000</strong>
+                    </div>
+
+                    <div class="additional-stat">
+                        <span>Poverty rate</span>
+                        <strong>23.4%</strong>
+                    </div>
+
+                    <div class="additional-stat">
+                        <span>Median age</span>
+                        <strong>34.8</strong>
+                    </div>
+
+                    <div class="additional-stat">
+                        <span>Owner occupied housing</span>
+                        <strong>25.7%</strong>
+                    </div>
+
+                    <div class="additional-stat">
+                        <span>Public transit usage</span>
+                        <strong>18.2%</strong>
+                    </div>
+
+                    <div class="additional-stat">
+                        <span>Average commute</span>
+                        <strong>31.4 min</strong>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ==================================
+                 DATA DISCLAIMER
+            =================================== -->
+
+            <div class="stats-disclaimer">
+
+                <span>ⓘ</span>
+
+                <p>
+                    Statistics are provided for civic exploration
+                    and analysis. Values may come from different
+                    sources, years, geographic boundaries, and
+                    methodologies. CivicLens should display the
+                    original source and date for each statistic
+                    when real data is connected.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</body>
+</html>

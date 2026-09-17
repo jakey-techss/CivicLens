@@ -462,16 +462,6 @@ forgotPassword.addEventListener(
         }
 
 
-        /*
-         * SUPABASE PASSWORD RESET WILL GO HERE
-         *
-         * Example:
-         *
-         * await supabase.auth.resetPasswordForEmail(
-         *     email
-         * );
-         */
-
 
         showMessage(
             loginMessage,
@@ -481,11 +471,6 @@ forgotPassword.addEventListener(
 
     }
 );
-
-
-/* =========================================================
-   HELPERS
-========================================================= */
 
 function isValidEmail(email) {
 
