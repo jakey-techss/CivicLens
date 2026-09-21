@@ -1,12 +1,16 @@
-/* =========================================================
-   CIVICLENS AUTH
-========================================================= */
-
-
-/* =========================================================
-   ELEMENTS
-========================================================= */
-
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvenhzZHN0bmR5d25xYnl0emphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5OTA1MjgsImV4cCI6MjEwNTU2NjUyOH0.IjVL1OhAZlKNxqoHVZ9_BXVnCQU0uL3gsd7j57PeV0Y"
+const SUPABASE_URL = "https://iozxsdstndywnqbytzja.supabase.co"
+const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+)
+checkSession()
+async function checkSession(){
+    const {data: {session}} = await supabaseClient.auth.getSession();
+    if(session){
+        window.location.assign("dashboard.html")
+    }
+}
 const tabs = document.querySelectorAll(".auth-tab");
 const forms = document.querySelectorAll(".auth-form");
 
@@ -39,10 +43,6 @@ const strengthBars =
         ".strength-bars span"
     );
 
-
-/* =========================================================
-   SWITCH LOGIN / SIGNUP
-========================================================= */
 
 function switchMode(mode) {
 
@@ -109,10 +109,6 @@ switchButtons.forEach(button => {
 });
 
 
-/* =========================================================
-   INITIAL MODE FROM URL
-========================================================= */
-
 const params =
     new URLSearchParams(
         window.location.search
@@ -122,10 +118,6 @@ if (params.get("mode") === "signup") {
     switchMode("signup");
 }
 
-
-/* =========================================================
-   PASSWORD VISIBILITY
-========================================================= */
 
 document.querySelectorAll(
     ".password-toggle"
@@ -169,10 +161,6 @@ document.querySelectorAll(
 
 });
 
-
-/* =========================================================
-   PASSWORD STRENGTH
-========================================================= */
 
 signupPassword.addEventListener(
     "input",
@@ -247,10 +235,6 @@ signupPassword.addEventListener(
 );
 
 
-/* =========================================================
-   LOGIN
-========================================================= */
-
 loginForm.addEventListener(
     "submit",
     event => {
@@ -314,11 +298,6 @@ loginForm.addEventListener(
     }
 );
 
-
-/* =========================================================
-   SIGN UP
-========================================================= */
-
 signupForm.addEventListener(
     "submit",
     event => {
@@ -330,12 +309,12 @@ signupForm.addEventListener(
                 "signupName"
             ).value.trim();
 
-        const email =
+        const emailVal =
             document.getElementById(
                 "signupEmail"
             ).value.trim();
 
-        const password =
+        const passwordVal =
             document.getElementById(
                 "signupPassword"
             ).value;
@@ -346,7 +325,7 @@ signupForm.addEventListener(
             ).checked;
 
 
-        if (!name || !email || !password) {
+        if (!name || !emailVal || !passwordVal) {
 
             showMessage(
                 signupMessage,
@@ -358,7 +337,7 @@ signupForm.addEventListener(
         }
 
 
-        if (!isValidEmail(email)) {
+        if (!isValidEmail(emailVal)) {
 
             showMessage(
                 signupMessage,
@@ -370,7 +349,7 @@ signupForm.addEventListener(
         }
 
 
-        if (password.length < 8) {
+        if (passwordVal.length < 8) {
 
             showMessage(
                 signupMessage,
@@ -380,7 +359,6 @@ signupForm.addEventListener(
 
             return;
         }
-
 
         if (!agree) {
 
@@ -392,39 +370,41 @@ signupForm.addEventListener(
 
             return;
         }
+        async function signup() {
+            const { data: userInfo, error: error } = await supabaseClient.auth.signUp({
+                email: emailVal,
+                password: passwordVal,
+                options: {
+                    data:{
+                        display_name: name
+                    }
+                }
+            })
+
+            if (error) {
+                console.error(error)
+                showMessage(
+                    signupMessage,
+                    error.message,
+                    "error"
+                );
+                return
+            }
+            showMessage(
+                signupMessage,
+                "Account created! Confirm your CivicLens account",
+                "success"
+            );
+
+        }
+        signup()
 
 
-        /*
-         * SUPABASE SIGNUP WILL GO HERE
-         *
-         * Example:
-         *
-         * const { data, error } =
-         *     await supabase.auth.signUp({
-         *         email,
-         *         password,
-         *         options: {
-         *             data: {
-         *                 display_name: name
-         *             }
-         *         }
-         *     });
-         */
-
-
-        showMessage(
-            signupMessage,
-            "Account created! Connect Supabase here.",
-            "success"
-        );
 
     }
 );
 
 
-/* =========================================================
-   FORGOT PASSWORD
-========================================================= */
 
 forgotPassword.addEventListener(
     "click",
