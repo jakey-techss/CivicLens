@@ -4,16 +4,17 @@ const supabaseClient = supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 )
+
 checkSession()
-async function checkSession(){
-    const {data: {session}} = await supabaseClient.auth.getSession();
-    if(session){
+async function checkSession() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (session) {
         window.location.assign("dashboard.html")
     }
 }
 const tabs = document.querySelectorAll(".auth-tab");
 const forms = document.querySelectorAll(".auth-form");
-
+const confirmationOverlay = document.getElementById("confirmationOverlay");
 const switchButtons =
     document.querySelectorAll(".switch-button");
 
@@ -241,18 +242,18 @@ loginForm.addEventListener(
 
         event.preventDefault();
 
-        const email =
+        const emailVal =
             document.getElementById(
                 "loginEmail"
             ).value.trim();
 
-        const password =
+        const passwordVal =
             document.getElementById(
                 "loginPassword"
             ).value;
 
 
-        if (!email || !password) {
+        if (!emailVal || !passwordVal) {
 
             showMessage(
                 loginMessage,
@@ -264,7 +265,7 @@ loginForm.addEventListener(
         }
 
 
-        if (!isValidEmail(email)) {
+        if (!isValidEmail(emailVal)) {
 
             showMessage(
                 loginMessage,
@@ -276,24 +277,34 @@ loginForm.addEventListener(
         }
 
 
-        /*
-         * SUPABASE LOGIN WILL GO HERE
-         *
-         * Example:
-         *
-         * const { data, error } =
-         *     await supabase.auth.signInWithPassword({
-         *         email,
-         *         password
-         *     });
-         */
-
-
-        showMessage(
-            loginMessage,
-            "Demo login successful! Connect Supabase here.",
-            "success"
-        );
+        async function login() {
+            const { data: userInfo, error: error } = await supabaseClient.auth.signInWithPassword({
+                email: emailVal,
+                password: passwordVal,
+            })
+            if(userInfo.user.confirmed_at == ""){
+                showConfirmationPopup()
+                return
+            }
+            if (error) {
+                console.error(error)
+                showMessage(
+                    loginMessage,
+                    error.message,
+                    "error"
+                );
+                return
+            }
+            showMessage(
+                loginMessage,
+                "Successfully logged into your CivicLens account",
+                "success"
+            );
+            
+            window.location.assign("dashboard.html")
+  
+        }
+        login()
 
     }
 );
@@ -375,10 +386,11 @@ signupForm.addEventListener(
                 email: emailVal,
                 password: passwordVal,
                 options: {
-                    data:{
+                    data: {
                         display_name: name
                     }
                 }
+
             })
 
             if (error) {
@@ -390,21 +402,29 @@ signupForm.addEventListener(
                 );
                 return
             }
+
             showMessage(
                 signupMessage,
                 "Account created! Confirm your CivicLens account",
                 "success"
             );
+            showConfirmationPopup();
 
         }
         signup()
 
-
-
     }
 );
 
+function showConfirmationPopup() {
+    confirmationOverlay.classList.add("active");
+    document.body.style.overflow = "hidden";
+}
 
+function hideConfirmationPopup() {
+    confirmationOverlay.classList.remove("active");
+    document.body.style.overflow = "";
+}
 
 forgotPassword.addEventListener(
     "click",

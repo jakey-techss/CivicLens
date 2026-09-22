@@ -1,11 +1,4 @@
-/* ============================================
-   CIVICLENS DASHBOARD
-   ============================================ */
 
-
-/* -------------------------------- */
-/* DEFAULT WORLDS */
-/* -------------------------------- */
 
 const defaultWorlds = [
     {
@@ -49,9 +42,6 @@ const defaultWorlds = [
 ];
 
 
-/* -------------------------------- */
-/* STATE */
-/* -------------------------------- */
 
 let worlds = JSON.parse(
     localStorage.getItem("civiclens_worlds")
@@ -68,10 +58,6 @@ let selectedDifficulty = "freeplay";
 
 let currentStep = 1;
 
-
-/* -------------------------------- */
-/* ELEMENTS */
-/* -------------------------------- */
 
 const worldGrid =
     document.getElementById("worldGrid");
@@ -107,9 +93,6 @@ const summaryDifficulty =
     document.getElementById("summaryDifficulty");
 
 
-/* -------------------------------- */
-/* SAVE */
-/* -------------------------------- */
 
 function saveWorlds() {
 
@@ -555,11 +538,6 @@ function resetCreateForm() {
     updateSummary();
 }
 
-
-/* -------------------------------- */
-/* STEP NAVIGATION */
-/* -------------------------------- */
-
 document
     .querySelectorAll("[data-next]")
     .forEach(button => {
@@ -636,9 +614,6 @@ function showStep(step) {
 }
 
 
-/* -------------------------------- */
-/* TYPE SELECTION */
-/* -------------------------------- */
 
 document
     .querySelectorAll(".world-type")
@@ -670,9 +645,6 @@ document
     });
 
 
-/* -------------------------------- */
-/* DIFFICULTY SELECTION */
-/* -------------------------------- */
 
 document
     .querySelectorAll(".difficulty")
@@ -704,9 +676,6 @@ document
     });
 
 
-/* -------------------------------- */
-/* SUMMARY */
-/* -------------------------------- */
 
 function updateSummary() {
 
@@ -755,10 +724,6 @@ function getDifficultyLabel(difficulty) {
     return labels[difficulty] || difficulty;
 }
 
-
-/* -------------------------------- */
-/* CREATE WORLD */
-/* -------------------------------- */
 
 document
     .getElementById("launchWorld")
@@ -899,23 +864,12 @@ function openWorld(id) {
     if (!world) return;
 
 
-    /*
-        Later:
-
-        window.location.href =
-            `world.html?id=${id}`;
-    */
-
     showToast(
         `Opening ${world.name}...`,
         "🗺️"
     );
 }
 
-
-/* -------------------------------- */
-/* WORLD MENU */
-/* -------------------------------- */
 
 function showWorldMenu(id) {
 
