@@ -1496,3 +1496,361 @@ a {
     }
 
 }
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+/* =========================
+   FORGOT PASSWORD POPUP
+   ========================= */
+
+.forgot-popup-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    background: rgba(23, 23, 23, 0.72);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.forgot-popup-overlay.active {
+    display: flex;
+}
+
+/* =========================
+   POPUP
+   ========================= */
+
+.forgot-popup {
+    position: relative;
+
+    width: 100%;
+    max-width: 460px;
+
+    padding: 42px 38px 36px;
+
+    background: #f8f7f2;
+
+    border: 4px solid #171717;
+    border-radius: 30px;
+
+    box-shadow: 10px 10px 0 #171717;
+
+    text-align: center;
+
+    animation: forgotPopupIn 0.25s ease-out;
+}
+
+@keyframes forgotPopupIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* =========================
+   CLOSE BUTTON
+   ========================= */
+
+.popup-close {
+    position: absolute;
+    top: 16px;
+    right: 17px;
+
+    width: 38px;
+    height: 38px;
+
+    border: 3px solid #171717;
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    color: #171717;
+
+    font-size: 25px;
+    font-weight: 800;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease;
+}
+
+.popup-close:hover {
+    background: #ff9fc8;
+    transform: rotate(5deg) scale(1.05);
+}
+
+.popup-close:active {
+    transform: translateY(2px);
+}
+
+/* =========================
+   ICON
+   ========================= */
+
+.forgot-icon {
+    width: 74px;
+    height: 74px;
+
+    margin: 0 auto 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #b8a1ff;
+
+    border: 3px solid #171717;
+    border-radius: 20px;
+
+    box-shadow: 5px 5px 0 #171717;
+
+    font-size: 35px;
+
+    transform: rotate(-3deg);
+}
+
+/* =========================
+   BADGE
+   ========================= */
+
+.forgot-badge {
+    display: inline-block;
+
+    margin-bottom: 15px;
+
+    padding: 7px 14px;
+
+    background: #ffd84d;
+
+    border: 2px solid #171717;
+    border-radius: 999px;
+
+    font-family: "Baloo 2", sans-serif;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    letter-spacing: 0.8px;
+}
+
+/* =========================
+   HEADING
+   ========================= */
+
+.forgot-popup h2 {
+    margin: 0 0 14px;
+
+    font-family: "Baloo 2", sans-serif;
+
+    font-size: 38px;
+    line-height: 1.02;
+
+    font-weight: 800;
+
+    letter-spacing: -0.8px;
+
+    color: #171717;
+}
+
+
+.forgot-popup p {
+    max-width: 390px;
+
+    margin: 0 auto 25px;
+
+    color: #555555;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 15px;
+    line-height: 1.65;
+}
+
+/* =========================
+   FORM
+   ========================= */
+
+#forgotPasswordForm {
+    text-align: left;
+}
+
+#forgotPasswordForm label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    color: #171717;
+}
+
+#forgotPasswordForm input {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 14px 15px;
+
+    margin-bottom: 16px;
+
+    background: #ffffff;
+
+    border: 3px solid #171717;
+    border-radius: 13px;
+
+    outline: none;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 15px;
+
+    color: #171717;
+
+    transition:
+        box-shadow 0.15s ease,
+        transform 0.15s ease;
+}
+
+#forgotPasswordForm input::placeholder {
+    color: #999999;
+}
+
+#forgotPasswordForm input:focus {
+    box-shadow: 4px 4px 0 #20b26b;
+    transform: translate(-1px, -1px);
+}
+
+/* =========================
+   RESET BUTTON
+   ========================= */
+
+.reset-button {
+    width: 100%;
+
+    padding: 15px 20px;
+
+    background: #20b26b;
+
+    border: 3px solid #171717;
+    border-radius: 14px;
+
+    box-shadow: 5px 5px 0 #171717;
+
+    color: #ffffff;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 15px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.reset-button:hover {
+    transform: translate(-2px, -2px);
+
+    box-shadow: 7px 7px 0 #171717;
+}
+
+.reset-button:active {
+    transform: translate(3px, 3px);
+
+    box-shadow: 2px 2px 0 #171717;
+}
+
+/* =========================
+   MESSAGE
+   ========================= */
+
+.reset-message {
+    margin-top: 15px;
+
+    padding: 12px 14px;
+
+    border-radius: 12px;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    display: none;
+}
+
+.reset-message.loading {
+    display: block;
+
+    background: #75bdf4;
+
+    border: 2px solid #171717;
+
+    color: #171717;
+}
+
+.reset-message.success {
+    display: block;
+
+    background: #20b26b;
+
+    border: 2px solid #171717;
+
+    color: #ffffff;
+}
+
+.reset-message.error {
+    display: block;
+
+    background: #ff9fc8;
+
+    border: 2px solid #171717;
+
+    color: #171717;
+}
+
+/* =========================
+   MOBILE
+   ========================= */
+
+@media (max-width: 600px) {
+
+    .forgot-popup {
+        padding: 35px 23px 28px;
+
+        border-radius: 25px;
+
+        box-shadow: 6px 6px 0 #171717;
+    }
+
+    .forgot-popup h2 {
+        font-size: 32px;
+    }
+
+    .forgot-icon {
+        width: 64px;
+        height: 64px;
+
+        font-size: 30px;
+    }
+}

@@ -15,18 +15,10 @@ async function checkSession() {
 const tabs = document.querySelectorAll(".auth-tab");
 const forms = document.querySelectorAll(".auth-form");
 const confirmationOverlay = document.getElementById("confirmationOverlay");
-const switchButtons =
-    document.querySelectorAll(".switch-button");
-
-const loginForm =
-    document.getElementById("loginForm");
-
-const signupForm =
-    document.getElementById("signupForm");
-
-const loginMessage =
-    document.getElementById("loginMessage");
-
+const switchButtons = document.querySelectorAll(".switch-button");
+const loginForm = document.getElementById("loginForm");
+const signupForm = document.getElementById("signupForm");
+const loginMessage = document.getElementById("loginMessage");
 const signupMessage =
     document.getElementById("signupMessage");
 
@@ -235,7 +227,6 @@ signupPassword.addEventListener(
     }
 );
 
-
 loginForm.addEventListener(
     "submit",
     event => {
@@ -276,13 +267,12 @@ loginForm.addEventListener(
             return;
         }
 
-
         async function login() {
             const { data: userInfo, error: error } = await supabaseClient.auth.signInWithPassword({
                 email: emailVal,
                 password: passwordVal,
             })
-            if(userInfo.user.confirmed_at == ""){
+            if (userInfo.user.confirmed_at == "") {
                 showConfirmationPopup()
                 return
             }
@@ -300,9 +290,9 @@ loginForm.addEventListener(
                 "Successfully logged into your CivicLens account",
                 "success"
             );
-            
+
             window.location.assign("dashboard.html")
-  
+
         }
         login()
 
@@ -425,49 +415,81 @@ function hideConfirmationPopup() {
     confirmationOverlay.classList.remove("active");
     document.body.style.overflow = "";
 }
+const forgotPopup = document.getElementById("forgotPasswordPopup");
+const closeForgotPopup = document.getElementById("closeForgotPopup");
+const forgotPasswordForm = document.getElementById("forgotPasswordForm");
+const resetMessage = document.getElementById("resetMessage");
 
+function openPopUp() {
+    forgotPopup.classList.add("active");
+}
+function closePopUp() {
+    forgotPopup.classList.remove("active");
+}
+closeForgotPopup.addEventListener("click", () => {
+    closePopUp()
+})
+forgotPasswordForm.addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    const email = document.getElementById("resetEmail").value.trim();
+    if (!email) {
+
+        showMessage(
+            loginMessage,
+            "Enter your email first and we'll send you a reset link.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (!isValidEmail(email)) {
+
+        showMessage(
+            loginMessage,
+            "Please enter a valid email address so that the reset link can be sent to you.",
+            "error"
+        );
+
+        return;
+    }
+    resetMessage.textContent = "Sending reset link...";
+    resetMessage.className = "reset-message loading";
+
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(
+        email,
+        {
+            redirectTo: "http://127.0.0.1:5500/reset-password.html"
+        }
+    );
+
+    if (error) {
+
+        console.error(error);
+
+        resetMessage.textContent = error.message;
+
+        resetMessage.className = "reset-message error";
+
+        return;
+    }
+
+    resetMessage.textContent =
+        "Reset link sent! Check your email. ✉️";
+
+    resetMessage.className = "reset-message success";
+
+});
 forgotPassword.addEventListener(
     "click",
     event => {
 
         event.preventDefault();
+        openPopUp()
 
-        const email =
-            document.getElementById(
-                "loginEmail"
-            ).value.trim();
-
-
-        if (!email) {
-
-            showMessage(
-                loginMessage,
-                "Enter your email first and we'll send you a reset link.",
-                "error"
-            );
-
-            return;
-        }
-
-
-        if (!isValidEmail(email)) {
-
-            showMessage(
-                loginMessage,
-                "Please enter a valid email address.",
-                "error"
-            );
-
-            return;
-        }
-
-
-
-        showMessage(
-            loginMessage,
-            "Demo reset request sent. Connect Supabase here.",
-            "success"
-        );
 
     }
 );

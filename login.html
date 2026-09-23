@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,11 +9,10 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-     <link rel="icon" href="assets/logo.png">
+    <link rel="icon" href="assets/logo.png">
     <link
         href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
+        rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="/css/login.css">
 </head>
@@ -125,27 +125,17 @@
 
                 <div class="auth-tabs">
 
-                    <button
-                        class="auth-tab active"
-                        data-mode="login"
-                    >
+                    <button class="auth-tab active" data-mode="login">
                         Log in
                     </button>
 
-                    <button
-                        class="auth-tab"
-                        data-mode="signup"
-                    >
+                    <button class="auth-tab" data-mode="signup">
                         Sign up
                     </button>
 
                 </div>
 
-                <form
-                    id="loginForm"
-                    class="auth-form active"
-                    novalidate
-                >
+                <form id="loginForm" class="auth-form active" novalidate>
 
                     <div class="form-heading">
 
@@ -168,13 +158,7 @@
                             Email
                         </label>
 
-                        <input
-                            type="email"
-                            id="loginEmail"
-                            placeholder="you@example.com"
-                            autocomplete="email"
-                            required
-                        >
+                        <input type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email" required>
 
                     </div>
 
@@ -195,20 +179,11 @@
 
                         <div class="password-field">
 
-                            <input
-                                type="password"
-                                id="loginPassword"
-                                placeholder="Your password"
-                                autocomplete="current-password"
-                                required
-                            >
+                            <input type="password" id="loginPassword" placeholder="Your password"
+                                autocomplete="current-password" required>
 
-                            <button
-                                type="button"
-                                class="password-toggle"
-                                data-target="loginPassword"
-                                aria-label="Show password"
-                            >
+                            <button type="button" class="password-toggle" data-target="loginPassword"
+                                aria-label="Show password">
                                 👁
                             </button>
 
@@ -219,10 +194,7 @@
 
                     <label class="checkbox-row">
 
-                        <input
-                            type="checkbox"
-                            id="rememberMe"
-                        >
+                        <input type="checkbox" id="rememberMe">
 
                         <span class="custom-checkbox"></span>
 
@@ -233,10 +205,7 @@
                     </label>
 
 
-                    <button
-                        type="submit"
-                        class="submit-button"
-                    >
+                    <button type="submit" class="submit-button">
                         Log in
                         <span>→</span>
                     </button>
@@ -248,22 +217,14 @@
                     <p class="switch-text">
                         Don't have an account?
 
-                        <button
-                            type="button"
-                            class="switch-button"
-                            data-switch="signup"
-                        >
+                        <button type="button" class="switch-button" data-switch="signup">
                             Sign up
                         </button>
                     </p>
 
                 </form>
 
-                <form
-                    id="signupForm"
-                    class="auth-form"
-                    novalidate
-                >
+                <form id="signupForm" class="auth-form" novalidate>
 
                     <div class="form-heading">
 
@@ -286,13 +247,8 @@
                             Display name
                         </label>
 
-                        <input
-                            type="text"
-                            id="signupName"
-                            placeholder="What should people call you?"
-                            autocomplete="name"
-                            required
-                        >
+                        <input type="text" id="signupName" placeholder="What should people call you?"
+                            autocomplete="name" required>
 
                     </div>
 
@@ -303,13 +259,8 @@
                             Email
                         </label>
 
-                        <input
-                            type="email"
-                            id="signupEmail"
-                            placeholder="you@example.com"
-                            autocomplete="email"
-                            required
-                        >
+                        <input type="email" id="signupEmail" placeholder="you@example.com" autocomplete="email"
+                            required>
 
                     </div>
 
@@ -322,20 +273,11 @@
 
                         <div class="password-field">
 
-                            <input
-                                type="password"
-                                id="signupPassword"
-                                placeholder="At least 8 characters"
-                                autocomplete="new-password"
-                                required
-                            >
+                            <input type="password" id="signupPassword" placeholder="At least 8 characters"
+                                autocomplete="new-password" required>
 
-                            <button
-                                type="button"
-                                class="password-toggle"
-                                data-target="signupPassword"
-                                aria-label="Show password"
-                            >
+                            <button type="button" class="password-toggle" data-target="signupPassword"
+                                aria-label="Show password">
                                 👁
                             </button>
 
@@ -362,11 +304,7 @@
 
                     <label class="checkbox-row terms-row">
 
-                        <input
-                            type="checkbox"
-                            id="agreeTerms"
-                            required
-                        >
+                        <input type="checkbox" id="agreeTerms" required>
 
                         <span class="custom-checkbox"></span>
 
@@ -380,10 +318,7 @@
                     </label>
 
 
-                    <button
-                        type="submit"
-                        class="submit-button"
-                    >
+                    <button type="submit" class="submit-button">
                         Create account
                         <span>→</span>
                     </button>
@@ -395,11 +330,7 @@
                     <p class="switch-text">
                         Already have an account?
 
-                        <button
-                            type="button"
-                            class="switch-button"
-                            data-switch="login"
-                        >
+                        <button type="button" class="switch-button" data-switch="login">
                             Log in
                         </button>
                     </p>
@@ -416,43 +347,84 @@
         </section>
 
     </main>
+    <div class="confirmation-overlay" id="confirmationOverlay">
 
-    <!-- EMAIL CONFIRMATION OVERLAY -->
-<div class="confirmation-overlay" id="confirmationOverlay">
+        <div class="confirmation-popup">
 
-    <div class="confirmation-popup">
+            <div class="confirmation-icon">
+                ✉
+            </div>
 
-        <div class="confirmation-icon">
-            ✉
+            <div class="confirmation-badge">
+                ONE MORE STEP!
+            </div>
+
+            <h2>Awaiting Email<br>Confirmation</h2>
+
+            <p>
+                We sent a confirmation link to your email.
+                Click the link in that email to finish creating
+                your CivicLens account.
+            </p>
+
+            <div class="email-status">
+                <span class="status-dot"></span>
+                Waiting for confirmation...
+            </div>
+
+            <div class="confirmation-tip">
+                <strong>Can't find it?</strong><br>
+                Check your spam or junk folder.
+            </div>
+
         </div>
 
-        <div class="confirmation-badge">
-            ONE MORE STEP!
-        </div>
+    </div>
+    <div class="forgot-popup-overlay" id="forgotPasswordPopup">
 
-        <h2>Awaiting Email<br>Confirmation</h2>
+        <div class="forgot-popup">
 
-        <p>
-            We sent a confirmation link to your email.
-            Click the link in that email to finish creating
-            your CivicLens account.
-        </p>
+            <button class="popup-close" id="closeForgotPopup">
+                ×
+            </button>
 
-        <div class="email-status">
-            <span class="status-dot"></span>
-            Waiting for confirmation...
-        </div>
+            <div class="forgot-icon">
+                🔑
+            </div>
 
-        <div class="confirmation-tip">
-            <strong>Can't find it?</strong><br>
-            Check your spam or junk folder.
+            <span class="forgot-badge">
+                NO WORRIES!
+            </span>
+
+            <h2>Forgot your<br>password?</h2>
+
+            <p>
+                Enter the email connected to your CivicLens
+                account and we'll send you a link to reset it.
+            </p>
+
+            <form id="forgotPasswordForm">
+
+                <label for="resetEmail">
+                    Email address
+                </label>
+
+                <input type="email" id="resetEmail" placeholder="you@example.com" required>
+
+                <button type="submit" class="reset-button">
+                    Send Reset Link →
+                </button>
+
+            </form>
+
+            <div class="reset-message" id="resetMessage"></div>
+
         </div>
 
     </div>
 
-</div>
-
     <script src="/js/login.js"></script>
 
 </body>
+
 </html>
