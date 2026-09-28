@@ -13,7 +13,7 @@
         href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet"
     >
-
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/login.css">
 </head>
@@ -49,10 +49,10 @@
                 <span class="notification-dot"></span>
             </button>
 
-            <button class="profile-button">
-                <span class="profile-avatar">J</span>
-                <span class="profile-name">Joshua</span>
-            </button>
+            <a href="profile.html"><button class="profile-button" >
+                <span class="profile-avatar"></span>
+                <span class="profile-name"></span>
+            </button></a>
 
         </div>
 
@@ -431,11 +431,12 @@
                     placeholder="e.g. Newark Safety Hunt"
                     maxlength="50"
                     autocomplete="off"
+                    required
                 >
 
 
                 <label class="input-label location-label">
-                    COMMUNITY <span>(optional)</span>
+                    COMMUNITY
                 </label>
 
                 <div class="location-input">
@@ -450,6 +451,7 @@
                         id="communityName"
                         placeholder="City, state or neighborhood"
                         maxlength="60"
+                        required
                     >
 
                 </div>
@@ -493,7 +495,7 @@
     <!-- TOAST -->
     <div class="toast" id="toast">
 
-        <span class="toast-icon">✨</span>
+        <span class="toast-icon" style="display: flex; justify-content: center;align-items: center;">✨</span>
 
         <div>
             <strong>World created!</strong>
@@ -502,7 +504,61 @@
 
     </div>
 
+<div id="civicLensLoader" class="civic-loader">
 
+    <div class="loader-content">
+
+        <!-- Animated city -->
+        <div class="loader-city">
+
+            <div class="city-building building-1"></div>
+            <div class="city-building building-2"></div>
+            <div class="city-building building-3"></div>
+            <div class="city-building building-4"></div>
+            <div class="city-building building-5"></div>
+
+            <div class="city-road"></div>
+
+            <div class="city-dot dot-1"></div>
+            <div class="city-dot dot-2"></div>
+            <div class="city-dot dot-3"></div>
+
+        </div>
+
+
+        <!-- Logo -->
+
+        <div class="loader-logo">
+            Civic<span>Lens</span>
+        </div>
+
+
+        <!-- Message -->
+
+        <div class="loader-message" id="loaderMessage">
+            Building your view...
+        </div>
+
+
+        <!-- Progress -->
+
+        <div class="loader-progress">
+
+            <div
+                class="loader-progress-bar"
+                id="loaderProgress"
+            ></div>
+
+        </div>
+
+
+        <div class="loader-tip" id="loaderTip">
+            Getting everything ready
+        </div>
+
+    </div>
+
+</div>
     <script src="js/dashboard.js"></script>
 
 </body>

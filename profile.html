@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Profile — CivicLens</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="assets/logo.png">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/profile.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+    <header class="simple-header">
+        <a href="dashboard.html" class="back-dashboard">
+            <span>←</span>
+            Back to Dashboard
+        </a>
+
+        <div class="header-logo">
+            Civic<span>Lens</span>
+        </div>
+    </header>
+
+    <main class="profile-page">
+
+        <section class="profile-hero">
+
+            <div class="hero-background">
+
+                <div class="hero-circle circle-one"></div>
+                <div class="hero-circle circle-two"></div>
+                <div class="hero-building building-one"></div>
+                <div class="hero-building building-two"></div>
+                <div class="hero-building building-three"></div>
+
+            </div>
+
+
+            <div class="profile-main">
+
+                <div class="avatar-wrapper">
+
+                    <div class="profile-avatar">
+                        J
+                    </div>
+
+                    <button class="edit-avatar">
+                        ✎
+                    </button>
+
+                </div>
+
+
+                <div class="profile-info">
+
+                    <div class="name-row">
+
+                        <h1>
+                            Joshy
+                        </h1>
+
+                        <span class="verified">
+                            ✓
+                        </span>
+
+                    </div>
+
+                    <p class="username">
+                        @joshy
+                    </p>
+
+                    <p class="bio">
+                        Building better cities, one idea at a time. 🏙️
+                    </p>
+
+                    <div class="profile-meta">
+
+                        <span>
+                            📍 New Jersey
+                        </span>
+
+                        <span>
+                            🗓️ Joined 2026
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <button class="edit-profile">
+                    Edit Profile
+                </button>
+
+            </div>
+
+        </section>
+
+        <section class="profile-stats">
+
+            <div class="stat-card">
+
+                <div class="stat-icon green">
+                    🏙️
+                </div>
+
+                <div>
+                    <strong>12</strong>
+                    <span>Worlds Built</span>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon blue">
+                    ❤️
+                </div>
+
+                <div>
+                    <strong>248</strong>
+                    <span>Likes Received</span>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon yellow">
+                    💬
+                </div>
+
+                <div>
+                    <strong>37</strong>
+                    <span>Comments</span>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon pink">
+                    🌱
+                </div>
+
+                <div>
+                    <strong>18</strong>
+                    <span>Problems Solved</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="profile-content">
+
+
+            <!-- =========================
+                 LEFT COLUMN
+                 ========================= -->
+
+            <div class="profile-left">
+
+
+                <!-- ABOUT -->
+
+                <div class="section-card">
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <span class="section-label">
+                                ABOUT
+                            </span>
+
+                            <h2>
+                                A little about me
+                            </h2>
+
+                        </div>
+
+                        <button class="small-edit">
+                            ✎
+                        </button>
+
+                    </div>
+
+
+                    <p class="about-text">
+                        I'm interested in technology, cities,
+                        problem solving, and figuring out how
+                        communities can become better places to live.
+                    </p>
+
+
+                    <div class="interest-list">
+
+                        <span>💻 Technology</span>
+                        <span>🏙️ Cities</span>
+                        <span>🌎 Community</span>
+                        <span>🚀 Innovation</span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RECENT ACTIVITY -->
+
+                <div class="section-card">
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <span class="section-label">
+                                ACTIVITY
+                            </span>
+
+                            <h2>
+                                Recent activity
+                            </h2>
+
+                        </div>
+
+                        <a href="#" class="view-all">
+                            View all →
+                        </a>
+
+                    </div>
+
+
+                    <div class="activity-list">
+
+
+                        <div class="activity">
+
+                            <div class="activity-icon green">
+                                🏗️
+                            </div>
+
+                            <div class="activity-content">
+
+                                <strong>
+                                    Created a new world
+                                </strong>
+
+                                <p>
+                                    Metroville
+                                </p>
+
+                                <span>
+                                    2 hours ago
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="activity">
+
+                            <div class="activity-icon blue">
+                                ❤️
+                            </div>
+
+                            <div class="activity-content">
+
+                                <strong>
+                                    Liked a world
+                                </strong>
+
+                                <p>
+                                    Green Valley
+                                </p>
+
+                                <span>
+                                    Yesterday
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="activity">
+
+                            <div class="activity-icon yellow">
+                                💬
+                            </div>
+
+                            <div class="activity-content">
+
+                                <strong>
+                                    Commented on a world
+                                </strong>
+
+                                <p>
+                                    "This transit system is awesome!"
+                                </p>
+
+                                <span>
+                                    3 days ago
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =========================
+                 RIGHT COLUMN
+                 ========================= -->
+
+            <aside class="profile-right">
+
+
+                <!-- FAVORITE WORLD -->
+
+                <div class="featured-card">
+
+                    <div class="featured-top">
+
+                        <span class="section-label">
+                            FEATURED WORLD
+                        </span>
+
+                        <span class="featured-badge">
+                            ⭐
+                        </span>
+
+                    </div>
+
+
+                    <div class="world-preview">
+
+                        <div class="map-road road-one"></div>
+                        <div class="map-road road-two"></div>
+
+                        <div class="map-building building-a"></div>
+                        <div class="map-building building-b"></div>
+                        <div class="map-building building-c"></div>
+
+                        <div class="map-tree tree-a">🌳</div>
+                        <div class="map-tree tree-b">🌳</div>
+
+                    </div>
+
+
+                    <h3>
+                        Metroville
+                    </h3>
+
+                    <p>
+                        A growing city focused on sustainable
+                        transportation and education.
+                    </p>
+
+
+                    <div class="world-stats">
+
+                        <span>
+                            👥 124K
+                        </span>
+
+                        <span>
+                            ❤️ 86
+                        </span>
+
+                        <span>
+                            💬 21
+                        </span>
+
+                    </div>
+
+
+                    <a href="#" class="world-button">
+                        View World →
+                    </a>
+
+                </div>
+
+
+                <!-- ACHIEVEMENTS -->
+
+                <div class="section-card achievements">
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <span class="section-label">
+                                ACHIEVEMENTS
+                            </span>
+
+                            <h2>
+                                Your badges
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="badge-grid">
+
+                        <div class="achievement unlocked">
+                            <div>🏙️</div>
+                            <span>City Starter</span>
+                        </div>
+
+                        <div class="achievement unlocked">
+                            <div>🌱</div>
+                            <span>Green Builder</span>
+                        </div>
+
+                        <div class="achievement unlocked">
+                            <div>💡</div>
+                            <span>Problem Solver</span>
+                        </div>
+
+                        <div class="achievement locked">
+                            <div>🚀</div>
+                            <span>Visionary</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </aside>
+
+        </section>
+
+        <section class="settings-section">
+
+            <div class="settings-heading">
+
+                <div>
+                    <span class="section-label">
+                        SETTINGS
+                    </span>
+
+                    <h2>
+                        Make CivicLens yours.
+                    </h2>
+
+                    <p>
+                        Manage your account, preferences, and privacy.
+                    </p>
+                </div>
+
+                <div class="settings-icon">
+                    ⚙️
+                </div>
+
+            </div>
+
+
+            <!-- ACCOUNT -->
+
+            <div class="settings-group">
+
+                <div class="settings-group-title">
+                    <span class="settings-group-icon green">
+                        👤
+                    </span>
+
+                    <div>
+                        <h3>Account</h3>
+                        <p>Your CivicLens account information</p>
+                    </div>
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+                        <strong>Email address</strong>
+                        <span id="settingsEmail">
+                            joshuauzokwe12@gmail.com
+                        </span>
+                    </div>
+
+                    <button class="setting-action">
+                        Change
+                    </button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+                        <strong>Password</strong>
+                        <span>
+                            Change your account password
+                        </span>
+                    </div>
+
+                    <button class="setting-action">
+                        Change
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- APPEARANCE -->
+
+            <div class="settings-group">
+
+                <div class="settings-group-title">
+
+                    <span class="settings-group-icon blue">
+                        🎨
+                    </span>
+
+                    <div>
+                        <h3>Appearance</h3>
+                        <p>Customize how CivicLens looks</p>
+                    </div>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <strong>Theme</strong>
+
+                        <span>
+                            Choose how CivicLens appears
+                        </span>
+
+                    </div>
+
+
+                    <select class="setting-select" id="themeSelect">
+
+                        <option value="light">
+                            Light
+                        </option>
+
+                        <option value="dark">
+                            Dark
+                        </option>
+
+                        <option value="system">
+                            System
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- NOTIFICATIONS -->
+
+            <div class="settings-group">
+
+                <div class="settings-group-title">
+
+                    <span class="settings-group-icon yellow">
+                        🔔
+                    </span>
+
+                    <div>
+                        <h3>Notifications</h3>
+                        <p>Choose what CivicLens tells you about</p>
+                    </div>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <strong>World activity</strong>
+
+                        <span>
+                            Likes, comments, and activity on your worlds
+                        </span>
+
+                    </div>
+
+                    <label class="toggle">
+
+                        <input type="checkbox" id="worldNotifications" checked>
+
+                        <span class="toggle-slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <strong>Community updates</strong>
+
+                        <span>
+                            Updates about CivicLens and the community
+                        </span>
+
+                    </div>
+
+                    <label class="toggle">
+
+                        <input type="checkbox" id="communityNotifications" checked>
+
+                        <span class="toggle-slider"></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- PRIVACY -->
+
+            <div class="settings-group">
+
+                <div class="settings-group-title">
+
+                    <span class="settings-group-icon pink">
+                        🔒
+                    </span>
+
+                    <div>
+                        <h3>Privacy</h3>
+                        <p>Control what other CivicLens users can see</p>
+                    </div>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <strong>Public profile</strong>
+
+                        <span>
+                            Allow other users to view your profile
+                        </span>
+
+                    </div>
+
+                    <label class="toggle">
+
+                        <input type="checkbox" id="publicProfile" checked>
+
+                        <span class="toggle-slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <strong>Show activity</strong>
+
+                        <span>
+                            Allow others to see your recent activity
+                        </span>
+
+                    </div>
+
+                    <label class="toggle">
+
+                        <input type="checkbox" id="showActivity" checked>
+
+                        <span class="toggle-slider"></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- DANGER ZONE -->
+
+            <div class="settings-group danger-group">
+
+                <div class="settings-group-title">
+
+                    <span class="settings-group-icon red">
+                        ⚠️
+                    </span>
+
+                    <div>
+                        <h3>Account actions</h3>
+                        <p>Actions that affect your account</p>
+                    </div>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <strong>Sign out</strong>
+
+                        <span>
+                            Sign out of this CivicLens account
+                        </span>
+
+                    </div>
+
+                    <button class="danger-button" id="signOutButton">
+                        Sign Out
+                    </button>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <strong>Delete account</strong>
+
+                        <span>
+                            Permanently delete your CivicLens account
+                        </span>
+
+                    </div>
+
+                    <button class="delete-button">
+                        Delete
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <div class="modal-overlay" id="profileModal">
+
+        <div class="profile-modal">
+
+            <button class="modal-close" id="closeModal">
+                ×
+            </button>
+
+            <span class="section-label">
+                YOUR PROFILE
+            </span>
+
+            <h2>
+                Make it yours.
+            </h2>
+
+            <form id="profileForm">
+
+                <label for="displayName">
+                    Display name
+                </label>
+
+                <input type="text" id="displayName" placeholder="Your name">
+
+
+                <label for="username">
+                    Username
+                </label>
+
+                <input type="text" id="username" placeholder="@username">
+
+
+                <label for="bio">
+                    Bio
+                </label>
+
+                <textarea id="bio" placeholder="Tell people a little about yourself..." rows="4"></textarea>
+
+
+                <button type="submit" class="save-button">
+                    Save Changes →
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+
+    <script src="/js/profile.js"></script>
+
+</body>
+
+</html>

@@ -328,7 +328,7 @@ body {
 
     border-radius: 9px;
 
-    background: var(--green);
+    background: var(--yellow);
 
     border: 2px solid var(--ink);
 
@@ -2211,4 +2211,427 @@ main {
     .setup-summary {
         grid-template-columns: 1fr;
     }
+}
+/* =================================
+   CIVICLENS LOADER
+   ================================= */
+
+.civic-loader {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 99999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #f8f7f2;
+
+    opacity: 1;
+
+    visibility: visible;
+
+    transition:
+        opacity 0.45s ease,
+        visibility 0.45s ease;
+}
+
+
+/* When loading is finished */
+
+.civic-loader.loader-hidden {
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+}
+
+
+/* =================================
+   CONTENT
+   ================================= */
+
+.loader-content {
+    width: min(380px, 85%);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+}
+
+
+/* =================================
+   CITY
+   ================================= */
+
+.loader-city {
+    position: relative;
+
+    width: 230px;
+    height: 145px;
+
+    margin-bottom: 25px;
+
+    overflow: hidden;
+
+    border: 3px solid #171717;
+
+    border-radius: 24px;
+
+    background: #75bdf4;
+
+    box-shadow: 7px 7px 0 #171717;
+
+    animation: cityFloat 3s ease-in-out infinite;
+}
+
+
+/* Sun */
+
+.loader-city::before {
+    content: "";
+
+    position: absolute;
+
+    width: 55px;
+    height: 55px;
+
+    top: -18px;
+    right: 18px;
+
+    background: #ffd84d;
+
+    border: 3px solid #171717;
+
+    border-radius: 50%;
+}
+
+
+/* Ground */
+
+.loader-city::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: 0;
+
+    width: 100%;
+    height: 35px;
+
+    background: #20b26b;
+
+    border-top: 3px solid #171717;
+}
+
+
+/* =================================
+   BUILDINGS
+   ================================= */
+
+.city-building {
+    position: absolute;
+
+    bottom: 30px;
+
+    z-index: 2;
+
+    background: #ffffff;
+
+    border: 3px solid #171717;
+
+    transform-origin: bottom;
+
+    animation: buildingPop 1.8s ease-in-out infinite;
+}
+
+.building-1 {
+    left: 15px;
+
+    width: 35px;
+    height: 65px;
+
+    animation-delay: 0s;
+}
+
+.building-2 {
+    left: 55px;
+
+    width: 43px;
+    height: 88px;
+
+    background: #ff9fc8;
+
+    animation-delay: 0.15s;
+}
+
+.building-3 {
+    left: 103px;
+
+    width: 35px;
+    height: 55px;
+
+    background: #ffd84d;
+
+    animation-delay: 0.3s;
+}
+
+.building-4 {
+    left: 143px;
+
+    width: 42px;
+    height: 78px;
+
+    background: #b8a1ff;
+
+    animation-delay: 0.45s;
+}
+
+.building-5 {
+    left: 190px;
+
+    width: 28px;
+    height: 48px;
+
+    background: #ffffff;
+
+    animation-delay: 0.6s;
+}
+
+
+/* Windows */
+
+.city-building::after {
+    content: "▪ ▪\A▪ ▪\A▪ ▪";
+
+    white-space: pre;
+
+    position: absolute;
+
+    top: 9px;
+    left: 8px;
+
+    color: #171717;
+
+    font-size: 7px;
+
+    line-height: 14px;
+}
+
+
+/* =================================
+   ROAD
+   ================================= */
+
+.city-road {
+    position: absolute;
+
+    z-index: 3;
+
+    width: 280px;
+    height: 25px;
+
+    left: -20px;
+    bottom: 18px;
+
+    background: #f8f7f2;
+
+    border-top: 3px solid #171717;
+    border-bottom: 3px solid #171717;
+
+    transform: rotate(-8deg);
+}
+
+
+/* =================================
+   CITY DOTS
+   ================================= */
+
+.city-dot {
+    position: absolute;
+
+    z-index: 5;
+
+    width: 11px;
+    height: 11px;
+
+    background: #ff815f;
+
+    border: 2px solid #171717;
+
+    border-radius: 50%;
+
+    animation: dotPulse 1.4s ease-in-out infinite;
+}
+
+.dot-1 {
+    left: 72px;
+    top: 38px;
+
+    animation-delay: 0s;
+}
+
+.dot-2 {
+    left: 132px;
+    top: 28px;
+
+    animation-delay: 0.3s;
+}
+
+.dot-3 {
+    right: 30px;
+    top: 65px;
+
+    animation-delay: 0.6s;
+}
+
+
+/* =================================
+   LOGO
+   ================================= */
+
+.loader-logo {
+    font-family: "Baloo 2", sans-serif;
+
+    font-size: 40px;
+
+    line-height: 1;
+
+    font-weight: 800;
+
+    letter-spacing: -1.5px;
+
+    margin-bottom: 10px;
+}
+
+.loader-logo span {
+    color: #20b26b;
+}
+
+
+/* =================================
+   MESSAGE
+   ================================= */
+
+.loader-message {
+    min-height: 25px;
+
+    font-family: "Baloo 2", sans-serif;
+
+    font-size: 20px;
+
+    font-weight: 700;
+}
+
+
+/* =================================
+   PROGRESS BAR
+   ================================= */
+
+.loader-progress {
+    width: 100%;
+    height: 12px;
+
+    margin-top: 20px;
+
+    overflow: hidden;
+
+    background: #ffffff;
+
+    border: 3px solid #171717;
+
+    border-radius: 999px;
+}
+
+.loader-progress-bar {
+    width: 10%;
+    height: 100%;
+
+    background: #20b26b;
+
+    border-right: 3px solid #171717;
+
+    transition: width 0.5s ease;
+}
+
+
+/* =================================
+   TIP
+   ================================= */
+
+.loader-tip {
+    margin-top: 12px;
+
+    color: #888;
+
+    font-size: 11px;
+
+    font-weight: 600;
+}
+
+
+/* =================================
+   ANIMATIONS
+   ================================= */
+
+@keyframes cityFloat {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(-1deg);
+    }
+
+    50% {
+        transform: translateY(-7px) rotate(1deg);
+    }
+}
+
+
+@keyframes buildingPop {
+
+    0%,
+    100% {
+        transform: scaleY(1);
+    }
+
+    50% {
+        transform: scaleY(1.05);
+    }
+}
+
+
+@keyframes dotPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.5);
+    }
+}
+
+
+@media (max-width: 500px) {
+
+    .loader-city {
+        width: 200px;
+        height: 125px;
+    }
+
+    .loader-logo {
+        font-size: 35px;
+    }
+
+    .loader-message {
+        font-size: 18px;
+    }
+
 }

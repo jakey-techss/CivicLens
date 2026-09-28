@@ -48,7 +48,7 @@ resetForm.addEventListener("submit", async (e) => {
 
     passwordMessage.className = "success";
     let time = 10
-     setTimeout(() => {
+     setInterval(() => {
         passwordMessage.textContent = "Redirecting in " + time+"s";
         time--;
     }, 1000);

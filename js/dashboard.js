@@ -1,5 +1,21 @@
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvenhzZHN0bmR5d25xYnl0emphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5OTA1MjgsImV4cCI6MjEwNTU2NjUyOH0.IjVL1OhAZlKNxqoHVZ9_BXVnCQU0uL3gsd7j57PeV0Y"
+const SUPABASE_URL = "https://iozxsdstndywnqbytzja.supabase.co"
+const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+)
 
-
+checkSession()
+async function checkSession() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (!session) {
+        window.location.assign("login.html")
+    }
+    let userInfo = session.user.user_metadata
+    document.querySelector(".profile-avatar").innerHTML = userInfo.display_name.substring(0,1)
+    document.querySelector(".profile-name").innerHTML = userInfo.display_name
+    hideCivicLensLoader()
+}
 const defaultWorlds = [
     {
         id: crypto.randomUUID(),
@@ -49,14 +65,13 @@ let worlds = JSON.parse(
 
 if (!worlds) {
     worlds = defaultWorlds;
-
     saveWorlds();
 }
 
 let selectedType = "scratch";
 let selectedDifficulty = "freeplay";
 
-let currentStep = 1;
+let currentSteps = 1;
 
 
 const worldGrid =
@@ -484,7 +499,7 @@ function openCreateModal() {
 
     document.body.style.overflow = "hidden";
 
-    currentStep = 1;
+    currentSteps = 1;
 
     resetCreateForm();
 
@@ -550,14 +565,14 @@ document
                     Number(button.dataset.next);
 
                 if (
-                    currentStep === 3
+                    currentSteps === 3
                 ) {
                     return;
                 }
 
-                currentStep = next;
+                currentSteps = next;
 
-                showStep(currentStep);
+                showStep(currentSteps);
 
             }
         );
@@ -573,10 +588,10 @@ document
             "click",
             () => {
 
-                currentStep =
+                currentSteps =
                     Number(button.dataset.back);
 
-                showStep(currentStep);
+                showStep(currentSteps);
 
             }
         );
@@ -762,10 +777,19 @@ function createWorld() {
 
     if (!location) {
 
-        location =
-            selectedType === "improve"
-                ? "Your Community"
-                : "Personal World";
+        communityName.focus();
+
+        communityName.style.borderColor =
+            "var(--orange)";
+
+        setTimeout(() => {
+
+            communityName.style.borderColor =
+                "";
+
+        }, 1000);
+
+        return;
 
     }
 
@@ -850,10 +874,6 @@ function createWorld() {
 }
 
 
-/* -------------------------------- */
-/* OPEN WORLD */
-/* -------------------------------- */
-
 function openWorld(id) {
 
     const world =
@@ -905,11 +925,6 @@ function showWorldMenu(id) {
     );
 }
 
-
-/* -------------------------------- */
-/* TOAST */
-/* -------------------------------- */
-
 function showToast(
     message = "World created!",
     icon = "✨"
@@ -931,10 +946,6 @@ function showToast(
     iconElement.textContent = icon;
 
     title.textContent = message;
-
-    description.textContent =
-        "Your CivicLens universe is ready.";
-
 
     toast.classList.add("show");
 
@@ -1034,3 +1045,75 @@ document.addEventListener(
 
 
 renderWorlds();
+
+const loader = document.getElementById("civicLensLoader");
+const loaderMessage = document.getElementById("loaderMessage");
+const loaderTip = document.getElementById("loaderTip");
+const loaderProgress = document.getElementById("loaderProgress");
+
+const loadingSteps = [
+    {
+        message: "Finding your city...",
+        tip: "Looking for your CivicLens profile",
+        progress: 20
+    },
+    {
+        message: "Loading your worlds...",
+        tip: "Bringing your cities back to life",
+        progress: 45
+    },
+    {
+        message: "Checking your progress...",
+        tip: "Counting your builds and achievements",
+        progress: 70
+    },
+    {
+        message: "Almost there...",
+        tip: "Putting everything in place",
+        progress: 90
+    }
+];
+
+let currentStep = 0;
+
+const loadingInterval = setInterval(() => {
+
+    if (currentStep >= loadingSteps.length) {
+        clearInterval(loadingInterval);
+        return;
+    }
+
+    const step = loadingSteps[currentStep];
+
+    loaderMessage.textContent = step.message;
+    loaderTip.textContent = step.tip;
+    loaderProgress.style.width = `${step.progress}%`;
+
+    currentStep++;
+
+}, 700);
+
+
+/* =================================
+   HIDE LOADER
+   ================================= */
+
+function hideCivicLensLoader() {
+
+    clearInterval(loadingInterval);
+
+    loaderProgress.style.width = "100%";
+
+    loaderMessage.textContent = "Ready to build!";
+    loaderTip.textContent = "Welcome back to CivicLens";
+
+    setTimeout(() => {
+
+        loader.classList.add("loader-hidden");
+
+        setTimeout(() => {
+            loader.remove();
+        }, 500);
+
+    }, 450);
+}

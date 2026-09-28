@@ -272,10 +272,7 @@ loginForm.addEventListener(
                 email: emailVal,
                 password: passwordVal,
             })
-            if (userInfo.user.confirmed_at == "") {
-                showConfirmationPopup()
-                return
-            }
+            
             if (error) {
                 console.error(error)
                 showMessage(
@@ -283,6 +280,9 @@ loginForm.addEventListener(
                     error.message,
                     "error"
                 );
+                if(error.message.trim().toLowerCase() == "Email not confirmed".trim().toLowerCase()){
+                    showConfirmationPopup()
+                }
                 return
             }
             showMessage(
@@ -291,7 +291,7 @@ loginForm.addEventListener(
                 "success"
             );
 
-            window.location.assign("dashboard.html")
+           window.location.assign("dashboard.html")
 
         }
         login()
