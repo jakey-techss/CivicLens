@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,44 +8,53 @@
     <link rel="icon" href="assets/logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+   
     <link rel="stylesheet" href="css/dashboard.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
+
 <body>
-    <div class="background-shape shape-one"></div>
-    <div class="background-shape shape-two"></div>
-    <div class="background-shape shape-three"></div>
 
     <div class="app-shell">
         <aside class="sidebar">
-            <a href="dashboard.html" class="brand">
-                <span class="brand-icon" aria-hidden="true">
-                    <span class="brand-map-line line-a"></span>
-                    <span class="brand-map-line line-b"></span>
-                    <span class="brand-map-pin">+</span>
-                </span>
-                <span class="brand-word">Civic<span>Lens</span></span>
-            </a>
-
             <div class="sidebar-label">WORKSPACE</div>
             <nav class="side-nav" aria-label="Dashboard navigation">
+
                 <button class="side-link active" data-section="worldsSection">
-                    <span class="nav-icon"><i data-lucide="house"></i></span><span>Your Worlds</span>
+                    <span class="nav-icon">
+                        <i data-lucide="house"></i>
+                    </span>
+                    <span>Your Worlds</span>
                 </button>
+
                 <button class="side-link" data-section="sharedSection">
-                    <span class="nav-icon">◈</span><span>Shared With Me</span>
+                    <span class="nav-icon">
+                        <i data-lucide="blocks"></i>
+                    </span>
+                    <span>Shared With Me</span>
                     <b id="sharedBadge">0</b>
                 </button>
+
                 <button class="side-link" data-section="friendsSection">
-                    <span class="nav-icon">◎</span><span>Friends</span>
+                    <span class="nav-icon">
+                        <i data-lucide="users"></i>
+                    </span>
+                    <span>Friends</span>
                     <b id="friendBadge">0</b>
                 </button>
+
                 <button class="side-link" data-section="chatSection">
-                    <span class="nav-icon">⌁</span><span>Messages</span>
+                    <span class="nav-icon">
+                        <i data-lucide="message-circle"></i>
+                    </span>
+                    <span>Messages</span>
                     <b id="messageBadge">0</b>
                 </button>
+
             </nav>
 
             <div class="sidebar-spacer"></div>
@@ -79,7 +89,8 @@
                     <strong>Civic<span>Lens</span></strong>
                 </div>
                 <div class="topbar-spacer"></div>
-                <button class="notification-button" id="notificationButton" aria-label="Notifications" aria-expanded="false">
+                <button class="notification-button" id="notificationButton" aria-label="Notifications"
+                    aria-expanded="false">
                     <span class="bell-icon">♢</span>
                     <span class="notification-dot" id="notificationDot"></span>
                 </button>
@@ -95,16 +106,25 @@
                     <div>
                         <div class="eyebrow"><span></span> CIVICLENS / DASHBOARD</div>
                         <h1>Build your <span>civic universe.</span></h1>
-                        <p class="hero-text">Create worlds, investigate communities, and collaborate with people who want to understand their city.</p>
+                        <p class="hero-text">Create worlds, investigate communities, and collaborate with people who
+                            want to understand their city.</p>
                     </div>
                     <button class="primary-button large" id="openCreate"><span>+</span> Create world</button>
                 </div>
 
                 <div class="stats-strip">
-                    <div class="stat"><span class="stat-symbol green">◫</span><div><small>WORLDS</small><strong id="worldCount">0</strong></div></div>
-                    <div class="stat"><span class="stat-symbol yellow">!</span><div><small>PROBLEMS</small><strong id="problemCount">0</strong></div></div>
-                    <div class="stat"><span class="stat-symbol blue">⌁</span><div><small>ANALYSES</small><strong id="analysisCount">0</strong></div></div>
-                    <div class="stat"><span class="stat-symbol pink">✦</span><div><small>FRIENDS</small><strong id="friendCount">0</strong></div></div>
+                    <div class="stat"><span class="stat-symbol green">◫</span>
+                        <div><small>WORLDS</small><strong id="worldCount">0</strong></div>
+                    </div>
+                    <div class="stat"><span class="stat-symbol yellow">!</span>
+                        <div><small>PROBLEMS</small><strong id="problemCount">0</strong></div>
+                    </div>
+                    <div class="stat"><span class="stat-symbol blue">⌁</span>
+                        <div><small>ANALYSES</small><strong id="analysisCount">0</strong></div>
+                    </div>
+                    <div class="stat"><span class="stat-symbol pink">✦</span>
+                        <div><small>FRIENDS</small><strong id="friendCount">0</strong></div>
+                    </div>
                 </div>
 
                 <div class="section-heading">
@@ -127,29 +147,59 @@
             </section>
 
             <section class="dashboard-section" id="sharedSection">
-                <div class="page-heading"><div><span class="section-kicker">COLLABORATION</span><h2>Shared with me</h2><p>Worlds your friends have invited you to explore or build.</p></div></div>
+                <div class="page-heading">
+                    <div><span class="section-kicker">COLLABORATION</span>
+                        <h2>Shared with me</h2>
+                        <p>Worlds your friends have invited you to explore or build.</p>
+                    </div>
+                </div>
                 <div class="world-grid" id="sharedGrid"></div>
             </section>
 
             <section class="dashboard-section" id="friendsSection">
                 <div class="page-heading friends-heading">
-                    <div><span class="section-kicker">YOUR PEOPLE</span><h2>Friends</h2><p>See your collaborators, find new people, and jump into a conversation.</p></div>
+                    <div><span class="section-kicker">YOUR PEOPLE</span>
+                        <h2>Friends</h2>
+                        <p>See your collaborators, find new people, and jump into a conversation.</p>
+                    </div>
                     <button class="primary-button" id="openAddFriend">+ Add friend</button>
                 </div>
                 <div class="friends-layout">
-                    <div class="friends-panel"><div class="panel-title"><strong>All friends</strong><span id="friendsOnlineCount">0 online</span></div><div id="friendsGrid" class="friends-grid"></div></div>
-                    <div class="friends-art"><div class="large-map-art"><span></span><span></span><span></span><i>+</i></div><h3>Build together.</h3><p>Add friends to a world while you create it. Collaboration is part of the world, not an afterthought.</p></div>
+                    <div class="friends-panel">
+                        <div class="panel-title"><strong>All friends</strong><span id="friendsOnlineCount">0
+                                online</span></div>
+                        <div id="friendsGrid" class="friends-grid"></div>
+                    </div>
+                    <div class="friends-art">
+                        <div class="large-map-art"><span></span><span></span><span></span><i>+</i></div>
+                        <h3>Build together.</h3>
+                        <p>Add friends to a world while you create it. Collaboration is part of the world, not an
+                            afterthought.</p>
+                    </div>
                 </div>
             </section>
 
             <section class="dashboard-section" id="chatSection">
-                <div class="page-heading"><div><span class="section-kicker">CONVERSATIONS</span><h2>Messages</h2><p>Talk with your friends about the worlds you are building.</p></div></div>
+                <div class="page-heading">
+                    <div><span class="section-kicker">CONVERSATIONS</span>
+                        <h2>Messages</h2>
+                        <p>Talk with your friends about the worlds you are building.</p>
+                    </div>
+                </div>
                 <div class="chat-layout">
                     <div class="chat-friends" id="chatFriends"></div>
                     <div class="chat-window">
-                        <div class="chat-header"><div class="chat-person"><span class="profile-avatar" id="chatAvatar">?</span><div><strong id="chatTitle">Select a friend</strong><small id="chatStatus">Choose someone to start chatting</small></div></div></div>
-                        <div class="chat-messages" id="chatMessages"><div class="chat-empty">Select a friend from the left.</div></div>
-                        <form class="chat-form" id="chatForm"><input id="chatInput" placeholder="Write a message..." autocomplete="off" disabled><button type="submit" disabled>Send</button></form>
+                        <div class="chat-header">
+                            <div class="chat-person"><span class="profile-avatar" id="chatAvatar">?</span>
+                                <div><strong id="chatTitle">Select a friend</strong><small id="chatStatus">Choose
+                                        someone to start chatting</small></div>
+                            </div>
+                        </div>
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="chat-empty">Select a friend from the left.</div>
+                        </div>
+                        <form class="chat-form" id="chatForm"><input id="chatInput" placeholder="Write a message..."
+                                autocomplete="off" disabled><button type="submit" disabled>Send</button></form>
                     </div>
                 </div>
             </section>
@@ -157,7 +207,11 @@
     </div>
 
     <div class="notification-popover" id="notificationPopover" aria-hidden="true">
-        <div class="popover-head"><div><span class="section-kicker">INBOX</span><h3>Notifications</h3></div><button id="clearNotifications">Clear</button></div>
+        <div class="popover-head">
+            <div><span class="section-kicker">INBOX</span>
+                <h3>Notifications</h3>
+            </div><button id="clearNotifications">Clear</button>
+        </div>
         <div id="notificationList"></div>
     </div>
 
@@ -165,24 +219,112 @@
         <div class="create-workspace">
             <button class="close-modal" id="closeCreate">×</button>
             <aside class="create-sidebar">
-                <span class="section-kicker">NEW WORLD</span><h2>Shape your next place.</h2><p>A community is always required—even for fictional worlds—so every CivicLens world has a real-world anchor.</p>
-                <div class="create-progress"><button data-create-step="1" class="active"><b>01</b><span>World type</span></button><button data-create-step="2"><b>02</b><span>Difficulty</span></button><button data-create-step="3"><b>03</b><span>Community</span></button><button data-create-step="4"><b>04</b><span>Collaborators</span></button><button data-create-step="5"><b>05</b><span>Review</span></button></div>
-                <div class="setup-summary"><small>WORLD SUMMARY</small><strong id="summaryWorldName">Untitled world</strong><span id="summaryMode">Start from Scratch</span><span id="summaryDifficulty">Free-play</span><span id="summaryCommunity">Community required</span><span id="summaryCollaborators">Just you</span></div>
+                <span class="section-kicker">NEW WORLD</span>
+                <h2>Shape your next place.</h2>
+                <p>A community is always required—even for fictional worlds—so every CivicLens world has a real-world
+                    anchor.</p>
+                <div class="create-progress"><button data-create-step="1" class="active"><b>01</b><span>World
+                            type</span></button><button
+                        data-create-step="2"><b>02</b><span>Difficulty</span></button><button
+                        data-create-step="3"><b>03</b><span>Community</span></button><button
+                        data-create-step="4"><b>04</b><span>Collaborators</span></button><button
+                        data-create-step="5"><b>05</b><span>Review</span></button></div>
+                <div class="setup-summary"><small>WORLD SUMMARY</small><strong id="summaryWorldName">Untitled
+                        world</strong><span id="summaryMode">Start from Scratch</span><span
+                        id="summaryDifficulty">Free-play</span><span id="summaryCommunity">Community
+                        required</span><span id="summaryCollaborators">Just you</span></div>
             </aside>
             <div class="create-main">
-                <section class="modal-step active" data-step="1"><span class="step-number">01 / 05</span><h2>What kind of world are you making?</h2><p>Choose the foundation for your investigation.</p><div class="choice-grid"><button class="world-type selected" data-type="scratch"><span>✦</span><strong>Start from Scratch</strong><small>Begin with a blank canvas and build your own city.</small></button><button class="world-type" data-type="improve"><span>⌂</span><strong>Improve the World Around You</strong><small>Work with an existing community and its public data.</small></button></div><div class="step-actions"><span></span><button class="primary-button" data-next="2">Continue →</button></div></section>
-                <section class="modal-step" data-step="2"><span class="step-number">02 / 05</span><h2>How challenging should it be?</h2><p>Your difficulty changes how much freedom and pressure your world has.</p><div class="difficulty-grid"><button class="difficulty selected" data-difficulty="freeplay"><b>FREE</b><strong>Free-play</strong><small>Experiment without pressure.</small></button><button class="difficulty" data-difficulty="medium"><b>MED</b><strong>Medium</strong><small>Balance creativity and constraints.</small></button><button class="difficulty" data-difficulty="reallife"><b>REAL</b><strong>Real Life</strong><small>Work within realistic conditions.</small></button><button class="difficulty" data-difficulty="hell"><b>HELL</b><strong>Hell Mode</strong><small>Everything gets complicated.</small></button></div><div class="step-actions"><button class="secondary-button" data-back="1">← Back</button><button class="primary-button" data-next="3">Choose community →</button></div></section>
-                <section class="modal-step community-step" data-step="3"><span class="step-number">03 / 05</span><h2>Anchor your world to a community.</h2><p>This step is required for every world. Search by place name or coordinates.</p><div class="community-tabs"><button class="community-tab active" data-search-mode="name">Search places</button><button class="community-tab" data-search-mode="coords">Latitude + longitude</button></div><div id="nameSearchRow" class="community-search"><span>⌕</span><input id="communitySearch" placeholder="Search city, neighborhood, state, country..." autocomplete="off"></div><div id="coordsSearchRow" class="coords-row hidden"><input id="latitudeInput" type="number" step="any" placeholder="Latitude"><input id="longitudeInput" type="number" step="any" placeholder="Longitude"><button class="secondary-button" id="findCoordinates">Find nearby</button></div><div class="community-results-head"><strong>Places</strong><span id="communityResultCount">0 places</span></div><div class="community-result-list" id="communityResultList"></div><div class="selected-community"><div><small>SELECTED COMMUNITY</small><strong id="selectedCommunityName">No community selected</strong><span id="selectedCommunityMeta">Choose a place above.</span></div><button id="clearCommunity">Clear</button></div><div class="step-actions"><button class="secondary-button" data-back="2">← Back</button><button class="primary-button" id="communityContinue" data-next="4" disabled>Continue →</button></div></section>
-                <section class="modal-step" data-step="4"><span class="step-number">04 / 05</span><h2>Who should build with you?</h2><p>Collaborators can be selected now or you can keep the world private.</p><input class="wide-search" id="collabSearch" placeholder="Search your friends..."><div class="collaborator-list" id="collaboratorList"></div><div class="step-actions"><button class="secondary-button" data-back="3">← Back</button><button class="primary-button" data-next="5">Review →</button></div></section>
-                <section class="modal-step" data-step="5"><span class="step-number">05 / 05</span><h2>Give your world a name.</h2><p>Everything looks good. Name the world and launch it.</p><label class="field-label">WORLD NAME<input id="worldName" placeholder="e.g. Newark 2040"></label><div class="review-card"><div><small>MODE</small><strong id="reviewMode">Start from Scratch</strong></div><div><small>DIFFICULTY</small><strong id="reviewDifficulty">Free-play</strong></div><div><small>COMMUNITY</small><strong id="reviewCommunity">Not selected</strong></div><div><small>COLLABORATORS</small><strong id="reviewCollaborators">Just you</strong></div></div><div class="step-actions"><button class="secondary-button" data-back="4">← Back</button><button class="primary-button launch" id="launchWorld">Create world ✦</button></div></section>
+                <section class="modal-step active" data-step="1"><span class="step-number">01 / 05</span>
+                    <h2>What kind of world are you making?</h2>
+                    <p>Choose the foundation for your investigation.</p>
+                    <div class="choice-grid"><button class="world-type selected"
+                            data-type="scratch"><span>✦</span><strong>Start from Scratch</strong><small>Begin with a
+                                blank canvas and build your own city.</small></button><button class="world-type"
+                            data-type="improve"><span>⌂</span><strong>Improve the World Around You</strong><small>Work
+                                with an existing community and its public data.</small></button></div>
+                    <div class="step-actions"><span></span><button class="primary-button" data-next="2">Continue
+                            →</button></div>
+                </section>
+                <section class="modal-step" data-step="2"><span class="step-number">02 / 05</span>
+                    <h2>How challenging should it be?</h2>
+                    <p>Your difficulty changes how much freedom and pressure your world has.</p>
+                    <div class="difficulty-grid"><button class="difficulty selected"
+                            data-difficulty="freeplay"><b>FREE</b><strong>Free-play</strong><small>Experiment without
+                                pressure.</small></button><button class="difficulty"
+                            data-difficulty="medium"><b>MED</b><strong>Medium</strong><small>Balance creativity and
+                                constraints.</small></button><button class="difficulty"
+                            data-difficulty="reallife"><b>REAL</b><strong>Real Life</strong><small>Work within realistic
+                                conditions.</small></button><button class="difficulty"
+                            data-difficulty="hell"><b>HELL</b><strong>Hell Mode</strong><small>Everything gets
+                                complicated.</small></button></div>
+                    <div class="step-actions"><button class="secondary-button" data-back="1">← Back</button><button
+                            class="primary-button" data-next="3">Choose community →</button></div>
+                </section>
+                <section class="modal-step community-step" data-step="3"><span class="step-number">03 / 05</span>
+                    <h2>Anchor your world to a community.</h2>
+                    <p>This step is required for every world. Search by place name or coordinates.</p>
+                    <div class="community-tabs"><button class="community-tab active" data-search-mode="name">Search
+                            places</button><button class="community-tab" data-search-mode="coords">Latitude +
+                            longitude</button></div>
+                    <div id="nameSearchRow" class="community-search"><span>⌕</span><input id="communitySearch"
+                            placeholder="Search city, neighborhood, state, country..." autocomplete="off"></div>
+                    <div id="coordsSearchRow" class="coords-row hidden"><input id="latitudeInput" type="number"
+                            step="any" placeholder="Latitude"><input id="longitudeInput" type="number" step="any"
+                            placeholder="Longitude"><button class="secondary-button" id="findCoordinates">Find
+                            nearby</button></div>
+                    <div class="community-results-head"><strong>Places</strong><span id="communityResultCount">0
+                            places</span></div>
+                    <div class="community-result-list" id="communityResultList"></div>
+                    <div class="selected-community">
+                        <div><small>SELECTED COMMUNITY</small><strong id="selectedCommunityName">No community
+                                selected</strong><span id="selectedCommunityMeta">Choose a place above.</span></div>
+                        <button id="clearCommunity">Clear</button>
+                    </div>
+                    <div class="step-actions"><button class="secondary-button" data-back="2">← Back</button><button
+                            class="primary-button" id="communityContinue" data-next="4" disabled>Continue →</button>
+                    </div>
+                </section>
+                <section class="modal-step" data-step="4"><span class="step-number">04 / 05</span>
+                    <h2>Who should build with you?</h2>
+                    <p>Collaborators can be selected now or you can keep the world private.</p><input
+                        class="wide-search" id="collabSearch" placeholder="Search your friends...">
+                    <div class="collaborator-list" id="collaboratorList"></div>
+                    <div class="step-actions"><button class="secondary-button" data-back="3">← Back</button><button
+                            class="primary-button" data-next="5">Review →</button></div>
+                </section>
+                <section class="modal-step" data-step="5"><span class="step-number">05 / 05</span>
+                    <h2>Give your world a name.</h2>
+                    <p>Everything looks good. Name the world and launch it.</p><label class="field-label">WORLD
+                        NAME<input id="worldName" placeholder="e.g. Newark 2040"></label>
+                    <div class="review-card">
+                        <div><small>MODE</small><strong id="reviewMode">Start from Scratch</strong></div>
+                        <div><small>DIFFICULTY</small><strong id="reviewDifficulty">Free-play</strong></div>
+                        <div><small>COMMUNITY</small><strong id="reviewCommunity">Not selected</strong></div>
+                        <div><small>COLLABORATORS</small><strong id="reviewCollaborators">Just you</strong></div>
+                    </div>
+                    <div class="step-actions"><button class="secondary-button" data-back="4">← Back</button><button
+                            class="primary-button launch" id="launchWorld">Create world ✦</button></div>
+                </section>
             </div>
         </div>
     </div>
 
-    <div class="modal-backdrop" id="friendModal"><div class="friend-modal"><button class="close-modal" id="closeFriend">×</button><span class="section-kicker">CONNECT</span><h2>Find a friend.</h2><p>Search by name, username, or friend code.</p><input class="wide-search" id="friendSearch" placeholder="Search people..." autocomplete="off"><div id="friendSearchResults"></div></div></div>
+    <div class="modal-backdrop" id="friendModal">
+        <div class="friend-modal"><button class="close-modal" id="closeFriend">×</button><span
+                class="section-kicker">CONNECT</span>
+            <h2>Find a friend.</h2>
+            <p>Search by name, username, or friend code.</p><input class="wide-search" id="friendSearch"
+                placeholder="Search people..." autocomplete="off">
+            <div id="friendSearchResults"></div>
+        </div>
+    </div>
 
-    <div class="toast" id="toast"><span class="toast-icon">✦</span><div><strong>Done!</strong><small>Updated in CivicLens.</small></div></div>
+    <div class="toast" id="toast"><span class="toast-icon">✦</span>
+        <div><strong>Done!</strong><small>Updated in CivicLens.</small></div>
+    </div>
 
     <script src="js/dashboard.js"></script>
 </body>
+
 </html>
