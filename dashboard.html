@@ -3,563 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>CivicLens — Your Worlds</title>
-
+    <title>CivicLens — Dashboard</title>
+    <link rel="icon" href="assets/logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-     <link rel="icon" href="assets/logo.png">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="css/dashboard.css">
-    <link rel="stylesheet" href="css/login.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-
 <body>
+    <div class="background-shape shape-one"></div>
+    <div class="background-shape shape-two"></div>
+    <div class="background-shape shape-three"></div>
 
-    <div class="blob blob-green"></div>
-    <div class="blob blob-yellow"></div>
-    <div class="blob blob-blue"></div>
-    <nav class="navbar">
-
-        <a href="#" class="logo">
-            <span class="logo-mark">
-                <span></span>
-                <span></span>
-            </span>
-
-            <span>
-                Civic<span>Lens</span>
-            </span>
-        </a>
-
-
-
-        <div class="nav-right">
-
-            <button class="notification-button" aria-label="Notifications">
-                <svg viewBox="0 0 24 24">
-                    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
-                    <path d="M10 21h4"/>
-                </svg>
-
-                <span class="notification-dot"></span>
-            </button>
-
-            <a href="profile.html"><button class="profile-button" >
-                <span class="profile-avatar"></span>
-                <span class="profile-name"></span>
-            </button></a>
-
-        </div>
-
-    </nav>
-
-
-    <!-- MAIN -->
-    <main>
-
-        <!-- HERO -->
-        <section class="hero">
-
-            <div class="hero-copy">
-
-                <div class="eyebrow">
-                    <span class="pulse"></span>
-                    YOUR CIVIC UNIVERSE
-                </div>
-
-                <h1>
-                    Welcome back,<br>
-                    <span>explorer.</span>
-                </h1>
-
-                <p>
-                    Your communities. Your questions. Your worlds.
-                    Pick up where you left off or create somewhere new to explore.
-                </p>
-
-            </div>
-
-
-            <button class="create-button" id="openCreate">
-
-                <span class="plus-icon">+</span>
-
-                <span>
-                    <strong>Create a World</strong>
-                    <small>Start investigating</small>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <a href="dashboard.html" class="brand">
+                <span class="brand-icon" aria-hidden="true">
+                    <span class="brand-map-line line-a"></span>
+                    <span class="brand-map-line line-b"></span>
+                    <span class="brand-map-pin">+</span>
                 </span>
+                <span class="brand-word">Civic<span>Lens</span></span>
+            </a>
 
-                <span class="button-arrow">↗</span>
-
-            </button>
-
-        </section>
-
-
-        <!-- QUICK STATS -->
-        <section class="quick-stats">
-
-            <div class="stat-card green-card">
-                <div class="stat-icon">🌎</div>
-
-                <div>
-                    <strong id="worldCount">0</strong>
-                    <span>Worlds</span>
-                </div>
-            </div>
-
-
-            <div class="stat-card yellow-card">
-                <div class="stat-icon">🔎</div>
-
-                <div>
-                    <strong id="problemCount">0</strong>
-                    <span>Problems found</span>
-                </div>
-            </div>
-
-
-            <div class="stat-card blue-card">
-                <div class="stat-icon">📊</div>
-
-                <div>
-                    <strong id="analysisCount">0</strong>
-                    <span>Analyses</span>
-                </div>
-            </div>
-
-
-            <div class="stat-card pink-card">
-                <div class="stat-icon">✨</div>
-
-                <div>
-                    <strong id="activityCount">0</strong>
-                    <span>Activities</span>
-                </div>
-            </div>
-
-        </section>
-
-
-        <!-- WORLDS HEADER -->
-        <section class="worlds-section">
-
-            <div class="section-heading">
-
-                <div>
-                    <div class="tiny-label">YOUR WORLDS</div>
-
-                    <h2>
-                        Places you're
-                        <span>exploring.</span>
-                    </h2>
-                </div>
-
-                <div class="view-controls">
-
-                    <button class="view-button active" data-view="grid">
-                        <svg viewBox="0 0 24 24">
-                            <rect x="4" y="4" width="6" height="6" rx="1"/>
-                            <rect x="14" y="4" width="6" height="6" rx="1"/>
-                            <rect x="4" y="14" width="6" height="6" rx="1"/>
-                            <rect x="14" y="14" width="6" height="6" rx="1"/>
-                        </svg>
-                    </button>
-
-                    <button class="view-button" data-view="list">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M5 7h14"/>
-                            <path d="M5 12h14"/>
-                            <path d="M5 17h14"/>
-                        </svg>
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- WORLD GRID -->
-            <div class="world-grid" id="worldGrid"></div>
-
-
-            <!-- EMPTY STATE -->
-            <div class="empty-state" id="emptyState">
-
-                <div class="empty-map">
-
-                    <div class="empty-road road-one"></div>
-                    <div class="empty-road road-two"></div>
-                    <div class="empty-road road-three"></div>
-
-                    <span class="empty-pin pin-one">!</span>
-                    <span class="empty-pin pin-two">?</span>
-                    <span class="empty-pin pin-three">+</span>
-
-                </div>
-
-                <h3>Your universe is empty.</h3>
-
-                <p>
-                    Create your first world and start exploring
-                    what's happening around you.
-                </p>
-
-                <button class="secondary-create" id="emptyCreate">
-                    + Create your first world
+            <div class="sidebar-label">WORKSPACE</div>
+            <nav class="side-nav" aria-label="Dashboard navigation">
+                <button class="side-link active" data-section="worldsSection">
+                    <span class="nav-icon"><i data-lucide="house"></i></span><span>Your Worlds</span>
                 </button>
+                <button class="side-link" data-section="sharedSection">
+                    <span class="nav-icon">◈</span><span>Shared With Me</span>
+                    <b id="sharedBadge">0</b>
+                </button>
+                <button class="side-link" data-section="friendsSection">
+                    <span class="nav-icon">◎</span><span>Friends</span>
+                    <b id="friendBadge">0</b>
+                </button>
+                <button class="side-link" data-section="chatSection">
+                    <span class="nav-icon">⌁</span><span>Messages</span>
+                    <b id="messageBadge">0</b>
+                </button>
+            </nav>
 
+            <div class="sidebar-spacer"></div>
+
+            <div class="sidebar-card">
+                <div class="mini-map">
+                    <i></i><i></i><i></i><i></i>
+                    <span></span><span></span>
+                    <em>+</em>
+                </div>
+                <strong>Build a better place.</strong>
+                <p>Turn questions about your community into worlds you can explore.</p>
+                <button id="sideCreate">+ New world</button>
             </div>
 
-        </section>
+            <div class="sidebar-bottom">
+                <a class="profile-link" href="profile.html">
+                    <span class="profile-avatar">?</span>
+                    <span class="profile-copy">
+                        <strong class="profile-name">Explorer</strong>
+                        <small>View profile</small>
+                    </span>
+                    <span class="profile-arrow">→</span>
+                </a>
+            </div>
+        </aside>
 
-    </main>
+        <main class="main-area">
+            <header class="topbar">
+                <div class="mobile-brand">
+                    <span class="brand-icon small"><span class="brand-map-pin">+</span></span>
+                    <strong>Civic<span>Lens</span></strong>
+                </div>
+                <div class="topbar-spacer"></div>
+                <button class="notification-button" id="notificationButton" aria-label="Notifications" aria-expanded="false">
+                    <span class="bell-icon">♢</span>
+                    <span class="notification-dot" id="notificationDot"></span>
+                </button>
+                <a href="profile.html" class="top-profile">
+                    <span class="profile-avatar top-avatar">?</span>
+                    <span class="top-profile-name">Explorer</span>
+                    <span class="chevron">⌄</span>
+                </a>
+            </header>
 
+            <section class="dashboard-section active" id="worldsSection">
+                <div class="hero-row">
+                    <div>
+                        <div class="eyebrow"><span></span> CIVICLENS / DASHBOARD</div>
+                        <h1>Build your <span>civic universe.</span></h1>
+                        <p class="hero-text">Create worlds, investigate communities, and collaborate with people who want to understand their city.</p>
+                    </div>
+                    <button class="primary-button large" id="openCreate"><span>+</span> Create world</button>
+                </div>
 
-    <!-- CREATE WORLD MODAL -->
+                <div class="stats-strip">
+                    <div class="stat"><span class="stat-symbol green">◫</span><div><small>WORLDS</small><strong id="worldCount">0</strong></div></div>
+                    <div class="stat"><span class="stat-symbol yellow">!</span><div><small>PROBLEMS</small><strong id="problemCount">0</strong></div></div>
+                    <div class="stat"><span class="stat-symbol blue">⌁</span><div><small>ANALYSES</small><strong id="analysisCount">0</strong></div></div>
+                    <div class="stat"><span class="stat-symbol pink">✦</span><div><small>FRIENDS</small><strong id="friendCount">0</strong></div></div>
+                </div>
+
+                <div class="section-heading">
+                    <div>
+                        <span class="section-kicker">YOUR COLLECTION</span>
+                        <h2>Your worlds</h2>
+                    </div>
+                    <div class="view-controls">
+                        <button class="view-button active" data-view="grid">▦</button>
+                        <button class="view-button" data-view="list">☰</button>
+                    </div>
+                </div>
+                <div class="world-grid" id="worldGrid"></div>
+                <div class="empty-state" id="emptyState">
+                    <div class="empty-map">+</div>
+                    <h3>Your universe is empty.</h3>
+                    <p>Create your first world and start exploring what is happening around you.</p>
+                    <button class="secondary-button" id="emptyCreate">Create your first world</button>
+                </div>
+            </section>
+
+            <section class="dashboard-section" id="sharedSection">
+                <div class="page-heading"><div><span class="section-kicker">COLLABORATION</span><h2>Shared with me</h2><p>Worlds your friends have invited you to explore or build.</p></div></div>
+                <div class="world-grid" id="sharedGrid"></div>
+            </section>
+
+            <section class="dashboard-section" id="friendsSection">
+                <div class="page-heading friends-heading">
+                    <div><span class="section-kicker">YOUR PEOPLE</span><h2>Friends</h2><p>See your collaborators, find new people, and jump into a conversation.</p></div>
+                    <button class="primary-button" id="openAddFriend">+ Add friend</button>
+                </div>
+                <div class="friends-layout">
+                    <div class="friends-panel"><div class="panel-title"><strong>All friends</strong><span id="friendsOnlineCount">0 online</span></div><div id="friendsGrid" class="friends-grid"></div></div>
+                    <div class="friends-art"><div class="large-map-art"><span></span><span></span><span></span><i>+</i></div><h3>Build together.</h3><p>Add friends to a world while you create it. Collaboration is part of the world, not an afterthought.</p></div>
+                </div>
+            </section>
+
+            <section class="dashboard-section" id="chatSection">
+                <div class="page-heading"><div><span class="section-kicker">CONVERSATIONS</span><h2>Messages</h2><p>Talk with your friends about the worlds you are building.</p></div></div>
+                <div class="chat-layout">
+                    <div class="chat-friends" id="chatFriends"></div>
+                    <div class="chat-window">
+                        <div class="chat-header"><div class="chat-person"><span class="profile-avatar" id="chatAvatar">?</span><div><strong id="chatTitle">Select a friend</strong><small id="chatStatus">Choose someone to start chatting</small></div></div></div>
+                        <div class="chat-messages" id="chatMessages"><div class="chat-empty">Select a friend from the left.</div></div>
+                        <form class="chat-form" id="chatForm"><input id="chatInput" placeholder="Write a message..." autocomplete="off" disabled><button type="submit" disabled>Send</button></form>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div class="notification-popover" id="notificationPopover" aria-hidden="true">
+        <div class="popover-head"><div><span class="section-kicker">INBOX</span><h3>Notifications</h3></div><button id="clearNotifications">Clear</button></div>
+        <div id="notificationList"></div>
+    </div>
+
     <div class="modal-backdrop" id="createModal">
-
-        <div class="create-modal">
-
-            <button class="close-modal" id="closeCreate">
-                ×
-            </button>
-
-
-            <div class="modal-progress">
-
-                <span class="progress-dot active"></span>
-                <span class="progress-line"></span>
-                <span class="progress-dot"></span>
-                <span class="progress-line"></span>
-                <span class="progress-dot"></span>
-
+        <div class="create-workspace">
+            <button class="close-modal" id="closeCreate">×</button>
+            <aside class="create-sidebar">
+                <span class="section-kicker">NEW WORLD</span><h2>Shape your next place.</h2><p>A community is always required—even for fictional worlds—so every CivicLens world has a real-world anchor.</p>
+                <div class="create-progress"><button data-create-step="1" class="active"><b>01</b><span>World type</span></button><button data-create-step="2"><b>02</b><span>Difficulty</span></button><button data-create-step="3"><b>03</b><span>Community</span></button><button data-create-step="4"><b>04</b><span>Collaborators</span></button><button data-create-step="5"><b>05</b><span>Review</span></button></div>
+                <div class="setup-summary"><small>WORLD SUMMARY</small><strong id="summaryWorldName">Untitled world</strong><span id="summaryMode">Start from Scratch</span><span id="summaryDifficulty">Free-play</span><span id="summaryCommunity">Community required</span><span id="summaryCollaborators">Just you</span></div>
+            </aside>
+            <div class="create-main">
+                <section class="modal-step active" data-step="1"><span class="step-number">01 / 05</span><h2>What kind of world are you making?</h2><p>Choose the foundation for your investigation.</p><div class="choice-grid"><button class="world-type selected" data-type="scratch"><span>✦</span><strong>Start from Scratch</strong><small>Begin with a blank canvas and build your own city.</small></button><button class="world-type" data-type="improve"><span>⌂</span><strong>Improve the World Around You</strong><small>Work with an existing community and its public data.</small></button></div><div class="step-actions"><span></span><button class="primary-button" data-next="2">Continue →</button></div></section>
+                <section class="modal-step" data-step="2"><span class="step-number">02 / 05</span><h2>How challenging should it be?</h2><p>Your difficulty changes how much freedom and pressure your world has.</p><div class="difficulty-grid"><button class="difficulty selected" data-difficulty="freeplay"><b>FREE</b><strong>Free-play</strong><small>Experiment without pressure.</small></button><button class="difficulty" data-difficulty="medium"><b>MED</b><strong>Medium</strong><small>Balance creativity and constraints.</small></button><button class="difficulty" data-difficulty="reallife"><b>REAL</b><strong>Real Life</strong><small>Work within realistic conditions.</small></button><button class="difficulty" data-difficulty="hell"><b>HELL</b><strong>Hell Mode</strong><small>Everything gets complicated.</small></button></div><div class="step-actions"><button class="secondary-button" data-back="1">← Back</button><button class="primary-button" data-next="3">Choose community →</button></div></section>
+                <section class="modal-step community-step" data-step="3"><span class="step-number">03 / 05</span><h2>Anchor your world to a community.</h2><p>This step is required for every world. Search by place name or coordinates.</p><div class="community-tabs"><button class="community-tab active" data-search-mode="name">Search places</button><button class="community-tab" data-search-mode="coords">Latitude + longitude</button></div><div id="nameSearchRow" class="community-search"><span>⌕</span><input id="communitySearch" placeholder="Search city, neighborhood, state, country..." autocomplete="off"></div><div id="coordsSearchRow" class="coords-row hidden"><input id="latitudeInput" type="number" step="any" placeholder="Latitude"><input id="longitudeInput" type="number" step="any" placeholder="Longitude"><button class="secondary-button" id="findCoordinates">Find nearby</button></div><div class="community-results-head"><strong>Places</strong><span id="communityResultCount">0 places</span></div><div class="community-result-list" id="communityResultList"></div><div class="selected-community"><div><small>SELECTED COMMUNITY</small><strong id="selectedCommunityName">No community selected</strong><span id="selectedCommunityMeta">Choose a place above.</span></div><button id="clearCommunity">Clear</button></div><div class="step-actions"><button class="secondary-button" data-back="2">← Back</button><button class="primary-button" id="communityContinue" data-next="4" disabled>Continue →</button></div></section>
+                <section class="modal-step" data-step="4"><span class="step-number">04 / 05</span><h2>Who should build with you?</h2><p>Collaborators can be selected now or you can keep the world private.</p><input class="wide-search" id="collabSearch" placeholder="Search your friends..."><div class="collaborator-list" id="collaboratorList"></div><div class="step-actions"><button class="secondary-button" data-back="3">← Back</button><button class="primary-button" data-next="5">Review →</button></div></section>
+                <section class="modal-step" data-step="5"><span class="step-number">05 / 05</span><h2>Give your world a name.</h2><p>Everything looks good. Name the world and launch it.</p><label class="field-label">WORLD NAME<input id="worldName" placeholder="e.g. Newark 2040"></label><div class="review-card"><div><small>MODE</small><strong id="reviewMode">Start from Scratch</strong></div><div><small>DIFFICULTY</small><strong id="reviewDifficulty">Free-play</strong></div><div><small>COMMUNITY</small><strong id="reviewCommunity">Not selected</strong></div><div><small>COLLABORATORS</small><strong id="reviewCollaborators">Just you</strong></div></div><div class="step-actions"><button class="secondary-button" data-back="4">← Back</button><button class="primary-button launch" id="launchWorld">Create world ✦</button></div></section>
             </div>
-
-
-            <!-- STEP 1 -->
-            <div class="modal-step active" data-step="1">
-
-                <div class="modal-emoji">🌎</div>
-
-                <div class="modal-label">STEP ONE</div>
-
-                <h2>
-                    What kind of<br>
-                    world are we making?
-                </h2>
-
-                <p>
-                    Choose how CivicLens should set up your investigation.
-                </p>
-
-
-                <div class="world-type-options">
-
-                    <button class="world-type selected" data-type="scratch">
-
-                        <div class="option-icon scratch-icon">
-                            ✨
-                        </div>
-
-                        <div class="option-copy">
-                            <strong>Start from Scratch</strong>
-                            <span>
-                                Begin with a blank canvas and
-                                discover problems yourself.
-                            </span>
-                        </div>
-
-                        <span class="check">✓</span>
-
-                    </button>
-
-
-                    <button class="world-type" data-type="improve">
-
-                        <div class="option-icon improve-icon">
-                            🏡
-                        </div>
-
-                        <div class="option-copy">
-                            <strong>Improve the World Around You</strong>
-                            <span>
-                                Start with your community and
-                                investigate existing public data.
-                            </span>
-                        </div>
-
-                        <span class="check">✓</span>
-
-                    </button>
-
-                </div>
-
-
-                <button class="next-button" data-next="2">
-                    Continue
-                    <span>→</span>
-                </button>
-
-            </div>
-
-
-            <!-- STEP 2 -->
-            <div class="modal-step" data-step="2">
-
-                <div class="modal-emoji">🎮</div>
-
-                <div class="modal-label">STEP TWO</div>
-
-                <h2>
-                    Choose your<br>
-                    difficulty.
-                </h2>
-
-                <p>
-                    How much reality do you want CivicLens
-                    to throw at you?
-                </p>
-
-
-                <div class="difficulty-options">
-
-                    <button class="difficulty selected" data-difficulty="freeplay">
-
-                        <div class="difficulty-number">01</div>
-
-                        <div class="difficulty-main">
-                            <strong>Free-play</strong>
-                            <span>Explore with no pressure.</span>
-                        </div>
-
-                        <div class="difficulty-face">🌱</div>
-
-                    </button>
-
-
-                    <button class="difficulty" data-difficulty="medium">
-
-                        <div class="difficulty-number">02</div>
-
-                        <div class="difficulty-main">
-                            <strong>Medium</strong>
-                            <span>More data. More questions.</span>
-                        </div>
-
-                        <div class="difficulty-face">🧭</div>
-
-                    </button>
-
-
-                    <button class="difficulty" data-difficulty="reallife">
-
-                        <div class="difficulty-number">03</div>
-
-                        <div class="difficulty-main">
-                            <strong>Real Life</strong>
-                            <span>Use real community data.</span>
-                        </div>
-
-                        <div class="difficulty-face">🏙️</div>
-
-                    </button>
-
-
-                    <button class="difficulty hell" data-difficulty="hell">
-
-                        <div class="difficulty-number">04</div>
-
-                        <div class="difficulty-main">
-                            <strong>Hell Mode</strong>
-                            <span>Bring. Every. Dataset.</span>
-                        </div>
-
-                        <div class="difficulty-face">🔥</div>
-
-                    </button>
-
-                </div>
-
-
-                <div class="step-buttons">
-
-                    <button class="back-button" data-back="1">
-                        ← Back
-                    </button>
-
-                    <button class="next-button" data-next="3">
-                        Continue
-                        <span>→</span>
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- STEP 3 -->
-            <div class="modal-step" data-step="3">
-
-                <div class="modal-emoji">🗺️</div>
-
-                <div class="modal-label">STEP THREE</div>
-
-                <h2>
-                    Give your world<br>
-                    a name.
-                </h2>
-
-                <p>
-                    This is how you'll find it later.
-                </p>
-
-
-                <label class="input-label">
-                    WORLD NAME
-                </label>
-
-                <input
-                    type="text"
-                    id="worldName"
-                    class="world-input"
-                    placeholder="e.g. Newark Safety Hunt"
-                    maxlength="50"
-                    autocomplete="off"
-                    required
-                >
-
-
-                <label class="input-label location-label">
-                    COMMUNITY
-                </label>
-
-                <div class="location-input">
-
-                    <svg viewBox="0 0 24 24">
-                        <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/>
-                        <circle cx="12" cy="10" r="2.5"/>
-                    </svg>
-
-                    <input
-                        type="text"
-                        id="communityName"
-                        placeholder="City, state or neighborhood"
-                        maxlength="60"
-                        required
-                    >
-
-                </div>
-
-
-                <div class="setup-summary">
-
-                    <div>
-                        <span>MODE</span>
-                        <strong id="summaryMode">Start from Scratch</strong>
-                    </div>
-
-                    <div>
-                        <span>DIFFICULTY</span>
-                        <strong id="summaryDifficulty">Free-play</strong>
-                    </div>
-
-                </div>
-
-
-                <div class="step-buttons">
-
-                    <button class="back-button" data-back="2">
-                        ← Back
-                    </button>
-
-                    <button class="launch-button" id="launchWorld">
-                        Create World
-                        <span>↗</span>
-                    </button>
-
-                </div>
-
-            </div>
-
         </div>
-
     </div>
 
+    <div class="modal-backdrop" id="friendModal"><div class="friend-modal"><button class="close-modal" id="closeFriend">×</button><span class="section-kicker">CONNECT</span><h2>Find a friend.</h2><p>Search by name, username, or friend code.</p><input class="wide-search" id="friendSearch" placeholder="Search people..." autocomplete="off"><div id="friendSearchResults"></div></div></div>
 
-    <!-- TOAST -->
-    <div class="toast" id="toast">
+    <div class="toast" id="toast"><span class="toast-icon">✦</span><div><strong>Done!</strong><small>Updated in CivicLens.</small></div></div>
 
-        <span class="toast-icon" style="display: flex; justify-content: center;align-items: center;">✨</span>
-
-        <div>
-            <strong>World created!</strong>
-            <span>Your new investigation is ready.</span>
-        </div>
-
-    </div>
-
-<div id="civicLensLoader" class="civic-loader">
-
-    <div class="loader-content">
-
-        <!-- Animated city -->
-        <div class="loader-city">
-
-            <div class="city-building building-1"></div>
-            <div class="city-building building-2"></div>
-            <div class="city-building building-3"></div>
-            <div class="city-building building-4"></div>
-            <div class="city-building building-5"></div>
-
-            <div class="city-road"></div>
-
-            <div class="city-dot dot-1"></div>
-            <div class="city-dot dot-2"></div>
-            <div class="city-dot dot-3"></div>
-
-        </div>
-
-
-        <!-- Logo -->
-
-        <div class="loader-logo">
-            Civic<span>Lens</span>
-        </div>
-
-
-        <!-- Message -->
-
-        <div class="loader-message" id="loaderMessage">
-            Building your view...
-        </div>
-
-
-        <!-- Progress -->
-
-        <div class="loader-progress">
-
-            <div
-                class="loader-progress-bar"
-                id="loaderProgress"
-            ></div>
-
-        </div>
-
-
-        <div class="loader-tip" id="loaderTip">
-            Getting everything ready
-        </div>
-
-    </div>
-
-</div>
     <script src="js/dashboard.js"></script>
-
 </body>
 </html>

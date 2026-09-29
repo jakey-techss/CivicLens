@@ -1,275 +1,307 @@
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvenhzZHN0bmR5d25xYnl0emphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5OTA1MjgsImV4cCI6MjEwNTU2NjUyOH0.IjVL1OhAZlKNxqoHVZ9_BXVnCQU0uL3gsd7j57PeV0Y"
-const SUPABASE_URL = "https://iozxsdstndywnqbytzja.supabase.co"
-const supabaseClient = supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-)
+const SUPABASE_URL =
+    "https://iozxsdstndywnqbytzja.supabase.co";
 
-checkSession()
-async function checkSession() {
-    const { data: { session } } = await supabaseClient.auth.getSession();
-    if (!session) {
-        window.location.assign("login.html")
-    }
-    let userInfo = session.user.user_metadata
-    document.querySelector(".profile-avatar").innerHTML = userInfo.display_name.substring(0,1)
-    document.querySelector(".profile-name").innerHTML = userInfo.display_name
-    hideCivicLensLoader()
-}
-const defaultWorlds = [
-    {
-        id: crypto.randomUUID(),
-        name: "Newark Safety Hunt",
-        location: "Newark, NJ",
-        description: "Exploring road safety and community-reported problems.",
-        mode: "improve",
-        difficulty: "reallife",
-        problems: 8,
-        analyses: 14,
-        progress: 68,
-        lastActivity: "12 minutes ago"
-    },
+const SUPABASE_KEY =
+    "PASTE_YOUR_EXISTING_SUPABASE_ANON_KEY_HERE";
 
-    {
-        id: crypto.randomUUID(),
-        name: "Downtown Crossings",
-        location: "Newark, NJ",
-        description: "Investigating pedestrian crossings and intersections.",
-        mode: "scratch",
-        difficulty: "medium",
-        problems: 4,
-        analyses: 7,
-        progress: 42,
-        lastActivity: "Yesterday"
-    },
-
-    {
-        id: crypto.randomUUID(),
-        name: "The Sidewalk Project",
-        location: "Vailsburg",
-        description: "Mapping accessibility problems around the neighborhood.",
-        mode: "improve",
-        difficulty: "freeplay",
-        problems: 12,
-        analyses: 19,
-        progress: 84,
-        lastActivity: "3 days ago"
-    }
-];
+const supabaseClient =
+    window.supabase && SUPABASE_KEY !== "PASTE_YOUR_EXISTING_SUPABASE_ANON_KEY_HERE"
+        ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+        : null;
 
 
+/* =========================================================
+   HELPERS
+========================================================= */
 
-let worlds = JSON.parse(
-    localStorage.getItem("civiclens_worlds")
-);
+const $ = selector =>
+    document.querySelector(selector);
 
-if (!worlds) {
-    worlds = defaultWorlds;
-    saveWorlds();
-}
+const $$ = selector =>
+    [...document.querySelectorAll(selector)];
+
+const esc = value =>
+    String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+
+/* =========================================================
+   WORLD CREATION STATE
+========================================================= */
 
 let selectedType = "scratch";
 let selectedDifficulty = "freeplay";
+let selectedCommunity = null;
+let selectedCollaborators = [];
+let currentStep = 1;
 
-let currentSteps = 1;
-
-
-const worldGrid =
-    document.getElementById("worldGrid");
-
-const emptyState =
-    document.getElementById("emptyState");
-
-const worldCount =
-    document.getElementById("worldCount");
-
-const problemCount =
-    document.getElementById("problemCount");
-
-const analysisCount =
-    document.getElementById("analysisCount");
-
-const activityCount =
-    document.getElementById("activityCount");
-
-const modal =
-    document.getElementById("createModal");
-
-const worldName =
-    document.getElementById("worldName");
-
-const communityName =
-    document.getElementById("communityName");
-
-const summaryMode =
-    document.getElementById("summaryMode");
-
-const summaryDifficulty =
-    document.getElementById("summaryDifficulty");
+let activeFriend = null;
 
 
+/* =========================================================
+   DATA
+========================================================= */
 
-function saveWorlds() {
+let worlds =
+    JSON.parse(
+        localStorage.getItem("civiclens_worlds_v3")
+    ) || [];
+
+
+let sharedWorlds =
+    JSON.parse(
+        localStorage.getItem("civiclens_shared_v3")
+    ) || [
+        {
+            id: crypto.randomUUID(),
+            name: "Newark 2040",
+            location: "Newark, NJ",
+            owner: "Maya Johnson",
+            description:
+                "A collaborative future-city experiment.",
+            mode: "scratch",
+            difficulty: "medium",
+            problems: 6,
+            analyses: 9,
+            progress: 31
+        }
+    ];
+
+
+let friends =
+    JSON.parse(
+        localStorage.getItem("civiclens_friends_v3")
+    ) || [
+        {
+            id: "f1",
+            name: "Maya Johnson",
+            username: "maya.builds",
+            status: "online",
+            code: "MAYA2040"
+        },
+        {
+            id: "f2",
+            name: "Jordan Lee",
+            username: "jordanlens",
+            status: "offline",
+            code: "JORDAN77"
+        },
+        {
+            id: "f3",
+            name: "Chris Mensah",
+            username: "cmensah",
+            status: "online",
+            code: "CHRISLAB"
+        },
+        {
+            id: "f4",
+            name: "Aaliyah Smith",
+            username: "aaliyah.city",
+            status: "offline",
+            code: "AALIYAH9"
+        }
+    ];
+
+
+let messages =
+    JSON.parse(
+        localStorage.getItem("civiclens_messages_v3")
+    ) || {
+        f1: [
+            {
+                me: false,
+                text:
+                    "Want to collaborate on Newark 2040?"
+            },
+            {
+                me: true,
+                text:
+                    "Absolutely. I'll join."
+            }
+        ],
+        f2: [
+            {
+                me: false,
+                text:
+                    "Did you see the new community map?"
+            }
+        ],
+        f3: [],
+        f4: []
+    };
+
+
+/* =========================================================
+   NOTIFICATIONS
+========================================================= */
+
+let notifications =
+    JSON.parse(
+        localStorage.getItem(
+            "civiclens_notifications_v3"
+        )
+    ) || [
+        {
+            id: "n1",
+            icon: "◈",
+            title:
+                "Maya shared a world with you",
+            text:
+                "Newark 2040 is ready to explore.",
+            unread: true
+        },
+        {
+            id: "n2",
+            icon: "◎",
+            title:
+                "Chris is online",
+            text:
+                "You can invite them to collaborate.",
+            unread: true
+        },
+        {
+            id: "n3",
+            icon: "✓",
+            title:
+                "Welcome back",
+            text:
+                "Your CivicLens workspace is ready.",
+            unread: false
+        }
+    ];
+
+
+function save() {
 
     localStorage.setItem(
-        "civiclens_worlds",
+        "civiclens_worlds_v3",
         JSON.stringify(worlds)
+    );
+
+    localStorage.setItem(
+        "civiclens_shared_v3",
+        JSON.stringify(sharedWorlds)
+    );
+
+    localStorage.setItem(
+        "civiclens_friends_v3",
+        JSON.stringify(friends)
+    );
+
+    localStorage.setItem(
+        "civiclens_messages_v3",
+        JSON.stringify(messages)
+    );
+
+    localStorage.setItem(
+        "civiclens_notifications_v3",
+        JSON.stringify(notifications)
     );
 }
 
 
-function renderWorlds() {
+/* =========================================================
+   LABELS
+========================================================= */
 
-    worldGrid.innerHTML = "";
+function modeLabel(mode) {
 
-    if (worlds.length === 0) {
+    return mode === "improve"
+        ? "Improve Existing Community"
+        : "Start From Scratch";
+}
 
-        worldGrid.style.display = "none";
 
-        emptyState.classList.add("visible");
+function diffLabel(difficulty) {
 
-        updateStats();
+    return {
+        freeplay: "Free-play",
+        medium: "Medium",
+        reallife: "Real Life",
+        hell: "Hell Mode"
+    }[difficulty] || difficulty;
+}
+
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+async function initUser() {
+
+    if (!supabaseClient) {
+
+        renderAll();
 
         return;
     }
 
-    worldGrid.style.display = "grid";
 
-    emptyState.classList.remove("visible");
-
-
-    worlds.forEach((world, index) => {
-
-        const card =
-            document.createElement("article");
-
-        card.className = "world-card";
-
-        card.dataset.id = world.id;
+    const {
+        data: { session }
+    } =
+        await supabaseClient.auth.getSession();
 
 
-        const map = createMapPreview(index);
+    if (!session) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+    }
 
 
-        card.innerHTML = `
-
-            ${map}
-
-            <div class="world-content">
-
-                <div class="world-top">
-
-                    <div>
-
-                        <h3 class="world-title">
-                            ${escapeHTML(world.name)}
-                        </h3>
-
-                        <div class="world-location">
-
-                            <span class="location-dot"></span>
-
-                            ${escapeHTML(
-            world.location || "Personal World"
-        )}
-
-                        </div>
-
-                    </div>
-
-                    <button
-                        class="more-button"
-                        aria-label="More options"
-                        data-id="${world.id}"
-                        style= "display:flex; align-items:center; justify-content:center;"
-                    >
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="delete-icon">
-  <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-  <path d="M9 7V4H15V7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M18 7L17.2 19C17.13 20.12 16.2 21 15.08 21H8.92C7.8 21 6.87 20.12 6.8 19L6 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M10 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-  <path d="M14 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-</svg>
-                    </button>
-
-                </div>
+    const metadata =
+        session.user.user_metadata || {};
 
 
-                <p class="world-description">
-                    ${escapeHTML(world.description)}
-                </p>
+    const name =
+        metadata.display_name ||
+        session.user.email?.split("@")[0] ||
+        "Explorer";
 
 
-                <div class="world-tags">
+    setUser(name);
 
-                    <span class="world-tag">
-                        ${getModeLabel(world.mode)}
-                    </span>
-
-                    <span class="world-tag">
-                        ${getDifficultyLabel(world.difficulty)}
-                    </span>
-
-                    <span class="world-tag">
-                        ${world.problems} problems
-                    </span>
-
-                </div>
+    renderAll();
+}
 
 
-                <div class="world-footer">
+function setUser(name) {
 
-                    <button
-                        class="world-open"
-                        aria-label="Open world"
-                    >
-                        ↗
-                    </button>
-
-                </div>
-
-            </div>
-        `;
+    const letter =
+        name[0]?.toUpperCase() || "?";
 
 
-        card.addEventListener("click", (event) => {
+    $$(".profile-name, .top-profile-name")
+        .forEach(element => {
 
-            if (
-                event.target.closest(".more-button")
-            ) {
-                return;
-            }
-
-            openWorld(world.id);
-
+            element.textContent =
+                name;
         });
 
 
-        const moreButton =
-            card.querySelector(".more-button");
+    $$(".profile-avatar, .top-avatar")
+        .forEach(element => {
 
-        moreButton.addEventListener(
-            "click",
-            (event) => {
-
-                event.stopPropagation();
-
-                showWorldMenu(world.id);
-            }
-        );
-
-
-        worldGrid.appendChild(card);
-
-    });
-
-
-    updateStats();
+            element.textContent =
+                letter;
+        });
 }
 
-function createMapPreview(index) {
 
-    const mapTypes = [
+/* =========================================================
+   MAP PREVIEWS
+========================================================= */
+
+function mapPreview(index) {
+
+    const types = [
         "city",
         "coast",
         "mountain",
@@ -278,684 +310,2548 @@ function createMapPreview(index) {
         "chaos"
     ];
 
-    const type = mapTypes[index % mapTypes.length];
 
-    const configs = {
-
-        city: {
-            blocks: 4,
-            parks: 1,
-            roads: 2,
-            pins: 3
-        },
-
-        coast: {
-            blocks: 2,
-            parks: 1,
-            roads: 1,
-            pins: 2
-        },
-
-        mountain: {
-            blocks: 2,
-            parks: 2,
-            roads: 1,
-            pins: 2
-        },
-
-        wilderness: {
-            blocks: 1,
-            parks: 3,
-            roads: 1,
-            pins: 2
-        },
-
-        desert: {
-            blocks: 2,
-            parks: 0,
-            roads: 2,
-            pins: 1
-        },
-
-        chaos: {
-            blocks: 4,
-            parks: 1,
-            roads: 2,
-            pins: 3
-        }
-
-    };
-
-    const config = configs[type];
-
-
-    /* ----------------------------- */
-    /* BLOCKS */
-    /* ----------------------------- */
-
-    let blocks = "";
-
-    for (let i = 1; i <= config.blocks; i++) {
-        blocks += `
-            <div class="map-block block-${i}"></div>
-        `;
-    }
-
-
-    /* ----------------------------- */
-    /* PARKS */
-    /* ----------------------------- */
-
-    let parks = "";
-
-    for (let i = 0; i < config.parks; i++) {
-
-        parks += `
-            <div class="map-park park-${i + 1}"></div>
-        `;
-
-    }
-
-
-    /* ----------------------------- */
-    /* ROADS */
-    /* ----------------------------- */
-
-    let roads = "";
-
-    if (config.roads >= 1) {
-        roads += `
-            <div class="map-road horizontal"></div>
-        `;
-    }
-
-    if (config.roads >= 2) {
-        roads += `
-            <div class="map-road vertical"></div>
-        `;
-    }
-
-
-    /* ----------------------------- */
-    /* PINS */
-    /* ----------------------------- */
-
-    const pinClasses = [
-        "pin-a",
-        "pin-b",
-        "pin-c"
-    ];
-
-    const symbols = [
-        "!",
-        "?",
-        "+"
-    ];
-
-    let pins = "";
-
-    for (let i = 0; i < config.pins; i++) {
-
-        pins += `
-            <div class="map-pin ${pinClasses[i]}">
-                <span>${symbols[i]}</span>
-            </div>
-        `;
-
-    }
+    const type =
+        types[index % types.length];
 
 
     return `
-
         <div class="world-map map-${type}">
 
-            ${blocks}
+            <div class="map-block block-1"></div>
+            <div class="map-block block-2"></div>
+            <div class="map-block block-3"></div>
 
-            ${parks}
+            <div class="map-park"></div>
 
-            ${roads}
+            <div class="map-pin pin-a">
+                <span>!</span>
+            </div>
 
-            ${pins}
+            <div class="map-pin pin-b">
+                <span>?</span>
+            </div>
+
+            <div class="map-pin pin-c">
+                <span>+</span>
+            </div>
 
         </div>
-
     `;
 }
 
+
+/* =========================================================
+   WORLD CARDS
+========================================================= */
+
+function worldCard(
+    world,
+    index,
+    shared = false
+) {
+
+    return `
+        <article
+            class="world-card"
+            data-world="${esc(world.id)}"
+        >
+
+            ${mapPreview(index)}
+
+            <div class="world-content">
+
+                <div class="world-top">
+
+                    <div>
+
+                        <h3 class="world-title">
+                            ${esc(world.name)}
+                        </h3>
+
+                        <div class="world-location">
+
+                            <span
+                                class="location-dot"
+                            ></span>
+
+                            ${esc(
+                                world.location ||
+                                "Personal World"
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+                    ${
+                        shared
+
+                            ? `
+                                <span class="shared-owner">
+                                    BY ${esc(world.owner)}
+                                </span>
+                            `
+
+                            : `
+                                <button
+                                    class="more-button"
+                                    data-delete="${esc(world.id)}"
+                                    aria-label="Delete world"
+                                >
+                                    ×
+                                </button>
+                            `
+                    }
+
+                </div>
+
+
+                <p class="world-description">
+
+                    ${esc(
+                        world.description ||
+                        "A CivicLens world ready for your next investigation."
+                    )}
+
+                </p>
+
+
+                <div class="world-tags">
+
+                    <span class="world-tag">
+                        ${modeLabel(world.mode)}
+                    </span>
+
+                    <span class="world-tag">
+                        ${diffLabel(world.difficulty)}
+                    </span>
+
+                    <span class="world-tag">
+                        ${Number(
+                            world.problems || 0
+                        )} problems
+                    </span>
+
+                </div>
+
+
+                <div class="world-footer">
+
+                    <span class="world-last">
+
+                        ${
+                            shared
+                                ? "Shared with you"
+                                : "Continue exploring"
+                        }
+
+                    </span>
+
+                    <button
+                        class="world-open"
+                        aria-label="Open world"
+                    >
+                        →
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+    `;
+}
+
+
+/* =========================================================
+   WORLDS
+========================================================= */
+
+function renderWorlds() {
+
+    const grid =
+        $("#worldGrid");
+
+    const empty =
+        $("#emptyState");
+
+
+    if (!grid)
+        return;
+
+
+    grid.innerHTML =
+        worlds
+            .map(worldCard)
+            .join("");
+
+
+    if (empty) {
+
+        empty.style.display =
+            worlds.length
+                ? "none"
+                : "block";
+    }
+
+
+    grid.style.display =
+        worlds.length
+            ? "grid"
+            : "none";
+
+
+    $$("#worldGrid .world-card")
+        .forEach(card => {
+
+            card.onclick = event => {
+
+                if (
+                    event.target.closest(
+                        "[data-delete]"
+                    )
+                ) {
+
+                    return;
+                }
+
+
+                const world =
+                    worlds.find(
+                        item =>
+                            item.id ===
+                            card.dataset.world
+                    );
+
+
+                if (!world)
+                    return;
+
+
+                showToast(
+                    `Opening ${world.name}`,
+                    "→"
+                );
+            };
+        });
+
+
+    $$("[data-delete]")
+        .forEach(button => {
+
+            button.onclick = event => {
+
+                event.stopPropagation();
+
+
+                worlds =
+                    worlds.filter(
+                        world =>
+                            world.id !==
+                            button.dataset.delete
+                    );
+
+
+                save();
+
+                renderAll();
+
+                showToast(
+                    "World deleted",
+                    "×"
+                );
+            };
+        });
+}
+
+
+/* =========================================================
+   SHARED WORLDS
+========================================================= */
+
+function renderShared() {
+
+    const grid =
+        $("#sharedGrid");
+
+
+    if (!grid)
+        return;
+
+
+    grid.innerHTML =
+        sharedWorlds
+            .map(
+                (world, index) =>
+                    worldCard(
+                        world,
+                        index,
+                        true
+                    )
+            )
+            .join("");
+}
+
+
+/* =========================================================
+   FRIENDS
+========================================================= */
+
+function renderFriends() {
+
+    const grid =
+        $("#friendsGrid");
+
+
+    if (!grid)
+        return;
+
+
+    const online =
+        friends.filter(
+            friend =>
+                friend.status ===
+                "online"
+        ).length;
+
+
+    const onlineCounter =
+        $("#friendsOnlineCount");
+
+
+    if (onlineCounter) {
+
+        onlineCounter.textContent =
+            `${online} online`;
+    }
+
+
+    grid.innerHTML =
+        friends
+            .map(
+                friend => `
+
+                    <div
+                        class="friend-card"
+                        data-friend="${esc(
+                            friend.id
+                        )}"
+                    >
+
+                        <span class="profile-avatar">
+
+                            ${esc(
+                                friend.name[0]
+                            )}
+
+                        </span>
+
+
+                        <div class="friend-info">
+
+                            <strong>
+                                ${esc(
+                                    friend.name
+                                )}
+                            </strong>
+
+                            <span>
+                                @${esc(
+                                    friend.username
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <span
+                            class="
+                                friend-status
+                                ${
+                                    friend.status ===
+                                    "online"
+                                        ? "online"
+                                        : ""
+                                }
+                            "
+                        >
+                            ${friend.status}
+                        </span>
+
+                    </div>
+                `
+            )
+            .join("");
+
+
+    $$(".friend-card")
+        .forEach(card => {
+
+            card.onclick = () => {
+
+                openChat(
+                    card.dataset.friend
+                );
+
+                activateSection(
+                    "chatSection"
+                );
+            };
+        });
+
+
+    renderChatFriends();
+}
+
+
+function renderChatFriends() {
+
+    const container =
+        $("#chatFriends");
+
+
+    if (!container)
+        return;
+
+
+    container.innerHTML =
+        friends
+            .map(
+                friend => `
+
+                    <div
+                        class="
+                            chat-friend
+                            ${
+                                activeFriend?.id ===
+                                friend.id
+                                    ? "active"
+                                    : ""
+                            }
+                        "
+                        data-friend="${esc(
+                            friend.id
+                        )}"
+                    >
+
+                        <span class="profile-avatar">
+
+                            ${esc(
+                                friend.name[0]
+                            )}
+
+                        </span>
+
+
+                        <div>
+
+                            <strong>
+                                ${esc(
+                                    friend.name
+                                )}
+                            </strong>
+
+                            <small>
+                                @${esc(
+                                    friend.username
+                                )}
+                            </small>
+
+                        </div>
+
+                    </div>
+                `
+            )
+            .join("");
+
+
+    $$(".chat-friend")
+        .forEach(element => {
+
+            element.onclick = () =>
+                openChat(
+                    element.dataset.friend
+                );
+        });
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
 
 function updateStats() {
 
     const problems =
         worlds.reduce(
-            (sum, world) =>
-                sum + Number(world.problems || 0),
+            (total, world) =>
+                total +
+                Number(
+                    world.problems || 0
+                ),
             0
         );
+
 
     const analyses =
         worlds.reduce(
-            (sum, world) =>
-                sum + Number(world.analyses || 0),
+            (total, world) =>
+                total +
+                Number(
+                    world.analyses || 0
+                ),
             0
         );
 
-    worldCount.textContent =
-        worlds.length;
 
-    problemCount.textContent =
-        problems;
+    if ($("#worldCount"))
+        $("#worldCount").textContent =
+            worlds.length;
 
-    analysisCount.textContent =
-        analyses;
 
-    activityCount.textContent =
-        worlds.length
-            ? problems + analyses
-            : 0;
+    if ($("#problemCount"))
+        $("#problemCount").textContent =
+            problems;
+
+
+    if ($("#analysisCount"))
+        $("#analysisCount").textContent =
+            analyses;
+
+
+    if ($("#friendCount"))
+        $("#friendCount").textContent =
+            friends.length;
+
+
+    if ($("#sharedBadge"))
+        $("#sharedBadge").textContent =
+            sharedWorlds.length;
+
+
+    if ($("#friendBadge"))
+        $("#friendBadge").textContent =
+            friends.length;
+
+
+    if ($("#messageBadge"))
+        $("#messageBadge").textContent =
+            Object.values(messages)
+                .flat()
+                .length;
 }
 
 
-document
-    .getElementById("openCreate")
-    .addEventListener(
-        "click",
-        openCreateModal
+/* =========================================================
+   NOTIFICATIONS
+========================================================= */
+
+function renderNotifications() {
+
+    const list =
+        $("#notificationList");
+
+    const dot =
+        $("#notificationDot");
+
+
+    if (!list)
+        return;
+
+
+    const unread =
+        notifications.filter(
+            notification =>
+                notification.unread
+        ).length;
+
+
+    if (dot) {
+
+        dot.style.display =
+            unread
+                ? "block"
+                : "none";
+    }
+
+
+    if (!notifications.length) {
+
+        list.innerHTML = `
+
+            <div class="notification-empty">
+
+                <strong>
+                    You're all caught up.
+                </strong>
+
+                <span>
+                    No new notifications.
+                </span>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    list.innerHTML =
+        notifications
+            .map(
+                notification => `
+
+                    <div
+                        class="
+                            notification-item
+                            ${
+                                notification.unread
+                                    ? "unread"
+                                    : ""
+                            }
+                        "
+                    >
+
+                        <span class="notif-icon">
+
+                            ${esc(
+                                notification.icon
+                            )}
+
+                        </span>
+
+
+                        <div>
+
+                            <strong>
+                                ${esc(
+                                    notification.title
+                                )}
+                            </strong>
+
+                            <small>
+                                ${esc(
+                                    notification.text
+                                )}
+                            </small>
+
+                        </div>
+
+                    </div>
+                `
+            )
+            .join("");
+}
+
+
+function openNotifications() {
+
+    const popover =
+        $("#notificationPopover");
+
+
+    if (!popover)
+        return;
+
+
+    const isOpen =
+        popover.classList.contains(
+            "open"
+        );
+
+
+    if (isOpen) {
+
+        popover.classList.remove(
+            "open"
+        );
+
+        return;
+    }
+
+
+    popover.classList.add(
+        "open"
     );
 
 
-document
-    .getElementById("emptyCreate")
-    .addEventListener(
-        "click",
-        openCreateModal
+    popover.setAttribute(
+        "aria-hidden",
+        "false"
     );
 
 
-document
-    .getElementById("closeCreate")
-    .addEventListener(
-        "click",
-        closeCreateModal
+    notifications =
+        notifications.map(
+            notification => ({
+                ...notification,
+                unread: false
+            })
+        );
+
+
+    save();
+
+    renderNotifications();
+}
+
+
+function closeNotifications() {
+
+    const popover =
+        $("#notificationPopover");
+
+
+    if (!popover)
+        return;
+
+
+    popover.classList.remove(
+        "open"
     );
 
 
-modal.addEventListener(
+    popover.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+}
+
+
+const notificationButton =
+    $("#notificationButton");
+
+
+if (notificationButton) {
+
+    notificationButton.onclick =
+        event => {
+
+            event.stopPropagation();
+
+            openNotifications();
+        };
+}
+
+
+const clearNotifications =
+    $("#clearNotifications");
+
+
+if (clearNotifications) {
+
+    clearNotifications.onclick =
+        event => {
+
+            event.stopPropagation();
+
+
+            notifications = [];
+
+            save();
+
+            renderNotifications();
+
+            showToast(
+                "Notifications cleared",
+                "✓"
+            );
+        };
+}
+
+
+document.addEventListener(
     "click",
-    (event) => {
+    event => {
 
         if (
-            event.target === modal
+            !event.target.closest(
+                "#notificationPopover"
+            ) &&
+            !event.target.closest(
+                "#notificationButton"
+            )
         ) {
-            closeCreateModal();
-        }
 
+            closeNotifications();
+        }
     }
 );
 
 
-function openCreateModal() {
+/* =========================================================
+   NAVIGATION
+========================================================= */
 
-    modal.classList.add("open");
+function activateSection(id) {
 
-    document.body.style.overflow = "hidden";
-
-    currentSteps = 1;
-
-    resetCreateForm();
-
-    showStep(1);
-}
-
-
-function closeCreateModal() {
-
-    modal.classList.remove("open");
-
-    document.body.style.overflow = "";
-
-}
-
-
-function resetCreateForm() {
-
-    selectedType = "scratch";
-
-    selectedDifficulty = "freeplay";
-
-    worldName.value = "";
-
-    communityName.value = "";
-
-    document
-        .querySelectorAll(".world-type")
+    $$(".side-link")
         .forEach(button => {
 
             button.classList.toggle(
-                "selected",
-                button.dataset.type === selectedType
+                "active",
+                button.dataset.section ===
+                    id
             );
-
         });
 
 
-    document
-        .querySelectorAll(".difficulty")
+    $$(".dashboard-section")
+        .forEach(section => {
+
+            section.classList.toggle(
+                "active",
+                section.id === id
+            );
+        });
+}
+
+
+$$(".side-link")
+    .forEach(button => {
+
+        button.onclick = () => {
+
+            activateSection(
+                button.dataset.section
+            );
+        };
+    });
+
+
+/* =========================================================
+   VIEW SWITCHING
+========================================================= */
+
+$$(".view-button")
+    .forEach(button => {
+
+        button.onclick = () => {
+
+            $$(".view-button")
+                .forEach(item =>
+                    item.classList.remove(
+                        "active"
+                    )
+                );
+
+
+            button.classList.add(
+                "active"
+            );
+
+
+            const listView =
+                button.dataset.view ===
+                "list";
+
+
+            $("#worldGrid")
+                ?.classList.toggle(
+                    "list-view",
+                    listView
+                );
+        };
+    });
+
+
+/* =========================================================
+   CREATE WORLD
+========================================================= */
+
+function openCreate() {
+
+    resetCreate();
+
+    $("#createModal")
+        ?.classList.add("open");
+
+    document.body.style.overflow =
+        "hidden";
+
+    loadCommunities("");
+}
+
+
+function closeCreate() {
+
+    $("#createModal")
+        ?.classList.remove("open");
+
+    document.body.style.overflow =
+        "";
+}
+
+
+function resetCreate() {
+
+    selectedType =
+        "scratch";
+
+    selectedDifficulty =
+        "freeplay";
+
+    selectedCommunity =
+        null;
+
+    selectedCollaborators =
+        [];
+
+    currentStep =
+        1;
+
+
+    if ($("#worldName"))
+        $("#worldName").value =
+            "";
+
+
+    if ($("#selectedCommunityName"))
+        $("#selectedCommunityName")
+            .textContent =
+                "No community selected";
+
+
+    if ($("#selectedCommunityMeta"))
+        $("#selectedCommunityMeta")
+            .textContent =
+                "Choose a place above.";
+
+
+    if ($("#communityContinue"))
+        $("#communityContinue")
+            .disabled =
+                true;
+
+
+    $$(".world-type")
         .forEach(button => {
 
             button.classList.toggle(
                 "selected",
-                button.dataset.difficulty === selectedDifficulty
+                button.dataset.type ===
+                    "scratch"
             );
+        });
 
+
+    $$(".difficulty")
+        .forEach(button => {
+
+            button.classList.toggle(
+                "selected",
+                button.dataset.difficulty ===
+                    "freeplay"
+            );
+        });
+
+
+    showCreateStep(1);
+
+    renderCollaborators();
+
+    updateSummary();
+}
+
+
+function showCreateStep(step) {
+
+    currentStep =
+        step;
+
+
+    $$(".modal-step")
+        .forEach(section => {
+
+            section.classList.toggle(
+                "active",
+                Number(
+                    section.dataset.step
+                ) === step
+            );
+        });
+
+
+    $$(".create-progress button")
+        .forEach(button => {
+
+            button.classList.toggle(
+                "active",
+                Number(
+                    button.dataset.createStep
+                ) === step
+            );
         });
 
 
     updateSummary();
 }
 
-document
-    .querySelectorAll("[data-next]")
+
+/* CREATE BUTTONS */
+
+$("#openCreate")?.addEventListener(
+    "click",
+    openCreate
+);
+
+$("#sideCreate")?.addEventListener(
+    "click",
+    openCreate
+);
+
+$("#emptyCreate")?.addEventListener(
+    "click",
+    openCreate
+);
+
+$("#closeCreate")?.addEventListener(
+    "click",
+    closeCreate
+);
+
+
+$("#createModal")?.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target.id ===
+            "createModal"
+        ) {
+
+            closeCreate();
+        }
+    }
+);
+
+
+/* =========================================================
+   CREATE STEPS
+========================================================= */
+
+$$("[data-next]")
     .forEach(button => {
 
-        button.addEventListener(
-            "click",
-            () => {
+        button.onclick = () => {
 
-                const next =
-                    Number(button.dataset.next);
+            const next =
+                Number(
+                    button.dataset.next
+                );
+
+
+            if (
+                next >= 4 &&
+                !selectedCommunity
+            ) {
+
+                showToast(
+                    "Select a community first",
+                    "!"
+                );
+
+                return;
+            }
+
+
+            showCreateStep(next);
+        };
+    });
+
+
+$$("[data-back]")
+    .forEach(button => {
+
+        button.onclick = () => {
+
+            showCreateStep(
+                Number(
+                    button.dataset.back
+                )
+            );
+        };
+    });
+
+
+$$("[data-create-step]")
+    .forEach(button => {
+
+        button.onclick = () => {
+
+            const step =
+                Number(
+                    button.dataset.createStep
+                );
+
+
+            if (
+                step > currentStep
+            ) {
 
                 if (
-                    currentSteps === 3
+                    step >= 4 &&
+                    !selectedCommunity
                 ) {
+
+                    showToast(
+                        "Select a community first",
+                        "!"
+                    );
+
                     return;
                 }
-
-                currentSteps = next;
-
-                showStep(currentSteps);
-
             }
-        );
 
+
+            showCreateStep(step);
+        };
     });
 
 
-document
-    .querySelectorAll("[data-back]")
+/* =========================================================
+   WORLD TYPE / DIFFICULTY
+========================================================= */
+
+$$(".world-type")
     .forEach(button => {
 
-        button.addEventListener(
-            "click",
-            () => {
+        button.onclick = () => {
 
-                currentSteps =
-                    Number(button.dataset.back);
+            selectedType =
+                button.dataset.type;
 
-                showStep(currentSteps);
 
-            }
-        );
+            $$(".world-type")
+                .forEach(item => {
 
+                    item.classList.toggle(
+                        "selected",
+                        item === button
+                    );
+                });
+
+
+            updateSummary();
+        };
     });
 
 
-function showStep(step) {
-
-    document
-        .querySelectorAll(".modal-step")
-        .forEach(element => {
-
-            element.classList.toggle(
-                "active",
-                Number(element.dataset.step) === step
-            );
-
-        });
-
-
-    document
-        .querySelectorAll(".progress-dot")
-        .forEach((dot, index) => {
-
-            dot.classList.toggle(
-                "active",
-                index <= step - 1
-            );
-
-        });
-
-
-    updateSummary();
-}
-
-
-
-document
-    .querySelectorAll(".world-type")
+$$(".difficulty")
     .forEach(button => {
 
-        button.addEventListener(
-            "click",
-            () => {
+        button.onclick = () => {
 
-                selectedType =
-                    button.dataset.type;
+            selectedDifficulty =
+                button.dataset.difficulty;
 
-                document
-                    .querySelectorAll(".world-type")
-                    .forEach(option => {
 
-                        option.classList.toggle(
-                            "selected",
-                            option === button
-                        );
+            $$(".difficulty")
+                .forEach(item => {
 
-                    });
+                    item.classList.toggle(
+                        "selected",
+                        item === button
+                    );
+                });
 
-                updateSummary();
 
-            }
-        );
-
+            updateSummary();
+        };
     });
 
 
-
-document
-    .querySelectorAll(".difficulty")
-    .forEach(button => {
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                selectedDifficulty =
-                    button.dataset.difficulty;
-
-                document
-                    .querySelectorAll(".difficulty")
-                    .forEach(option => {
-
-                        option.classList.toggle(
-                            "selected",
-                            option === button
-                        );
-
-                    });
-
-                updateSummary();
-
-            }
-        );
-
-    });
-
-
+/* =========================================================
+   SUMMARY
+========================================================= */
 
 function updateSummary() {
 
-    summaryMode.textContent =
-        getModeLabel(selectedType);
+    const name =
+        $("#worldName")
+            ?.value
+            .trim() ||
+        "Untitled world";
 
-    summaryDifficulty.textContent =
-        getDifficultyLabel(selectedDifficulty);
+
+    if ($("#summaryWorldName"))
+        $("#summaryWorldName")
+            .textContent =
+                name;
+
+
+    if ($("#summaryMode"))
+        $("#summaryMode")
+            .textContent =
+                modeLabel(
+                    selectedType
+                );
+
+
+    if ($("#summaryDifficulty"))
+        $("#summaryDifficulty")
+            .textContent =
+                diffLabel(
+                    selectedDifficulty
+                );
+
+
+    if ($("#summaryCommunity"))
+        $("#summaryCommunity")
+            .textContent =
+                selectedCommunity
+                    ?.display_name ||
+                selectedCommunity
+                    ?.name ||
+                "Community required";
+
+
+    if ($("#summaryCollaborators"))
+        $("#summaryCollaborators")
+            .textContent =
+                selectedCollaborators.length
+                    ? `${selectedCollaborators.length} friend${
+                        selectedCollaborators.length > 1
+                            ? "s"
+                            : ""
+                    }`
+                    : "Just you";
+
+
+    if ($("#reviewMode"))
+        $("#reviewMode")
+            .textContent =
+                modeLabel(
+                    selectedType
+                );
+
+
+    if ($("#reviewDifficulty"))
+        $("#reviewDifficulty")
+            .textContent =
+                diffLabel(
+                    selectedDifficulty
+                );
+
+
+    if ($("#reviewCommunity"))
+        $("#reviewCommunity")
+            .textContent =
+                selectedCommunity
+                    ?.display_name ||
+                "Not selected";
+
+
+    if ($("#reviewCollaborators"))
+        $("#reviewCollaborators")
+            .textContent =
+                selectedCollaborators.length
+                    ? `${selectedCollaborators.length} friend${
+                        selectedCollaborators.length > 1
+                            ? "s"
+                            : ""
+                    }`
+                    : "Just you";
 }
 
 
-function getModeLabel(mode) {
-
-    const labels = {
-
-        scratch:
-            "Start from Scratch",
-
-        improve:
-            "Improve the World Around You"
-
-    };
-
-    return labels[mode] || mode;
-}
+$("#worldName")?.addEventListener(
+    "input",
+    updateSummary
+);
 
 
-function getDifficultyLabel(difficulty) {
+/* =========================================================
+   COMMUNITIES
+========================================================= */
 
-    const labels = {
-
-        freeplay:
-            "Free-play",
-
-        medium:
-            "Medium",
-
-        reallife:
-            "Real Life",
-
-        hell:
-            "Hell Mode"
-
-    };
-
-    return labels[difficulty] || difficulty;
-}
-
-
-document
-    .getElementById("launchWorld")
-    .addEventListener(
-        "click",
-        createWorld
-    );
-
-
-function createWorld() {
-
-    let name =
-        worldName.value.trim();
-
-    let location =
-        communityName.value.trim();
-
-
-    if (!name) {
-
-        worldName.focus();
-
-        worldName.style.borderColor =
-            "var(--orange)";
-
-        setTimeout(() => {
-
-            worldName.style.borderColor =
-                "";
-
-        }, 1000);
-
-        return;
+const demoCommunities = [
+    {
+        name:
+            "Newark, New Jersey, United States",
+        display_name:
+            "Newark",
+        type:
+            "City · New Jersey · United States",
+        latitude:
+            40.7357,
+        longitude:
+            -74.1724
+    },
+    {
+        name:
+            "Jersey City, New Jersey, United States",
+        display_name:
+            "Jersey City",
+        type:
+            "City · New Jersey · United States",
+        latitude:
+            40.7178,
+        longitude:
+            -74.0431
+    },
+    {
+        name:
+            "New York City, New York, United States",
+        display_name:
+            "New York City",
+        type:
+            "City · New York · United States",
+        latitude:
+            40.7128,
+        longitude:
+            -74.006
+    },
+    {
+        name:
+            "Philadelphia, Pennsylvania, United States",
+        display_name:
+            "Philadelphia",
+        type:
+            "City · Pennsylvania · United States",
+        latitude:
+            39.9526,
+        longitude:
+            -75.1652
+    },
+    {
+        name:
+            "Boston, Massachusetts, United States",
+        display_name:
+            "Boston",
+        type:
+            "City · Massachusetts · United States",
+        latitude:
+            42.3601,
+        longitude:
+            -71.0589
+    },
+    {
+        name:
+            "Chicago, Illinois, United States",
+        display_name:
+            "Chicago",
+        type:
+            "City · Illinois · United States",
+        latitude:
+            41.8781,
+        longitude:
+            -87.6298
+    },
+    {
+        name:
+            "Los Angeles, California, United States",
+        display_name:
+            "Los Angeles",
+        type:
+            "City · California · United States",
+        latitude:
+            34.0522,
+        longitude:
+            -118.2437
+    },
+    {
+        name:
+            "Toronto, Ontario, Canada",
+        display_name:
+            "Toronto",
+        type:
+            "City · Ontario · Canada",
+        latitude:
+            43.6532,
+        longitude:
+            -79.3832
+    },
+    {
+        name:
+            "London, England, United Kingdom",
+        display_name:
+            "London",
+        type:
+            "City · England · United Kingdom",
+        latitude:
+            51.5074,
+        longitude:
+            -0.1278
+    },
+    {
+        name:
+            "Accra, Greater Accra, Ghana",
+        display_name:
+            "Accra",
+        type:
+            "City · Greater Accra · Ghana",
+        latitude:
+            5.6037,
+        longitude:
+            -0.187
     }
+];
 
 
-    if (!location) {
-
-        communityName.focus();
-
-        communityName.style.borderColor =
-            "var(--orange)";
-
-        setTimeout(() => {
-
-            communityName.style.borderColor =
-                "";
-
-        }, 1000);
-
-        return;
-
-    }
+let communityTimer;
 
 
-    const difficultyData = {
+async function loadCommunities(
+    query = ""
+) {
 
-        freeplay: {
-            problems: 0,
-            analyses: 0,
-            progress: 0
-        },
+    let rows = [];
 
-        medium: {
-            problems: 0,
-            analyses: 0,
-            progress: 5
-        },
 
-        reallife: {
-            problems: 0,
-            analyses: 0,
-            progress: 8
-        },
+    if (supabaseClient) {
 
-        hell: {
-            problems: 0,
-            analyses: 0,
-            progress: 2
+        try {
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient.rpc(
+                    "search_communities",
+                    {
+                        search_text:
+                            query || "",
+                        lat:
+                            null,
+                        lon:
+                            null,
+                        limit_count:
+                            100
+                    }
+                );
+
+
+            if (!error && data) {
+
+                rows = data;
+            }
+
+        } catch (error) {
+
+            console.warn(
+                "Community search unavailable:",
+                error
+            );
         }
-
-    };
-
-
-    const world =
-        difficultyData[selectedDifficulty];
+    }
 
 
-    const newWorld = {
+    if (!rows.length) {
 
-        id: crypto.randomUUID(),
+        rows =
+            demoCommunities.filter(
+                place => {
 
-        name,
-
-        location,
-
-        description:
-            selectedType === "improve"
-                ? "Investigating your community using public data and local observations."
-                : "A blank CivicLens world ready for your next investigation.",
-
-        mode:
-            selectedType,
-
-        difficulty:
-            selectedDifficulty,
-
-        problems:
-            world.problems,
-
-        analyses:
-            world.analyses,
-
-        progress:
-            world.progress,
-
-        lastActivity:
-            "Just now"
-
-    };
+                    if (!query)
+                        return true;
 
 
-    worlds.unshift(newWorld);
-
-    saveWorlds();
-
-    renderWorlds();
-
-    closeCreateModal();
-
-    showToast();
-
-}
+                    const search =
+                        query.toLowerCase();
 
 
-function openWorld(id) {
+                    return (
+                        place.name
+                            .toLowerCase()
+                            .includes(search) ||
 
-    const world =
-        worlds.find(
-            world => world.id === id
-        );
+                        place.display_name
+                            .toLowerCase()
+                            .includes(search)
+                    );
+                }
+            );
+    }
 
-    if (!world) return;
 
-
-    showToast(
-        `Opening ${world.name}...`,
-        "🗺️"
+    renderCommunityResults(
+        rows
     );
 }
 
 
-function showWorldMenu(id) {
+function renderCommunityResults(
+    rows
+) {
 
-    const world =
-        worlds.find(
-            world => world.id === id
-        );
-
-    if (!world) return;
+    const count =
+        $("#communityResultCount");
 
 
-    const shouldDelete =
-        confirm(
-            `Delete "${world.name}"?`
-        );
+    const list =
+        $("#communityResultList");
 
 
-    if (!shouldDelete) return;
+    if (count) {
+
+        count.textContent =
+            `${rows.length} places`;
+    }
 
 
-    worlds =
-        worlds.filter(
-            world => world.id !== id
-        );
+    if (!list)
+        return;
 
-    saveWorlds();
 
-    renderWorlds();
+    list.innerHTML =
+        rows.length
 
-    showToast(
-        "World deleted.",
-        "🗑️"
-    );
+            ? rows
+                .map(place => {
+
+                    const community = {
+
+                        name:
+                            place.name ||
+                            place.display_name,
+
+                        display_name:
+                            place.display_name ||
+                            place.name,
+
+                        type:
+                            place.type ||
+                            "Community",
+
+                        latitude:
+                            place.latitude,
+
+                        longitude:
+                            place.longitude
+                    };
+
+
+                    return `
+
+                        <div
+                            class="community-result"
+                            data-community='${esc(
+                                JSON.stringify(
+                                    community
+                                )
+                            )}'
+                        >
+
+                            <span class="place-icon">
+                                ⌖
+                            </span>
+
+
+                            <div>
+
+                                <strong>
+                                    ${esc(
+                                        community.display_name
+                                    )}
+                                </strong>
+
+                                <small>
+
+                                    ${esc(
+                                        community.type
+                                    )}
+
+                                    ·
+
+                                    ${Number(
+                                        community.latitude
+                                    ).toFixed(4)}
+
+                                    ,
+
+                                    ${Number(
+                                        community.longitude
+                                    ).toFixed(4)}
+
+                                </small>
+
+                            </div>
+
+                        </div>
+                    `;
+                })
+                .join("")
+
+            : `
+
+                <div class="notification-empty">
+
+                    <strong>
+                        No places found.
+                    </strong>
+
+                    <span>
+                        Try a broader search.
+                    </span>
+
+                </div>
+            `;
+
+
+    $$(".community-result")
+        .forEach(element => {
+
+            element.onclick = () => {
+
+                selectedCommunity =
+                    JSON.parse(
+                        element.dataset.community
+                    );
+
+
+                $("#selectedCommunityName")
+                    .textContent =
+                        selectedCommunity
+                            .display_name;
+
+
+                $("#selectedCommunityMeta")
+                    .textContent =
+                        `${selectedCommunity.type} · ${
+                            Number(
+                                selectedCommunity.latitude
+                            ).toFixed(4)
+                        }, ${
+                            Number(
+                                selectedCommunity.longitude
+                            ).toFixed(4)
+                        }`;
+
+
+                $("#communityContinue")
+                    .disabled =
+                        false;
+
+
+                updateSummary();
+            };
+        });
 }
+
+
+$("#communitySearch")
+    ?.addEventListener(
+        "input",
+        event => {
+
+            clearTimeout(
+                communityTimer
+            );
+
+
+            communityTimer =
+                setTimeout(
+                    () =>
+                        loadCommunities(
+                            event.target.value.trim()
+                        ),
+                    150
+                );
+        }
+    );
+
+
+$$(".community-tab")
+    .forEach(button => {
+
+        button.onclick = () => {
+
+            $$(".community-tab")
+                .forEach(item =>
+                    item.classList.remove(
+                        "active"
+                    )
+                );
+
+
+            button.classList.add(
+                "active"
+            );
+
+
+            const coordinates =
+                button.dataset.searchMode ===
+                "coords";
+
+
+            $("#nameSearchRow")
+                ?.classList.toggle(
+                    "hidden",
+                    coordinates
+                );
+
+
+            $("#coordsSearchRow")
+                ?.classList.toggle(
+                    "hidden",
+                    !coordinates
+                );
+
+
+            if (!coordinates) {
+
+                loadCommunities(
+                    $("#communitySearch")
+                        ?.value
+                        .trim() || ""
+                );
+            }
+        };
+    });
+
+
+$("#clearCommunity")
+    ?.addEventListener(
+        "click",
+        () => {
+
+            selectedCommunity =
+                null;
+
+
+            $("#selectedCommunityName")
+                .textContent =
+                    "No community selected";
+
+
+            $("#selectedCommunityMeta")
+                .textContent =
+                    "Choose a place above.";
+
+
+            $("#communityContinue")
+                .disabled =
+                    true;
+
+
+            updateSummary();
+        }
+    );
+
+
+$("#findCoordinates")
+    ?.addEventListener(
+        "click",
+        () => {
+
+            const latitude =
+                Number(
+                    $("#latitudeInput")
+                        ?.value
+                );
+
+
+            const longitude =
+                Number(
+                    $("#longitudeInput")
+                        ?.value
+                );
+
+
+            if (
+                !Number.isFinite(latitude) ||
+                !Number.isFinite(longitude) ||
+                latitude < -90 ||
+                latitude > 90 ||
+                longitude < -180 ||
+                longitude > 180
+            ) {
+
+                showToast(
+                    "Enter valid coordinates",
+                    "!"
+                );
+
+                return;
+            }
+
+
+            const rows =
+                [...demoCommunities]
+                    .sort(
+                        (a, b) =>
+                            Math.hypot(
+                                a.latitude -
+                                    latitude,
+                                a.longitude -
+                                    longitude
+                            ) -
+                            Math.hypot(
+                                b.latitude -
+                                    latitude,
+                                b.longitude -
+                                    longitude
+                            )
+                    )
+                    .slice(
+                        0,
+                        10
+                    );
+
+
+            renderCommunityResults(
+                rows
+            );
+        }
+    );
+
+
+/* =========================================================
+   COLLABORATORS
+========================================================= */
+
+function renderCollaborators() {
+
+    const container =
+        $("#collaboratorList");
+
+
+    if (!container)
+        return;
+
+
+    const query =
+        $("#collabSearch")
+            ?.value
+            .toLowerCase() || "";
+
+
+    const rows =
+        friends.filter(
+            friend =>
+                (
+                    friend.name +
+                    " " +
+                    friend.username
+                )
+                    .toLowerCase()
+                    .includes(query)
+        );
+
+
+    container.innerHTML =
+        rows
+            .map(
+                friend => `
+
+                    <label
+                        class="
+                            collab-row
+                            ${
+                                selectedCollaborators
+                                    .includes(
+                                        friend.id
+                                    )
+                                    ? "selected"
+                                    : ""
+                            }
+                        "
+                    >
+
+                        <input
+                            type="checkbox"
+                            value="${esc(
+                                friend.id
+                            )}"
+                            ${
+                                selectedCollaborators
+                                    .includes(
+                                        friend.id
+                                    )
+                                    ? "checked"
+                                    : ""
+                            }
+                        >
+
+
+                        <span class="collab-avatar">
+
+                            ${esc(
+                                friend.name[0]
+                            )}
+
+                        </span>
+
+
+                        <span>
+
+                            <strong>
+                                ${esc(
+                                    friend.name
+                                )}
+                            </strong>
+
+                            <small>
+                                @${esc(
+                                    friend.username
+                                )}
+                            </small>
+
+                        </span>
+
+                    </label>
+                `
+            )
+            .join("");
+
+
+    $$("#collaboratorList input")
+        .forEach(input => {
+
+            input.onchange = () => {
+
+                if (input.checked) {
+
+                    if (
+                        !selectedCollaborators
+                            .includes(
+                                input.value
+                            )
+                    ) {
+
+                        selectedCollaborators
+                            .push(
+                                input.value
+                            );
+                    }
+
+                } else {
+
+                    selectedCollaborators =
+                        selectedCollaborators
+                            .filter(
+                                id =>
+                                    id !==
+                                    input.value
+                            );
+                }
+
+
+                renderCollaborators();
+
+                updateSummary();
+            };
+        });
+}
+
+
+$("#collabSearch")
+    ?.addEventListener(
+        "input",
+        renderCollaborators
+    );
+
+
+/* =========================================================
+   CREATE WORLD
+========================================================= */
+
+$("#launchWorld")
+    ?.addEventListener(
+        "click",
+        () => {
+
+            const name =
+                $("#worldName")
+                    ?.value
+                    .trim();
+
+
+            if (!name) {
+
+                showToast(
+                    "Give your world a name",
+                    "!"
+                );
+
+                return;
+            }
+
+
+            if (!selectedCommunity) {
+
+                showCreateStep(3);
+
+                showToast(
+                    "Community selection is required",
+                    "!"
+                );
+
+                return;
+            }
+
+
+            const difficultyStats = {
+
+                freeplay:
+                    [0, 0, 0],
+
+                medium:
+                    [0, 0, 5],
+
+                reallife:
+                    [0, 0, 8],
+
+                hell:
+                    [0, 0, 2]
+            };
+
+
+            const stats =
+                difficultyStats[
+                    selectedDifficulty
+                ];
+
+
+            const world = {
+
+                id:
+                    crypto.randomUUID(),
+
+                name,
+
+                location:
+                    selectedCommunity
+                        .display_name,
+
+                community:
+                    selectedCommunity,
+
+                description:
+                    selectedType === "improve"
+
+                        ? "Investigating an existing community using public data and local observations."
+
+                        : "A fictional CivicLens world anchored to a real community.",
+
+                mode:
+                    selectedType,
+
+                difficulty:
+                    selectedDifficulty,
+
+                problems:
+                    stats[0],
+
+                analyses:
+                    stats[1],
+
+                progress:
+                    stats[2],
+
+                collaborators:
+                    [...selectedCollaborators]
+            };
+
+
+            worlds.unshift(
+                world
+            );
+
+
+            save();
+
+            renderAll();
+
+            closeCreate();
+
+            showToast(
+                "World created",
+                "✓"
+            );
+        }
+    );
+
+
+/* =========================================================
+   CHAT
+========================================================= */
+
+function openChat(id) {
+
+    activeFriend =
+        friends.find(
+            friend =>
+                friend.id === id
+        );
+
+
+    if (!activeFriend)
+        return;
+
+
+    if ($("#chatTitle"))
+        $("#chatTitle")
+            .textContent =
+                activeFriend.name;
+
+
+    if ($("#chatStatus"))
+        $("#chatStatus")
+            .textContent =
+                activeFriend.status ===
+                "online"
+                    ? "Online"
+                    : "Offline";
+
+
+    if ($("#chatAvatar"))
+        $("#chatAvatar")
+            .textContent =
+                activeFriend.name[0];
+
+
+    if ($("#chatInput"))
+        $("#chatInput")
+            .disabled =
+                false;
+
+
+    if ($("#chatForm button"))
+        $("#chatForm button")
+            .disabled =
+                false;
+
+
+    renderFriends();
+
+    renderMessages();
+}
+
+
+function renderMessages() {
+
+    if (!activeFriend)
+        return;
+
+
+    const container =
+        $("#chatMessages");
+
+
+    if (!container)
+        return;
+
+
+    const list =
+        messages[
+            activeFriend.id
+        ] || [];
+
+
+    container.innerHTML =
+        list.length
+
+            ? list
+                .map(
+                    message => `
+
+                        <div
+                            class="
+                                message
+                                ${
+                                    message.me
+                                        ? "me"
+                                        : ""
+                                }
+                            "
+                        >
+
+                            <div
+                                class="
+                                    message-bubble
+                                "
+                            >
+                                ${esc(
+                                    message.text
+                                )}
+                            </div>
+
+                        </div>
+                    `
+                )
+                .join("")
+
+            : `
+
+                <div class="chat-empty">
+                    Start the conversation.
+                </div>
+            `;
+
+
+    container.scrollTop =
+        container.scrollHeight;
+}
+
+
+$("#chatForm")
+    ?.addEventListener(
+        "submit",
+        event => {
+
+            event.preventDefault();
+
+
+            if (!activeFriend)
+                return;
+
+
+            const input =
+                $("#chatInput");
+
+
+            const text =
+                input
+                    ?.value
+                    .trim();
+
+
+            if (!text)
+                return;
+
+
+            if (
+                !messages[
+                    activeFriend.id
+                ]
+            ) {
+
+                messages[
+                    activeFriend.id
+                ] = [];
+            }
+
+
+            messages[
+                activeFriend.id
+            ].push({
+
+                me:
+                    true,
+
+                text
+            });
+
+
+            input.value =
+                "";
+
+
+            save();
+
+            renderMessages();
+
+            updateStats();
+        }
+    );
+
+
+/* =========================================================
+   ADD FRIEND
+========================================================= */
+
+const possiblePeople = [
+    ...friends,
+    {
+        id:
+            "p5",
+        name:
+            "Sam Rivera",
+        username:
+            "sam.maps",
+        code:
+            "SAMMAPS"
+    },
+    {
+        id:
+            "p6",
+        name:
+            "Noah Williams",
+        username:
+            "noahbuilds",
+        code:
+            "NOAH88"
+    }
+];
+
+
+$("#openAddFriend")
+    ?.addEventListener(
+        "click",
+        () => {
+
+            $("#friendModal")
+                ?.classList.add(
+                    "open"
+                );
+
+            document.body.style.overflow =
+                "hidden";
+
+            renderFriendSearch("");
+        }
+    );
+
+
+$("#closeFriend")
+    ?.addEventListener(
+        "click",
+        () => {
+
+            $("#friendModal")
+                ?.classList.remove(
+                    "open"
+                );
+
+            document.body.style.overflow =
+                "";
+        }
+    );
+
+
+$("#friendModal")
+    ?.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target.id ===
+                "friendModal"
+            ) {
+
+                $("#closeFriend")
+                    ?.click();
+            }
+        }
+    );
+
+
+$("#friendSearch")
+    ?.addEventListener(
+        "input",
+        event => {
+
+            renderFriendSearch(
+                event.target.value
+            );
+        }
+    );
+
+
+function renderFriendSearch(
+    query = ""
+) {
+
+    const container =
+        $("#friendSearchResults");
+
+
+    if (!container)
+        return;
+
+
+    const rows =
+        possiblePeople.filter(
+            person =>
+                (
+                    person.name +
+                    " " +
+                    person.username +
+                    " " +
+                    person.code
+                )
+                    .toLowerCase()
+                    .includes(
+                        query.toLowerCase()
+                    )
+        );
+
+
+    container.innerHTML =
+        rows
+            .map(person => {
+
+                const exists =
+                    friends.some(
+                        friend =>
+                            friend.username ===
+                            person.username
+                    );
+
+
+                return `
+
+                    <div class="search-person">
+
+                        <span class="profile-avatar">
+
+                            ${esc(
+                                person.name[0]
+                            )}
+
+                        </span>
+
+
+                        <div>
+
+                            <strong>
+                                ${esc(
+                                    person.name
+                                )}
+                            </strong>
+
+                            <small>
+                                @${esc(
+                                    person.username
+                                )}
+                                ·
+                                ${esc(
+                                    person.code
+                                )}
+                            </small>
+
+                        </div>
+
+
+                        <button
+                            data-person="${esc(
+                                person.id
+                            )}"
+                            ${
+                                exists
+                                    ? "disabled"
+                                    : ""
+                            }
+                        >
+
+                            ${
+                                exists
+                                    ? "Added"
+                                    : "Add"
+                            }
+
+                        </button>
+
+                    </div>
+                `;
+            })
+            .join("");
+
+
+    $$("[data-person]")
+        .forEach(button => {
+
+            button.onclick = () => {
+
+                const person =
+                    possiblePeople.find(
+                        item =>
+                            item.id ===
+                            button.dataset.person
+                    );
+
+
+                if (!person)
+                    return;
+
+
+                if (
+                    friends.some(
+                        friend =>
+                            friend.username ===
+                            person.username
+                    )
+                ) {
+
+                    return;
+                }
+
+
+                friends.push({
+
+                    ...person,
+
+                    status:
+                        "offline"
+                });
+
+
+                save();
+
+                renderAll();
+
+
+                button.disabled =
+                    true;
+
+                button.textContent =
+                    "Added";
+
+
+                showToast(
+                    `${person.name} added`,
+                    "✓"
+                );
+            };
+        });
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
 
 function showToast(
-    message = "World created!",
-    icon = "✨"
+    message = "Done",
+    icon = "✓"
 ) {
 
     const toast =
-        document.getElementById("toast");
+        $("#toast");
+
+
+    if (!toast)
+        return;
+
 
     const iconElement =
-        toast.querySelector(".toast-icon");
-
-    const title =
-        toast.querySelector("strong");
-
-    const description =
-        toast.querySelector("div span");
+        toast.querySelector(
+            ".toast-icon"
+        );
 
 
-    iconElement.textContent = icon;
+    const messageElement =
+        toast.querySelector(
+            "strong"
+        );
 
-    title.textContent = message;
 
-    toast.classList.add("show");
+    if (iconElement)
+        iconElement.textContent =
+            icon;
 
 
-    clearTimeout(
-        window.civicToastTimeout
+    if (messageElement)
+        messageElement.textContent =
+            message;
+
+
+    toast.classList.add(
+        "show"
     );
 
 
-    window.civicToastTimeout =
+    clearTimeout(
+        window.civicToast
+    );
+
+
+    window.civicToast =
         setTimeout(
             () => {
 
@@ -964,156 +2860,44 @@ function showToast(
                 );
 
             },
-            3000
+            2600
         );
 }
 
 
-
-document
-    .querySelectorAll(".view-button")
-    .forEach(button => {
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                document
-                    .querySelectorAll(".view-button")
-                    .forEach(btn => {
-
-                        btn.classList.remove(
-                            "active"
-                        );
-
-                    });
-
-
-                button.classList.add("active");
-
-
-                const view =
-                    button.dataset.view;
-
-
-                if (view === "list") {
-
-                    worldGrid.classList.add(
-                        "list-view"
-                    );
-
-                } else {
-
-                    worldGrid.classList.remove(
-                        "list-view"
-                    );
-
-                }
-
-            }
-        );
-
-    });
-
-
-function escapeHTML(value) {
-
-    return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-}
-
-
-
+/* =========================================================
+   KEYBOARD
+========================================================= */
 
 document.addEventListener(
     "keydown",
     event => {
 
         if (
-            event.key === "Escape" &&
-            modal.classList.contains("open")
+            event.key !==
+            "Escape"
         ) {
-            closeCreateModal();
+
+            return;
         }
 
+
+        closeCreate();
+
+        $("#closeFriend")
+            ?.click();
+
+        closeNotifications();
     }
 );
 
 
-renderWorlds();
+/* =========================================================
+   INITIALIZE
+========================================================= */
+lucide.createIcons();
+loadCommunities("");
 
-const loader = document.getElementById("civicLensLoader");
-const loaderMessage = document.getElementById("loaderMessage");
-const loaderTip = document.getElementById("loaderTip");
-const loaderProgress = document.getElementById("loaderProgress");
+renderAll();
 
-const loadingSteps = [
-    {
-        message: "Finding your city...",
-        tip: "Looking for your CivicLens profile",
-        progress: 20
-    },
-    {
-        message: "Loading your worlds...",
-        tip: "Bringing your cities back to life",
-        progress: 45
-    },
-    {
-        message: "Checking your progress...",
-        tip: "Counting your builds and achievements",
-        progress: 70
-    },
-    {
-        message: "Almost there...",
-        tip: "Putting everything in place",
-        progress: 90
-    }
-];
-
-let currentStep = 0;
-
-const loadingInterval = setInterval(() => {
-
-    if (currentStep >= loadingSteps.length) {
-        clearInterval(loadingInterval);
-        return;
-    }
-
-    const step = loadingSteps[currentStep];
-
-    loaderMessage.textContent = step.message;
-    loaderTip.textContent = step.tip;
-    loaderProgress.style.width = `${step.progress}%`;
-
-    currentStep++;
-
-}, 700);
-
-
-/* =================================
-   HIDE LOADER
-   ================================= */
-
-function hideCivicLensLoader() {
-
-    clearInterval(loadingInterval);
-
-    loaderProgress.style.width = "100%";
-
-    loaderMessage.textContent = "Ready to build!";
-    loaderTip.textContent = "Welcome back to CivicLens";
-
-    setTimeout(() => {
-
-        loader.classList.add("loader-hidden");
-
-        setTimeout(() => {
-            loader.remove();
-        }, 500);
-
-    }, 450);
-}
+initUser();
