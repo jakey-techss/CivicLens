@@ -12,7 +12,7 @@
         href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-   
+
     <link rel="stylesheet" href="css/dashboard.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -91,13 +91,26 @@
                 <div class="topbar-spacer"></div>
                 <button class="notification-button" id="notificationButton" aria-label="Notifications"
                     aria-expanded="false">
-                    <span class="bell-icon">♢</span>
+
+                    <svg class="notification-bell" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true">
+                        <path d="M18 8.5C18 5.46 15.76 3 12.5 3C9.24 3 7 5.46 7 8.5
+               C7 13.75 4.5 15 4.5 17H20.5C20.5 15 18 13.75 18 8.5Z" fill="#FFD84D" stroke="#171717" stroke-width="1.8"
+                            stroke-linejoin="round" />
+
+                        <path d="M10 20C10.45 21.05 11.3 21.5 12.5 21.5
+               C13.7 21.5 14.55 21.05 15 20" stroke="#171717" stroke-width="1.8" stroke-linecap="round" />
+
+                        <path d="M9 8C9.15 6.7 10 5.7 11.15 5.25" stroke="#FFF0A3" stroke-width="1.5"
+                            stroke-linecap="round" />
+                    </svg>
+
                     <span class="notification-dot" id="notificationDot"></span>
                 </button>
                 <a href="profile.html" class="top-profile">
-                    <span class="profile-avatar top-avatar">?</span>
-                    <span class="top-profile-name">Explorer</span>
-                    <span class="chevron">⌄</span>
+                    <span class="profile-avatar top-avatar">U</span>
+                    <span class="top-profile-name">Username</span>
+
                 </a>
             </header>
 
@@ -113,16 +126,52 @@
                 </div>
 
                 <div class="stats-strip">
-                    <div class="stat"><span class="stat-symbol green">◫</span>
+                    <div class="stat"><span class="stat-symbol green"><svg class="stat-icon" viewBox="0 0 24 24"
+                                fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M4 5.5L9 3.5L15 5.5L20 3.5V18.5L15 20.5L9 18.5L4 20.5V5.5Z" fill="#20B26B"
+                                    stroke="#171717" stroke-width="1.8" stroke-linejoin="round" />
+                                <path d="M9 3.5V18.5M15 5.5V20.5" stroke="#171717" stroke-width="1.8" />
+                                <path d="M6 8L8 7M17 9L19 8" stroke="#75BDF4" stroke-width="1.5"
+                                    stroke-linecap="round" />
+                            </svg></span>
                         <div><small>WORLDS</small><strong id="worldCount">0</strong></div>
                     </div>
-                    <div class="stat"><span class="stat-symbol yellow">!</span>
+                    <div class="stat"><span class="stat-symbol yellow"><svg class="stat-icon" viewBox="0 0 24 24"
+                                fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M12 3L21 19H3L12 3Z" fill="#FFD84D" stroke="#171717" stroke-width="1.8"
+                                    stroke-linejoin="round" />
+                                <path d="M12 8V13" stroke="#171717" stroke-width="2" stroke-linecap="round" />
+                                <circle cx="12" cy="16" r="1" fill="#171717" />
+                            </svg></span>
                         <div><small>PROBLEMS</small><strong id="problemCount">0</strong></div>
                     </div>
-                    <div class="stat"><span class="stat-symbol blue">⌁</span>
+                    <div class="stat"><span class="stat-symbol blue"><svg class="stat-icon" viewBox="0 0 24 24"
+                                fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M4 19V5" stroke="#171717" stroke-width="1.8" stroke-linecap="round" />
+                                <path d="M4 19H21" stroke="#171717" stroke-width="1.8" stroke-linecap="round" />
+
+                                <path d="M7 15L10 11L13 13L18 7" stroke="#75BDF4" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+
+                                <circle cx="7" cy="15" r="1.5" fill="#75BDF4" stroke="#171717" stroke-width="1" />
+                                <circle cx="10" cy="11" r="1.5" fill="#75BDF4" stroke="#171717" stroke-width="1" />
+                                <circle cx="13" cy="13" r="1.5" fill="#75BDF4" stroke="#171717" stroke-width="1" />
+                                <circle cx="18" cy="7" r="1.5" fill="#75BDF4" stroke="#171717" stroke-width="1" />
+                            </svg></span>
                         <div><small>ANALYSES</small><strong id="analysisCount">0</strong></div>
                     </div>
-                    <div class="stat"><span class="stat-symbol pink">✦</span>
+                    <div class="stat"><span class="stat-symbol pink"><svg class="stat-icon" viewBox="0 0 24 24"
+                                fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <!-- Back person -->
+                                <circle cx="16.5" cy="8" r="3" fill="#FF9FC8" stroke="#171717" stroke-width="1.7" />
+                                <path d="M12.5 19C12.8 15.5 14.3 13.5 16.5 13.5C18.7 13.5 20.2 15.5 20.5 19"
+                                    fill="#FF9FC8" stroke="#171717" stroke-width="1.7" stroke-linecap="round" />
+
+                                <!-- Front person -->
+                                <circle cx="9" cy="9" r="3.5" fill="#20B26B" stroke="#171717" stroke-width="1.8" />
+                                <path d="M3.5 20C3.8 15.8 5.7 13.5 9 13.5C12.3 13.5 14.2 15.8 14.5 20" fill="#20B26B"
+                                    stroke="#171717" stroke-width="1.8" stroke-linecap="round" />
+                            </svg></span>
                         <div><small>FRIENDS</small><strong id="friendCount">0</strong></div>
                     </div>
                 </div>

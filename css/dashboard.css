@@ -430,10 +430,15 @@ button {
     box-shadow: 3px 3px 0 var(--ink)
 }
 
-.bell-icon {
-    font-size: 23px;
-    line-height: 1;
-    transform: rotate(45deg)
+.notification-bell {
+    width: 24px;
+    height: 24px;
+    display: block;
+}
+.stat-icon {
+    width: 24px;
+    height: 24px;
+    display: block;
 }
 
 .notification-dot {

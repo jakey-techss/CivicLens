@@ -235,7 +235,7 @@ async function initUser() {
 
     if (!supabaseClient) {
 
-        renderAll();
+        
 
         return;
     }
@@ -268,7 +268,7 @@ async function initUser() {
 
     setUser(name);
 
-    renderAll();
+
 }
 
 
@@ -556,7 +556,7 @@ function renderWorlds() {
 
                 save();
 
-                renderAll();
+         
 
                 showToast(
                     "World deleted",
@@ -2355,7 +2355,6 @@ $("#launchWorld")
 
             save();
 
-            renderAll();
 
             closeCreate();
 
@@ -2783,7 +2782,7 @@ function renderFriendSearch(
 
                 save();
 
-                renderAll();
+         
 
 
                 button.disabled =
@@ -2898,6 +2897,5 @@ document.addEventListener(
 lucide.createIcons();
 loadCommunities("");
 
-renderAll();
 
 initUser();
