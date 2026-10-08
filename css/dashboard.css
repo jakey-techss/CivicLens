@@ -395,7 +395,9 @@ button {
     min-width: 0;
     flex: 1
 }
-
+.community-icon {
+    color: #20b26b;
+}
 .topbar {
     height: 78px;
     border-bottom: 2px solid #e6e4dc;

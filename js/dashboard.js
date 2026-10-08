@@ -1,18 +1,19 @@
-const SUPABASE_URL =
-    "https://iozxsdstndywnqbytzja.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvenhzZHN0bmR5d25xYnl0emphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5OTA1MjgsImV4cCI6MjEwNTU2NjUyOH0.IjVL1OhAZlKNxqoHVZ9_BXVnCQU0uL3gsd7j57PeV0Y"
+const SUPABASE_URL = "https://iozxsdstndywnqbytzja.supabase.co"
+const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+)
 
-const SUPABASE_KEY =
-    "PASTE_YOUR_EXISTING_SUPABASE_ANON_KEY_HERE";
+checkSession()
+async function checkSession() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (!session) {
+        window.location.assign("index.html")
+    }
+}
 
-const supabaseClient =
-    window.supabase && SUPABASE_KEY !== "PASTE_YOUR_EXISTING_SUPABASE_ANON_KEY_HERE"
-        ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
-        : null;
 
-
-/* =========================================================
-   HELPERS
-========================================================= */
 
 const $ = selector =>
     document.querySelector(selector);
@@ -29,10 +30,6 @@ const esc = value =>
         .replaceAll("'", "&#039;");
 
 
-/* =========================================================
-   WORLD CREATION STATE
-========================================================= */
-
 let selectedType = "scratch";
 let selectedDifficulty = "freeplay";
 let selectedCommunity = null;
@@ -41,10 +38,6 @@ let currentStep = 1;
 
 let activeFriend = null;
 
-
-/* =========================================================
-   DATA
-========================================================= */
 
 let worlds =
     JSON.parse(
@@ -134,10 +127,6 @@ let messages =
         f4: []
     };
 
-
-/* =========================================================
-   NOTIFICATIONS
-========================================================= */
 
 let notifications =
     JSON.parse(
@@ -234,9 +223,6 @@ function diffLabel(difficulty) {
 async function initUser() {
 
     if (!supabaseClient) {
-
-        
-
         return;
     }
 
@@ -376,25 +362,24 @@ function worldCard(
                             ></span>
 
                             ${esc(
-                                world.location ||
-                                "Personal World"
-                            )}
+        world.location ||
+        "Personal World"
+    )}
 
                         </div>
 
                     </div>
 
 
-                    ${
-                        shared
+                    ${shared
 
-                            ? `
+            ? `
                                 <span class="shared-owner">
                                     BY ${esc(world.owner)}
                                 </span>
                             `
 
-                            : `
+            : `
                                 <button
                                     class="more-button"
                                     data-delete="${esc(world.id)}"
@@ -403,7 +388,7 @@ function worldCard(
                                     ×
                                 </button>
                             `
-                    }
+        }
 
                 </div>
 
@@ -411,9 +396,9 @@ function worldCard(
                 <p class="world-description">
 
                     ${esc(
-                        world.description ||
-                        "A CivicLens world ready for your next investigation."
-                    )}
+            world.description ||
+            "A CivicLens world ready for your next investigation."
+        )}
 
                 </p>
 
@@ -430,8 +415,8 @@ function worldCard(
 
                     <span class="world-tag">
                         ${Number(
-                            world.problems || 0
-                        )} problems
+            world.problems || 0
+        )} problems
                     </span>
 
                 </div>
@@ -441,11 +426,10 @@ function worldCard(
 
                     <span class="world-last">
 
-                        ${
-                            shared
-                                ? "Shared with you"
-                                : "Continue exploring"
-                        }
+                        ${shared
+            ? "Shared with you"
+            : "Continue exploring"
+        }
 
                     </span>
 
@@ -556,7 +540,7 @@ function renderWorlds() {
 
                 save();
 
-         
+
 
                 showToast(
                     "World deleted",
@@ -566,10 +550,6 @@ function renderWorlds() {
         });
 }
 
-
-/* =========================================================
-   SHARED WORLDS
-========================================================= */
 
 function renderShared() {
 
@@ -594,10 +574,6 @@ function renderShared() {
             .join("");
 }
 
-
-/* =========================================================
-   FRIENDS
-========================================================= */
 
 function renderFriends() {
 
@@ -636,15 +612,15 @@ function renderFriends() {
                     <div
                         class="friend-card"
                         data-friend="${esc(
-                            friend.id
-                        )}"
+                    friend.id
+                )}"
                     >
 
                         <span class="profile-avatar">
 
                             ${esc(
-                                friend.name[0]
-                            )}
+                    friend.name[0]
+                )}
 
                         </span>
 
@@ -653,14 +629,14 @@ function renderFriends() {
 
                             <strong>
                                 ${esc(
-                                    friend.name
-                                )}
+                    friend.name
+                )}
                             </strong>
 
                             <span>
                                 @${esc(
-                                    friend.username
-                                )}
+                    friend.username
+                )}
                             </span>
 
                         </div>
@@ -669,12 +645,11 @@ function renderFriends() {
                         <span
                             class="
                                 friend-status
-                                ${
-                                    friend.status ===
-                                    "online"
-                                        ? "online"
-                                        : ""
-                                }
+                                ${friend.status ===
+                        "online"
+                        ? "online"
+                        : ""
+                    }
                             "
                         >
                             ${friend.status}
@@ -724,23 +699,22 @@ function renderChatFriends() {
                     <div
                         class="
                             chat-friend
-                            ${
-                                activeFriend?.id ===
-                                friend.id
-                                    ? "active"
-                                    : ""
-                            }
+                            ${activeFriend?.id ===
+                        friend.id
+                        ? "active"
+                        : ""
+                    }
                         "
                         data-friend="${esc(
-                            friend.id
-                        )}"
+                        friend.id
+                    )}"
                     >
 
                         <span class="profile-avatar">
 
                             ${esc(
-                                friend.name[0]
-                            )}
+                        friend.name[0]
+                    )}
 
                         </span>
 
@@ -749,14 +723,14 @@ function renderChatFriends() {
 
                             <strong>
                                 ${esc(
-                                    friend.name
-                                )}
+                        friend.name
+                    )}
                             </strong>
 
                             <small>
                                 @${esc(
-                                    friend.username
-                                )}
+                        friend.username
+                    )}
                             </small>
 
                         </div>
@@ -777,10 +751,6 @@ function renderChatFriends() {
         });
 }
 
-
-/* =========================================================
-   STATS
-========================================================= */
 
 function updateStats() {
 
@@ -907,19 +877,18 @@ function renderNotifications() {
                     <div
                         class="
                             notification-item
-                            ${
-                                notification.unread
-                                    ? "unread"
-                                    : ""
-                            }
+                            ${notification.unread
+                        ? "unread"
+                        : ""
+                    }
                         "
                     >
 
                         <span class="notif-icon">
 
                             ${esc(
-                                notification.icon
-                            )}
+                        notification.icon
+                    )}
 
                         </span>
 
@@ -928,14 +897,14 @@ function renderNotifications() {
 
                             <strong>
                                 ${esc(
-                                    notification.title
-                                )}
+                        notification.title
+                    )}
                             </strong>
 
                             <small>
                                 ${esc(
-                                    notification.text
-                                )}
+                        notification.text
+                    )}
                             </small>
 
                         </div>
@@ -1094,7 +1063,7 @@ function activateSection(id) {
             button.classList.toggle(
                 "active",
                 button.dataset.section ===
-                    id
+                id
             );
         });
 
@@ -1212,19 +1181,19 @@ function resetCreate() {
     if ($("#selectedCommunityName"))
         $("#selectedCommunityName")
             .textContent =
-                "No community selected";
+            "No community selected";
 
 
     if ($("#selectedCommunityMeta"))
         $("#selectedCommunityMeta")
             .textContent =
-                "Choose a place above.";
+            "Choose a place above.";
 
 
     if ($("#communityContinue"))
         $("#communityContinue")
             .disabled =
-                true;
+            true;
 
 
     $$(".world-type")
@@ -1233,7 +1202,7 @@ function resetCreate() {
             button.classList.toggle(
                 "selected",
                 button.dataset.type ===
-                    "scratch"
+                "scratch"
             );
         });
 
@@ -1244,7 +1213,7 @@ function resetCreate() {
             button.classList.toggle(
                 "selected",
                 button.dataset.difficulty ===
-                    "freeplay"
+                "freeplay"
             );
         });
 
@@ -1480,81 +1449,79 @@ function updateSummary() {
     if ($("#summaryWorldName"))
         $("#summaryWorldName")
             .textContent =
-                name;
+            name;
 
 
     if ($("#summaryMode"))
         $("#summaryMode")
             .textContent =
-                modeLabel(
-                    selectedType
-                );
+            modeLabel(
+                selectedType
+            );
 
 
     if ($("#summaryDifficulty"))
         $("#summaryDifficulty")
             .textContent =
-                diffLabel(
-                    selectedDifficulty
-                );
+            diffLabel(
+                selectedDifficulty
+            );
 
 
     if ($("#summaryCommunity"))
         $("#summaryCommunity")
             .textContent =
-                selectedCommunity
-                    ?.display_name ||
-                selectedCommunity
-                    ?.name ||
-                "Community required";
+            selectedCommunity
+                ?.display_name ||
+            selectedCommunity
+                ?.name ||
+            "Community required";
 
 
     if ($("#summaryCollaborators"))
         $("#summaryCollaborators")
             .textContent =
-                selectedCollaborators.length
-                    ? `${selectedCollaborators.length} friend${
-                        selectedCollaborators.length > 1
-                            ? "s"
-                            : ""
-                    }`
-                    : "Just you";
+            selectedCollaborators.length
+                ? `${selectedCollaborators.length} friend${selectedCollaborators.length > 1
+                    ? "s"
+                    : ""
+                }`
+                : "Just you";
 
 
     if ($("#reviewMode"))
         $("#reviewMode")
             .textContent =
-                modeLabel(
-                    selectedType
-                );
+            modeLabel(
+                selectedType
+            );
 
 
     if ($("#reviewDifficulty"))
         $("#reviewDifficulty")
             .textContent =
-                diffLabel(
-                    selectedDifficulty
-                );
+            diffLabel(
+                selectedDifficulty
+            );
 
 
     if ($("#reviewCommunity"))
         $("#reviewCommunity")
             .textContent =
-                selectedCommunity
-                    ?.display_name ||
-                "Not selected";
+            selectedCommunity
+                ?.display_name ||
+            "Not selected";
 
 
     if ($("#reviewCollaborators"))
         $("#reviewCollaborators")
             .textContent =
-                selectedCollaborators.length
-                    ? `${selectedCollaborators.length} friend${
-                        selectedCollaborators.length > 1
-                            ? "s"
-                            : ""
-                    }`
-                    : "Just you";
+            selectedCollaborators.length
+                ? `${selectedCollaborators.length} friend${selectedCollaborators.length > 1
+                    ? "s"
+                    : ""
+                }`
+                : "Just you";
 }
 
 
@@ -1564,184 +1531,72 @@ $("#worldName")?.addEventListener(
 );
 
 
-/* =========================================================
-   COMMUNITIES
-========================================================= */
-
-const demoCommunities = [
-    {
-        name:
-            "Newark, New Jersey, United States",
-        display_name:
-            "Newark",
-        type:
-            "City · New Jersey · United States",
-        latitude:
-            40.7357,
-        longitude:
-            -74.1724
-    },
-    {
-        name:
-            "Jersey City, New Jersey, United States",
-        display_name:
-            "Jersey City",
-        type:
-            "City · New Jersey · United States",
-        latitude:
-            40.7178,
-        longitude:
-            -74.0431
-    },
-    {
-        name:
-            "New York City, New York, United States",
-        display_name:
-            "New York City",
-        type:
-            "City · New York · United States",
-        latitude:
-            40.7128,
-        longitude:
-            -74.006
-    },
-    {
-        name:
-            "Philadelphia, Pennsylvania, United States",
-        display_name:
-            "Philadelphia",
-        type:
-            "City · Pennsylvania · United States",
-        latitude:
-            39.9526,
-        longitude:
-            -75.1652
-    },
-    {
-        name:
-            "Boston, Massachusetts, United States",
-        display_name:
-            "Boston",
-        type:
-            "City · Massachusetts · United States",
-        latitude:
-            42.3601,
-        longitude:
-            -71.0589
-    },
-    {
-        name:
-            "Chicago, Illinois, United States",
-        display_name:
-            "Chicago",
-        type:
-            "City · Illinois · United States",
-        latitude:
-            41.8781,
-        longitude:
-            -87.6298
-    },
-    {
-        name:
-            "Los Angeles, California, United States",
-        display_name:
-            "Los Angeles",
-        type:
-            "City · California · United States",
-        latitude:
-            34.0522,
-        longitude:
-            -118.2437
-    },
-    {
-        name:
-            "Toronto, Ontario, Canada",
-        display_name:
-            "Toronto",
-        type:
-            "City · Ontario · Canada",
-        latitude:
-            43.6532,
-        longitude:
-            -79.3832
-    },
-    {
-        name:
-            "London, England, United Kingdom",
-        display_name:
-            "London",
-        type:
-            "City · England · United Kingdom",
-        latitude:
-            51.5074,
-        longitude:
-            -0.1278
-    },
-    {
-        name:
-            "Accra, Greater Accra, Ghana",
-        display_name:
-            "Accra",
-        type:
-            "City · Greater Accra · Ghana",
-        latitude:
-            5.6037,
-        longitude:
-            -0.187
-    }
-];
-
 
 let communityTimer;
+let userLoc;
+function getLocation() {
+    const output = document.getElementById("output");
 
+    // Check if Geolocation is supported
+    if (!navigator.geolocation) {
+        showToast("Geolocation is not supported by your browser.");
+        return;
+    }
+
+    // Request current position
+    navigator.geolocation.getCurrentPosition(
+        function (position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            showToast("Got Location")
+            userLoc = [latitude, longitude]
+        },
+        function (error) {
+            // Handle possible errors
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    showToast("User denied the request for Geolocation.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    showToast( "Location information is unavailable.");
+                    break;
+                case error.TIMEOUT:
+                    showToast("The request to get user location timed out.");
+                    break;
+                default:
+                    showToast("An unknown error occurred.");
+                    break;
+            }
+        },
+        {
+            enableHighAccuracy: true, // Use GPS if available
+            timeout: 10000,           // Max wait time (ms)
+            maximumAge: 0             // No cached position
+        }
+    );
+    return userLoc
+}
 
 async function loadCommunities(
     query = ""
 ) {
+   getLocation()
+   console.log()
+    const { data, error } = await supabaseClient
+        .rpc("find_nearby_cities", {
+            user_lat: userLoc[0],
+            user_lon:  userLoc[1],
+            max_results: 10
+        });
+
+
+    let demoCommunities = data
 
     let rows = [];
 
 
-    if (supabaseClient) {
-
-        try {
-
-            const {
-                data,
-                error
-            } =
-                await supabaseClient.rpc(
-                    "search_communities",
-                    {
-                        search_text:
-                            query || "",
-                        lat:
-                            null,
-                        lon:
-                            null,
-                        limit_count:
-                            100
-                    }
-                );
-
-
-            if (!error && data) {
-
-                rows = data;
-            }
-
-        } catch (error) {
-
-            console.warn(
-                "Community search unavailable:",
-                error
-            );
-        }
-    }
-
-
     if (!rows.length) {
-
+        console.log(demoCommunities)
         rows =
             demoCommunities.filter(
                 place => {
@@ -1757,26 +1612,23 @@ async function loadCommunities(
                     return (
                         place.name
                             .toLowerCase()
-                            .includes(search) ||
-
-                        place.display_name
-                            .toLowerCase()
                             .includes(search)
                     );
                 }
             );
     }
+    renderCommunityResults(rows)
 
-
-    renderCommunityResults(
-        rows
-    );
+}
+function formatNumber(number) {
+    return Number(number).toLocaleString("en-US");
 }
 
 
 function renderCommunityResults(
     rows
 ) {
+
 
     const count =
         $("#communityResultCount");
@@ -1817,11 +1669,7 @@ function renderCommunityResults(
                             place.type ||
                             "Community",
 
-                        latitude:
-                            place.latitude,
-
-                        longitude:
-                            place.longitude
+                        population: place.population
                     };
 
 
@@ -1830,14 +1678,19 @@ function renderCommunityResults(
                         <div
                             class="community-result"
                             data-community='${esc(
-                                JSON.stringify(
-                                    community
-                                )
-                            )}'
+                        JSON.stringify(
+                            community
+                        )
+                    )}'
                         >
 
-                            <span class="place-icon">
-                                ⌖
+                            <span class="community-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 20V9L12 4L20 9V20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M8 20V12H16V20" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                                    <path d="M10 15H14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                    <path d="M12 9V9.01" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                                </svg>
                             </span>
 
 
@@ -1845,27 +1698,19 @@ function renderCommunityResults(
 
                                 <strong>
                                     ${esc(
-                                        community.display_name
-                                    )}
+                        community.display_name
+                    )}
                                 </strong>
 
                                 <small>
 
                                     ${esc(
-                                        community.type
-                                    )}
+                        community.type
+                    )}
 
                                     ·
 
-                                    ${Number(
-                                        community.latitude
-                                    ).toFixed(4)}
-
-                                    ,
-
-                                    ${Number(
-                                        community.longitude
-                                    ).toFixed(4)}
+                                    ${formatNumber(community.population)} People
 
                                 </small>
 
@@ -1905,26 +1750,17 @@ function renderCommunityResults(
 
                 $("#selectedCommunityName")
                     .textContent =
-                        selectedCommunity
-                            .display_name;
+                    selectedCommunity
+                        .display_name;
 
 
                 $("#selectedCommunityMeta")
-                    .textContent =
-                        `${selectedCommunity.type} · ${
-                            Number(
-                                selectedCommunity.latitude
-                            ).toFixed(4)
-                        }, ${
-                            Number(
-                                selectedCommunity.longitude
-                            ).toFixed(4)
-                        }`;
+                    .textContent = formatNumber(selectedCommunity.population) + " People"
 
 
                 $("#communityContinue")
                     .disabled =
-                        false;
+                    false;
 
 
                 updateSummary();
@@ -2015,17 +1851,17 @@ $("#clearCommunity")
 
             $("#selectedCommunityName")
                 .textContent =
-                    "No community selected";
+                "No community selected";
 
 
             $("#selectedCommunityMeta")
                 .textContent =
-                    "Choose a place above.";
+                "Choose a place above.";
 
 
             $("#communityContinue")
                 .disabled =
-                    true;
+                true;
 
 
             updateSummary();
@@ -2076,15 +1912,15 @@ $("#findCoordinates")
                         (a, b) =>
                             Math.hypot(
                                 a.latitude -
-                                    latitude,
+                                latitude,
                                 a.longitude -
-                                    longitude
+                                longitude
                             ) -
                             Math.hypot(
                                 b.latitude -
-                                    latitude,
+                                latitude,
                                 b.longitude -
-                                    longitude
+                                longitude
                             )
                     )
                     .slice(
@@ -2141,38 +1977,36 @@ function renderCollaborators() {
                     <label
                         class="
                             collab-row
-                            ${
-                                selectedCollaborators
-                                    .includes(
-                                        friend.id
-                                    )
-                                    ? "selected"
-                                    : ""
-                            }
+                            ${selectedCollaborators
+                        .includes(
+                            friend.id
+                        )
+                        ? "selected"
+                        : ""
+                    }
                         "
                     >
 
                         <input
                             type="checkbox"
                             value="${esc(
-                                friend.id
-                            )}"
-                            ${
-                                selectedCollaborators
-                                    .includes(
-                                        friend.id
-                                    )
-                                    ? "checked"
-                                    : ""
-                            }
+                        friend.id
+                    )}"
+                            ${selectedCollaborators
+                        .includes(
+                            friend.id
+                        )
+                        ? "checked"
+                        : ""
+                    }
                         >
 
 
                         <span class="collab-avatar">
 
                             ${esc(
-                                friend.name[0]
-                            )}
+                        friend.name[0]
+                    )}
 
                         </span>
 
@@ -2181,14 +2015,14 @@ function renderCollaborators() {
 
                             <strong>
                                 ${esc(
-                                    friend.name
-                                )}
+                        friend.name
+                    )}
                             </strong>
 
                             <small>
                                 @${esc(
-                                    friend.username
-                                )}
+                        friend.username
+                    )}
                             </small>
 
                         </span>
@@ -2303,7 +2137,7 @@ $("#launchWorld")
 
             const stats =
                 difficultyStats[
-                    selectedDifficulty
+                selectedDifficulty
                 ];
 
 
@@ -2386,34 +2220,34 @@ function openChat(id) {
     if ($("#chatTitle"))
         $("#chatTitle")
             .textContent =
-                activeFriend.name;
+            activeFriend.name;
 
 
     if ($("#chatStatus"))
         $("#chatStatus")
             .textContent =
-                activeFriend.status ===
+            activeFriend.status ===
                 "online"
-                    ? "Online"
-                    : "Offline";
+                ? "Online"
+                : "Offline";
 
 
     if ($("#chatAvatar"))
         $("#chatAvatar")
             .textContent =
-                activeFriend.name[0];
+            activeFriend.name[0];
 
 
     if ($("#chatInput"))
         $("#chatInput")
             .disabled =
-                false;
+            false;
 
 
     if ($("#chatForm button"))
         $("#chatForm button")
             .disabled =
-                false;
+            false;
 
 
     renderFriends();
@@ -2438,7 +2272,7 @@ function renderMessages() {
 
     const list =
         messages[
-            activeFriend.id
+        activeFriend.id
         ] || [];
 
 
@@ -2452,11 +2286,10 @@ function renderMessages() {
                         <div
                             class="
                                 message
-                                ${
-                                    message.me
-                                        ? "me"
-                                        : ""
-                                }
+                                ${message.me
+                            ? "me"
+                            : ""
+                        }
                             "
                         >
 
@@ -2466,8 +2299,8 @@ function renderMessages() {
                                 "
                             >
                                 ${esc(
-                                    message.text
-                                )}
+                            message.text
+                        )}
                             </div>
 
                         </div>
@@ -2516,7 +2349,7 @@ $("#chatForm")
 
             if (
                 !messages[
-                    activeFriend.id
+                activeFriend.id
                 ]
             ) {
 
@@ -2690,8 +2523,8 @@ function renderFriendSearch(
                         <span class="profile-avatar">
 
                             ${esc(
-                                person.name[0]
-                            )}
+                    person.name[0]
+                )}
 
                         </span>
 
@@ -2700,18 +2533,18 @@ function renderFriendSearch(
 
                             <strong>
                                 ${esc(
-                                    person.name
-                                )}
+                    person.name
+                )}
                             </strong>
 
                             <small>
                                 @${esc(
-                                    person.username
-                                )}
+                    person.username
+                )}
                                 ·
                                 ${esc(
-                                    person.code
-                                )}
+                    person.code
+                )}
                             </small>
 
                         </div>
@@ -2719,20 +2552,18 @@ function renderFriendSearch(
 
                         <button
                             data-person="${esc(
-                                person.id
-                            )}"
-                            ${
-                                exists
-                                    ? "disabled"
-                                    : ""
-                            }
+                    person.id
+                )}"
+                            ${exists
+                        ? "disabled"
+                        : ""
+                    }
                         >
 
-                            ${
-                                exists
-                                    ? "Added"
-                                    : "Add"
-                            }
+                            ${exists
+                        ? "Added"
+                        : "Add"
+                    }
 
                         </button>
 
@@ -2782,7 +2613,7 @@ function renderFriendSearch(
 
                 save();
 
-         
+
 
 
                 button.disabled =
