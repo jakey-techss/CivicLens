@@ -5,6 +5,59 @@ const supabaseClient = supabase.createClient(
     SUPABASE_KEY
 )
 
+const US_STATES = {
+    "Alabama": "AL",
+    "Alaska": "AK",
+    "Arizona": "AZ",
+    "Arkansas": "AR",
+    "California": "CA",
+    "Colorado": "CO",
+    "Connecticut": "CT",
+    "Delaware": "DE",
+    "Florida": "FL",
+    "Georgia": "GA",
+    "Hawaii": "HI",
+    "Idaho": "ID",
+    "Illinois": "IL",
+    "Indiana": "IN",
+    "Iowa": "IA",
+    "Kansas": "KS",
+    "Kentucky": "KY",
+    "Louisiana": "LA",
+    "Maine": "ME",
+    "Maryland": "MD",
+    "Massachusetts": "MA",
+    "Michigan": "MI",
+    "Minnesota": "MN",
+    "Mississippi": "MS",
+    "Missouri": "MO",
+    "Montana": "MT",
+    "Nebraska": "NE",
+    "Nevada": "NV",
+    "New Hampshire": "NH",
+    "New Jersey": "NJ",
+    "New Mexico": "NM",
+    "New York": "NY",
+    "North Carolina": "NC",
+    "North Dakota": "ND",
+    "Ohio": "OH",
+    "Oklahoma": "OK",
+    "Oregon": "OR",
+    "Pennsylvania": "PA",
+    "Rhode Island": "RI",
+    "South Carolina": "SC",
+    "South Dakota": "SD",
+    "Tennessee": "TN",
+    "Texas": "TX",
+    "Utah": "UT",
+    "Vermont": "VT",
+    "Virginia": "VA",
+    "Washington": "WA",
+    "West Virginia": "WV",
+    "Wisconsin": "WI",
+    "Wyoming": "WY"
+};
+
 checkSession()
 async function checkSession() {
     const { data: { session } } = await supabaseClient.auth.getSession();
@@ -193,10 +246,6 @@ function save() {
 }
 
 
-/* =========================================================
-   LABELS
-========================================================= */
-
 function modeLabel(mode) {
 
     return mode === "improve"
@@ -281,9 +330,7 @@ function setUser(name) {
 }
 
 
-/* =========================================================
-   MAP PREVIEWS
-========================================================= */
+
 
 function mapPreview(index) {
 
@@ -326,10 +373,6 @@ function mapPreview(index) {
     `;
 }
 
-
-/* =========================================================
-   WORLD CARDS
-========================================================= */
 
 function worldCard(
     world,
@@ -448,10 +491,6 @@ function worldCard(
     `;
 }
 
-
-/* =========================================================
-   WORLDS
-========================================================= */
 
 function renderWorlds() {
 
@@ -1141,7 +1180,7 @@ function openCreate() {
     document.body.style.overflow =
         "hidden";
 
-    loadCommunities("");
+    getLocation()
 }
 
 
@@ -1433,10 +1472,6 @@ $$(".difficulty")
     });
 
 
-/* =========================================================
-   SUMMARY
-========================================================= */
-
 function updateSummary() {
 
     const name =
@@ -1533,32 +1568,33 @@ $("#worldName")?.addEventListener(
 
 
 let communityTimer;
-let userLoc;
+
 function getLocation() {
+    let userLoc = [];
     const output = document.getElementById("output");
 
-    // Check if Geolocation is supported
     if (!navigator.geolocation) {
         showToast("Geolocation is not supported by your browser.");
         return;
     }
 
-    // Request current position
     navigator.geolocation.getCurrentPosition(
+
         function (position) {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
             showToast("Got Location")
             userLoc = [latitude, longitude]
+            loadCommunities("", userLoc)
+
         },
         function (error) {
-            // Handle possible errors
             switch (error.code) {
                 case error.PERMISSION_DENIED:
                     showToast("User denied the request for Geolocation.");
                     break;
                 case error.POSITION_UNAVAILABLE:
-                    showToast( "Location information is unavailable.");
+                    showToast("Location information is unavailable.");
                     break;
                 case error.TIMEOUT:
                     showToast("The request to get user location timed out.");
@@ -1569,55 +1605,93 @@ function getLocation() {
             }
         },
         {
-            enableHighAccuracy: true, // Use GPS if available
-            timeout: 10000,           // Max wait time (ms)
-            maximumAge: 0             // No cached position
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
         }
     );
     return userLoc
 }
 
 async function loadCommunities(
-    query = ""
+    query = "", userLoc = []
 ) {
-   getLocation()
-   console.log()
-    const { data, error } = await supabaseClient
-        .rpc("find_nearby_cities", {
-            user_lat: userLoc[0],
-            user_lon:  userLoc[1],
-            max_results: 10
-        });
+
+    if (query == "") {
+        const { data, error } = await supabaseClient
+            .rpc("find_nearby_cities", {
+                user_lat: userLoc[0],
+                user_lon: userLoc[1],
+                max_results: 10
+            });
+        let demoCommunities = data
+        let rows = [];
+
+        if (!rows.length) {
+            console.log(demoCommunities)
+            rows =
+                demoCommunities.filter(
+                    place => {
+
+                        if (!query)
+                            return true;
 
 
-    let demoCommunities = data
-
-    let rows = [];
-
-
-    if (!rows.length) {
-        console.log(demoCommunities)
-        rows =
-            demoCommunities.filter(
-                place => {
-
-                    if (!query)
-                        return true;
+                        const search =
+                            query.toLowerCase();
 
 
-                    const search =
-                        query.toLowerCase();
+                        return (
+                            place.title
+                                .toLowerCase()
+                                .includes(search)
+                        );
+                    }
+                );
+        }
+        renderCommunityResults(rows)
+    } else if (query != "") {
+
+        const { data, error } = await supabaseClient
+            .rpc("search_communities", {
+                search_text: query,
+                max_results: 80,
+            });
+
+        if (error) {
+            console.error("Community search failed:", error);
+            return;
+        }
+
+        console.log(data)
+        let demoCommunities = data
+        let rows = [];
+
+        if (!rows.length) {
+            console.log(demoCommunities)
+            rows =
+                demoCommunities.filter(
+                    place => {
+
+                        if (!query)
+                            return true;
 
 
-                    return (
-                        place.name
-                            .toLowerCase()
-                            .includes(search)
-                    );
-                }
-            );
+                        const search =
+                            query.toLowerCase();
+
+
+                        return (
+                            place.name
+                                .toLowerCase()
+                                .includes(search)
+                        );
+                    }
+                );
+        }
+        renderCommunityResults(rows)
     }
-    renderCommunityResults(rows)
+
 
 }
 function formatNumber(number) {
@@ -1660,6 +1734,7 @@ function renderCommunityResults(
                         name:
                             place.name ||
                             place.display_name,
+                        state: place.state,
 
                         display_name:
                             place.display_name ||
@@ -1697,9 +1772,7 @@ function renderCommunityResults(
                             <div>
 
                                 <strong>
-                                    ${esc(
-                        community.display_name
-                    )}
+                                    ${esc(community.name)}, ${US_STATES[esc(community.state)]}
                                 </strong>
 
                                 <small>
@@ -1791,83 +1864,80 @@ $("#communitySearch")
     );
 
 
-$$(".community-tab")
-    .forEach(button => {
+$$(".community-tab").forEach(button => {
 
-        button.onclick = () => {
+    button.onclick = () => {
 
-            $$(".community-tab")
-                .forEach(item =>
-                    item.classList.remove(
-                        "active"
-                    )
-                );
-
-
-            button.classList.add(
-                "active"
+        $$(".community-tab")
+            .forEach(item =>
+                item.classList.remove(
+                    "active"
+                )
             );
 
 
-            const coordinates =
-                button.dataset.searchMode ===
-                "coords";
+        button.classList.add(
+            "active"
+        );
 
 
-            $("#nameSearchRow")
-                ?.classList.toggle(
-                    "hidden",
-                    coordinates
-                );
+        const coordinates =
+            button.dataset.searchMode ===
+            "coords";
 
 
-            $("#coordsSearchRow")
-                ?.classList.toggle(
-                    "hidden",
-                    !coordinates
-                );
+        $("#nameSearchRow")
+            ?.classList.toggle(
+                "hidden",
+                coordinates
+            );
 
 
-            if (!coordinates) {
-
-                loadCommunities(
-                    $("#communitySearch")
-                        ?.value
-                        .trim() || ""
-                );
-            }
-        };
-    });
+        $("#coordsSearchRow")
+            ?.classList.toggle(
+                "hidden",
+                !coordinates
+            );
 
 
-$("#clearCommunity")
-    ?.addEventListener(
-        "click",
-        () => {
+        if (!coordinates) {
 
-            selectedCommunity =
-                null;
-
-
-            $("#selectedCommunityName")
-                .textContent =
-                "No community selected";
-
-
-            $("#selectedCommunityMeta")
-                .textContent =
-                "Choose a place above.";
-
-
-            $("#communityContinue")
-                .disabled =
-                true;
-
-
-            updateSummary();
+            loadCommunities(
+                $("#communitySearch")
+                    ?.value
+                    .trim() || ""
+            );
         }
-    );
+    };
+});
 
+
+$("#clearCommunity")?.addEventListener(
+    "click",
+    () => {
+
+        selectedCommunity =
+            null;
+
+
+        $("#selectedCommunityName")
+            .textContent =
+            "No community selected";
+
+
+        $("#selectedCommunityMeta")
+            .textContent =
+            "Choose a place above.";
+
+
+        $("#communityContinue")
+            .disabled =
+            true;
+
+
+        updateSummary();
+    }
+);
 
 $("#findCoordinates")
     ?.addEventListener(
@@ -1905,40 +1975,11 @@ $("#findCoordinates")
                 return;
             }
 
-
-            const rows =
-                [...demoCommunities]
-                    .sort(
-                        (a, b) =>
-                            Math.hypot(
-                                a.latitude -
-                                latitude,
-                                a.longitude -
-                                longitude
-                            ) -
-                            Math.hypot(
-                                b.latitude -
-                                latitude,
-                                b.longitude -
-                                longitude
-                            )
-                    )
-                    .slice(
-                        0,
-                        10
-                    );
-
-
-            renderCommunityResults(
-                rows
-            );
+            loadCommunities("", [latitude, longitude])
         }
     );
 
 
-/* =========================================================
-   COLLABORATORS
-========================================================= */
 
 function renderCollaborators() {
 
@@ -2721,12 +2762,5 @@ document.addEventListener(
     }
 );
 
-
-/* =========================================================
-   INITIALIZE
-========================================================= */
 lucide.createIcons();
-loadCommunities("");
-
-
 initUser();
