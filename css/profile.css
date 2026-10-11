@@ -1617,3 +1617,290 @@ a {
     }
 
 }
+
+
+/* =========================================
+   CIVICLENS — SOFT DARK MODE
+   Replace the previous dark-mode override
+   ========================================= */
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+
+    /* Softer neutral surfaces */
+    --cream: #181b20;
+    --white: #22262d;
+    --ink: #e8ebf0;
+
+    /* Slightly softened accent palette */
+    --green: #43cc8a;
+    --yellow: #f4d46b;
+    --blue: #8bc9f5;
+    --pink: #efa9ca;
+    --purple: #b9a9ed;
+    --orange: #f59b80;
+
+    /* Gentle outlines and shadows */
+    --border: 1px solid #3a4049;
+    --shadow: 0 5px 18px rgba(0, 0, 0, 0.16);
+
+    --surface-muted: #2a2f37;
+    --text-muted: #a8b0bc;
+    --line: #343a43;
+}
+
+/* Base */
+:root[data-theme="dark"] body {
+    background: var(--cream);
+    color: var(--ink);
+}
+
+/* Navigation */
+:root[data-theme="dark"] .navbar,
+:root[data-theme="dark"] .simple-header {
+    background: rgba(24, 27, 32, 0.96);
+    border-bottom: 1px solid var(--line);
+}
+
+:root[data-theme="dark"] .logo,
+:root[data-theme="dark"] .header-logo,
+:root[data-theme="dark"] .nav-links a {
+    color: var(--ink);
+}
+
+:root[data-theme="dark"] .nav-links a {
+    opacity: 0.8;
+}
+
+:root[data-theme="dark"] .nav-links a:hover,
+:root[data-theme="dark"] .nav-links a.active {
+    background: var(--surface-muted);
+    border: 1px solid #454c57;
+    border-radius: 12px;
+    opacity: 1;
+}
+
+/* Main cards */
+:root[data-theme="dark"] .profile-hero,
+:root[data-theme="dark"] .stat-card,
+:root[data-theme="dark"] .section-card,
+:root[data-theme="dark"] .settings-section {
+    background: var(--white);
+    border: 1px solid #383e47;
+    box-shadow: var(--shadow);
+}
+
+:root[data-theme="dark"] .profile-hero,
+:root[data-theme="dark"] .settings-section {
+    border-radius: 22px;
+}
+
+:root[data-theme="dark"] .section-card {
+    border-radius: 18px;
+}
+
+:root[data-theme="dark"] .profile-avatar {
+    border: 3px solid #383e47;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
+}
+
+:root[data-theme="dark"] .edit-avatar,
+:root[data-theme="dark"] .notification-button,
+:root[data-theme="dark"] .edit-profile,
+:root[data-theme="dark"] .back-dashboard,
+:root[data-theme="dark"] .small-edit {
+    background: var(--surface-muted);
+    color: var(--ink);
+    border: 1px solid #454c57;
+    box-shadow: none;
+}
+
+/* Text */
+:root[data-theme="dark"] .username,
+:root[data-theme="dark"] .profile-meta,
+:root[data-theme="dark"] .stat-card span,
+:root[data-theme="dark"] .section-label,
+:root[data-theme="dark"] .activity-content p,
+:root[data-theme="dark"] .activity-content span,
+:root[data-theme="dark"] .about-text,
+:root[data-theme="dark"] .settings-group-title p,
+:root[data-theme="dark"] .setting-info span {
+    color: var(--text-muted);
+}
+
+:root[data-theme="dark"] .activity {
+    border-bottom-color: var(--line);
+}
+
+:root[data-theme="dark"] .view-all {
+    color: var(--green);
+}
+
+/* Interest tags */
+:root[data-theme="dark"] .interest-list span {
+    background: var(--surface-muted);
+    border: 1px solid #454c57;
+    color: var(--ink);
+}
+
+/* Colorful city preview — retain the illustration */
+:root[data-theme="dark"] .featured-card {
+    border: 1px solid #454052;
+    box-shadow: var(--shadow);
+}
+
+:root[data-theme="dark"] .featured-card p {
+    color: #30283a;
+}
+
+:root[data-theme="dark"] .map-road {
+    background: #dedbd2;
+    border: 1px solid #77766f;
+}
+
+:root[data-theme="dark"] .map-building {
+    border: 1px solid #454c57;
+}
+
+:root[data-theme="dark"] .world-button {
+    background: #292d35;
+    color: #f1f2f5;
+    border: 1px solid #555b65;
+}
+
+/* Achievements */
+:root[data-theme="dark"] .achievement {
+    border: 1px solid #454c57;
+}
+
+:root[data-theme="dark"] .achievement.unlocked {
+    background: #f4d46b;
+    color: #302814;
+}
+
+:root[data-theme="dark"] .achievement.locked {
+    background: #2b3038;
+    color: #a8b0bc;
+    opacity: 0.75;
+    filter: grayscale(0.6);
+}
+
+/* Settings banner: keep the soft blue accent */
+:root[data-theme="dark"] .settings-heading {
+    border-bottom: 1px solid #454c57;
+}
+
+:root[data-theme="dark"] .settings-heading p {
+    color: #283440;
+}
+
+:root[data-theme="dark"] .settings-icon {
+    background: #e9edf2;
+    color: #22262d;
+    border: 1px solid #d4d9e0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+:root[data-theme="dark"] .settings-group {
+    border-bottom-color: var(--line);
+}
+
+:root[data-theme="dark"] .setting-row {
+    border-top-color: var(--line);
+}
+
+:root[data-theme="dark"] .setting-action,
+:root[data-theme="dark"] .setting-select {
+    background: var(--surface-muted);
+    color: var(--ink);
+    border: 1px solid #454c57;
+}
+
+:root[data-theme="dark"] .setting-action:hover {
+    background: #3a4038;
+    border-color: var(--green);
+}
+
+:root[data-theme="dark"] .toggle-slider {
+    background: #454c57;
+    border: 1px solid #606875;
+}
+
+:root[data-theme="dark"] .toggle-slider::before {
+    background: #e8ebf0;
+    border: 1px solid #a8b0bc;
+}
+
+/* Danger zone */
+:root[data-theme="dark"] .danger-group {
+    background: #2b2225;
+}
+
+:root[data-theme="dark"] .danger-button {
+    background: #303039;
+    color: var(--ink);
+    border: 1px solid #554149;
+}
+
+:root[data-theme="dark"] .delete-button {
+    background: #68404d;
+    color: #ffe9ef;
+    border: 1px solid #986373;
+}
+
+/* Modals */
+:root[data-theme="dark"] .modal-overlay {
+    background: rgba(0, 0, 0, 0.62);
+}
+
+:root[data-theme="dark"] .profile-modal {
+    background: #22262d;
+    border: 1px solid #454c57;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.35);
+}
+
+:root[data-theme="dark"] .modal-close {
+    background: var(--surface-muted);
+    color: var(--ink);
+    border: 1px solid #454c57;
+}
+
+:root[data-theme="dark"] .profile-modal input,
+:root[data-theme="dark"] .profile-modal textarea,
+:root[data-theme="dark"] input,
+:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] select {
+    background: #191d23;
+    color: var(--ink);
+    border: 1px solid #454c57;
+}
+
+:root[data-theme="dark"] input::placeholder,
+:root[data-theme="dark"] textarea::placeholder {
+    color: #858e9b;
+}
+
+:root[data-theme="dark"] .save-button {
+    background: #278c60;
+    color: white;
+    border: 1px solid #39b47c;
+    box-shadow: none;
+}
+
+/* Keyboard accessibility */
+:root[data-theme="dark"] :focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 3px;
+}
+
+/* Smooth transitions */
+:root[data-theme="dark"] body,
+:root[data-theme="dark"] .navbar,
+:root[data-theme="dark"] .section-card,
+:root[data-theme="dark"] .stat-card,
+:root[data-theme="dark"] .settings-section {
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}

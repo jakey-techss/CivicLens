@@ -2707,3 +2707,336 @@ a {
         transform: translateY(0);
     }
 }
+/* =========================================================
+   CIVICLENS EXPLORE — NEUTRAL CHARCOAL DARK MODE
+   Activated by <html data-theme="dark">
+========================================================= */
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+
+    --bg: #151615;
+    --text: #ededeb;
+    --muted: #aaa9a3;
+
+    --green: #79c982;
+    --green-dark: #82ce8b;
+
+    --yellow: #f0d477;
+    --blue: #91cddd;
+    --pink: #e9a4b8;
+    --purple: #bba9e5;
+
+    --white: #222321;
+    --border: #3b3c38;
+
+    --surface: #222321;
+    --surface-raised: #292a27;
+    --surface-soft: #1c1d1b;
+    --border-soft: #363733;
+    --text-secondary: #aaa9a3;
+    --shadow-color: #0c0d0c;
+}
+
+/* Page and decorative background */
+:root[data-theme="dark"] body {
+    background: var(--bg);
+    color: var(--text);
+}
+
+:root[data-theme="dark"] .blob-green {
+    background: #292b28;
+}
+
+:root[data-theme="dark"] .blob-yellow {
+    background: #302d25;
+}
+
+:root[data-theme="dark"] .blob-purple {
+    background: #2c292f;
+}
+
+/* Navigation */
+:root[data-theme="dark"] .nav-links a,
+:root[data-theme="dark"] .login-link {
+    color: #bcbcb5;
+}
+
+:root[data-theme="dark"] .nav-links a:hover,
+:root[data-theme="dark"] .nav-links a.active,
+:root[data-theme="dark"] .login-link:hover {
+    color: #ffffff;
+}
+
+:root[data-theme="dark"] .nav-button,
+:root[data-theme="dark"] .view-button,
+:root[data-theme="dark"] .share-button {
+    background: #e8ebe5;
+    color: #20211f;
+    box-shadow: 3px 3px 0 #0c0d0c;
+}
+
+/* Hero */
+:root[data-theme="dark"] .eyebrow {
+    background: #252724;
+    border-color: #41433e;
+    color: #91d999;
+}
+
+:root[data-theme="dark"] .explore-hero h1 span,
+:root[data-theme="dark"] .section-kicker,
+:root[data-theme="dark"] .featured-info h3 + p strong {
+    color: #82ce8b;
+}
+
+:root[data-theme="dark"] .primary-button,
+:root[data-theme="dark"] .modal-build {
+    background: #79c982;
+    color: #151615;
+    border-color: #3b3c38;
+    box-shadow: 4px 4px 0 #0c0d0c;
+}
+
+:root[data-theme="dark"] .secondary-link:hover,
+:root[data-theme="dark"] .small-view:hover {
+    color: #91d999;
+}
+
+/* Neutral card surfaces */
+:root[data-theme="dark"] .map-card,
+:root[data-theme="dark"] .floating-note,
+:root[data-theme="dark"] .featured-city,
+:root[data-theme="dark"] .city-card,
+:root[data-theme="dark"] .modal-content {
+    background: #222321;
+    border-color: #3b3c38;
+    box-shadow: 6px 7px 0 #0c0d0c;
+}
+
+:root[data-theme="dark"] .map-card {
+    overflow: hidden;
+}
+
+:root[data-theme="dark"] .floating-note,
+:root[data-theme="dark"] .map-marker,
+:root[data-theme="dark"] .city-pin,
+:root[data-theme="dark"] .preview-transit,
+:root[data-theme="dark"] .preview-tag,
+:root[data-theme="dark"] .modal-close {
+    background: #292a27;
+    color: #ededeb;
+    border-color: #454640;
+    box-shadow: 3px 3px 0 #0c0d0c;
+}
+
+:root[data-theme="dark"] .note-icon.yellow {
+    background: #665a32;
+}
+
+:root[data-theme="dark"] .note-icon.green {
+    background: #38523b;
+}
+
+/* Map backgrounds: dark gray, not green */
+:root[data-theme="dark"] .mini-map,
+:root[data-theme="dark"] .big-map,
+:root[data-theme="dark"] .modal-map {
+    background-color: #292c29;
+    border-color: #454640;
+}
+
+:root[data-theme="dark"] .mini-map {
+    background:
+        linear-gradient(
+            90deg,
+            transparent 49%,
+            rgba(255,255,255,.035) 50%,
+            transparent 51%
+        ),
+        linear-gradient(
+            0deg,
+            transparent 49%,
+            rgba(255,255,255,.035) 50%,
+            transparent 51%
+        ),
+        #292c29;
+}
+
+:root[data-theme="dark"] .map-road,
+:root[data-theme="dark"] .big-road,
+:root[data-theme="dark"] .modal-map-road,
+:root[data-theme="dark"] .preview-road {
+    background: #3a3b37;
+    border-color: #505149;
+}
+
+:root[data-theme="dark"] .map-block,
+:root[data-theme="dark"] .big-block,
+:root[data-theme="dark"] .preview-block,
+:root[data-theme="dark"] .modal-map-block {
+    background: #454640;
+    border-color: #55564e;
+}
+
+:root[data-theme="dark"] .map-park,
+:root[data-theme="dark"] .big-park,
+:root[data-theme="dark"] .preview-park,
+:root[data-theme="dark"] .modal-map-park {
+    background: #3b5140;
+    border-color: #56745a;
+}
+
+:root[data-theme="dark"] .map-water,
+:root[data-theme="dark"] .preview-water,
+:root[data-theme="dark"] .water-two {
+    background: #344b52;
+    border-color: #4f7580;
+}
+
+/* Featured city map panel */
+:root[data-theme="dark"] .featured-map {
+    background: #252724;
+    border-color: #3b3c38;
+}
+
+:root[data-theme="dark"] .featured-map-top span:last-child {
+    background: #292a27;
+    border-color: #454640;
+    color: #ededeb;
+}
+
+/* City preview variations */
+:root[data-theme="dark"] .preview-green,
+:root[data-theme="dark"] .preview-blue,
+:root[data-theme="dark"] .preview-yellow,
+:root[data-theme="dark"] .preview-purple,
+:root[data-theme="dark"] .preview-pink,
+:root[data-theme="dark"] .preview-green-blue {
+    background: #292c29;
+}
+
+:root[data-theme="dark"] .city-preview {
+    border-color: #3b3c38;
+}
+
+/* City card details */
+:root[data-theme="dark"] .featured-stats div,
+:root[data-theme="dark"] .modal-stats div {
+    background: #292a27;
+    border-color: #41423d;
+}
+
+:root[data-theme="dark"] .card-bottom {
+    border-color: #3b3c38;
+}
+
+:root[data-theme="dark"] .custom-label {
+    color: #91d999;
+}
+
+:root[data-theme="dark"] .real-label {
+    color: #c0bfb8;
+}
+
+:root[data-theme="dark"] .avatar,
+:root[data-theme="dark"] .tiny-avatar {
+    border-color: #454640;
+}
+
+/* Browse controls */
+:root[data-theme="dark"] .search-box,
+:root[data-theme="dark"] .sort-select {
+    background: #222321;
+    color: #ededeb;
+    border-color: #454640;
+    box-shadow: 3px 3px 0 #0c0d0c;
+}
+
+:root[data-theme="dark"] .search-box input {
+    color: #ededeb;
+}
+
+:root[data-theme="dark"] .search-box input::placeholder {
+    color: #999990;
+}
+
+:root[data-theme="dark"] .filter-group {
+    background: #20211f;
+    border: 1px solid #363733;
+}
+
+:root[data-theme="dark"] .filter-button {
+    color: #bcbcb5;
+}
+
+:root[data-theme="dark"] .filter-button:hover,
+:root[data-theme="dark"] .filter-button.active {
+    background: #3a3b37;
+    color: #ffffff;
+    box-shadow: none;
+}
+
+/* Share section: retain yellow identity, soften the brightness */
+:root[data-theme="dark"] .share-card {
+    background: #353126;
+    border-color: #45433a;
+    box-shadow: 6px 7px 0 #0c0d0c;
+}
+
+:root[data-theme="dark"] .share-card h2 span {
+    color: #91d999;
+}
+
+:root[data-theme="dark"] .share-card p {
+    color: #d0cbbd;
+}
+
+:root[data-theme="dark"] .share-icon {
+    background: #292a27;
+    color: #ededeb;
+    border-color: #454640;
+    box-shadow: 4px 4px 0 #0c0d0c;
+}
+
+:root[data-theme="dark"] .share-button {
+    box-shadow: 3px 3px 0 #68634f;
+}
+
+/* Modal */
+:root[data-theme="dark"] .modal-overlay {
+    background: rgba(0, 0, 0, .76);
+}
+
+:root[data-theme="dark"] .modal-map {
+    border-color: #3b3c38;
+}
+
+:root[data-theme="dark"] .modal-close {
+    background: #292a27;
+    color: #ededeb;
+}
+
+/* Footer */
+:root[data-theme="dark"] .footer {
+    border-color: #363733;
+}
+
+/* Keyboard focus */
+:root[data-theme="dark"] a:focus-visible,
+:root[data-theme="dark"] button:focus-visible,
+:root[data-theme="dark"] input:focus-visible,
+:root[data-theme="dark"] select:focus-visible {
+    outline: 2px solid #91cddd;
+    outline-offset: 3px;
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    :root[data-theme="dark"] *,
+    :root[data-theme="dark"] *::before,
+    :root[data-theme="dark"] *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

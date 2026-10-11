@@ -1,9 +1,4 @@
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvenhzZHN0bmR5d25xYnl0emphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5OTA1MjgsImV4cCI6MjEwNTU2NjUyOH0.IjVL1OhAZlKNxqoHVZ9_BXVnCQU0uL3gsd7j57PeV0Y"
-const SUPABASE_URL = "https://iozxsdstndywnqbytzja.supabase.co"
-const supabaseClient = supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-)
+
 
 checkSession()
 async function checkSession() {
@@ -62,21 +57,7 @@ profileForm.addEventListener("submit", (e) => {
     document.body.style.overflow = "";
 
 });
-const themeSelect = document.getElementById("themeSelect");
 
-themeSelect.addEventListener("change", () => {
-
-    const theme = themeSelect.value;
-
-    localStorage.setItem("civicLensTheme", theme);
-
-    if (theme === "dark") {
-        document.body.classList.add("dark-mode");
-    } else {
-        document.body.classList.remove("dark-mode");
-    }
-
-});
 const signOutButton =
     document.getElementById("signOutButton");
 
@@ -91,3 +72,8 @@ signOutButton.addEventListener("click", async () => {
 
     window.location.href = "login.html";
 });
+document.getElementById("themeSelect").value = localStorage.getItem("civiclens-theme") == null ? "system" : localStorage.getItem("civiclens-theme")
+document.getElementById("themeSelect").addEventListener("change",()=>{
+    localStorage.setItem("civiclens-theme", document.getElementById("themeSelect").value.trim())
+    window.location.reload()
+})

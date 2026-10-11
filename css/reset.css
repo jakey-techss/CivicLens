@@ -368,3 +368,144 @@ body {
         height: 150px;
     }
 }
+
+/* =========================================
+   CIVICLENS — PASSWORD RESET DARK MODE
+   Append to the bottom of the stylesheet
+   ========================================= */
+
+:root[data-theme="dark"] body {
+    color-scheme: dark;
+    background: #181b20;
+    color: #e8ebf0;
+}
+
+/* Page decorations */
+:root[data-theme="dark"] .reset-page::before {
+    background: #344b60;
+    border: 2px solid #526477;
+}
+
+:root[data-theme="dark"] .reset-page::after {
+    background: #503544;
+    border: 2px solid #6b4a5b;
+}
+
+/* Main card */
+:root[data-theme="dark"] .reset-card {
+    background: #22262d;
+    color: #e8ebf0;
+
+    border: 1px solid #3a4049;
+    border-radius: 26px;
+
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.24);
+}
+
+/* Icon */
+:root[data-theme="dark"] .reset-icon {
+    background: #286e51;
+    border: 1px solid #3c9670;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
+
+    transform: rotate(2deg);
+}
+
+/* Badge */
+:root[data-theme="dark"] .reset-badge {
+    background: #453d28;
+    color: #f5dfa0;
+
+    border: 1px solid #76663b;
+}
+
+/* Heading */
+:root[data-theme="dark"] .reset-card h1 span {
+    color: #52d49a;
+}
+
+/* Description */
+:root[data-theme="dark"] .reset-card > p {
+    color: #b2bac6;
+}
+
+/* Form labels */
+:root[data-theme="dark"] #resetPasswordForm label {
+    color: #e8ebf0;
+}
+
+/* Password input */
+:root[data-theme="dark"] #resetPasswordForm input {
+    background: #191d23;
+    color: #f1f3f6;
+
+    border: 1px solid #454c57;
+    border-radius: 12px;
+}
+
+:root[data-theme="dark"] #resetPasswordForm input::placeholder {
+    color: #858e9b;
+}
+
+:root[data-theme="dark"] #resetPasswordForm input:focus {
+    background: #1c2128;
+    border-color: #8bc9f5;
+
+    box-shadow: 0 0 0 3px rgba(139, 201, 245, 0.15);
+
+    transform: none;
+}
+
+/* Submit button */
+:root[data-theme="dark"] #resetPasswordForm button {
+    background: #278c60;
+    color: #ffffff;
+
+    border: 1px solid #39b47c;
+    border-radius: 12px;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+}
+
+:root[data-theme="dark"] #resetPasswordForm button:hover {
+    background: #2fa370;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+
+    transform: translateY(-1px);
+}
+
+:root[data-theme="dark"] #resetPasswordForm button:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Success and error messages */
+:root[data-theme="dark"] #passwordMessage.success {
+    background: #203c30;
+    color: #a6f0c8;
+
+    border: 1px solid #356a50;
+}
+
+:root[data-theme="dark"] #passwordMessage.error {
+    background: #402b33;
+    color: #ffc3d3;
+
+    border: 1px solid #704352;
+}
+
+/* Keyboard accessibility */
+:root[data-theme="dark"] #resetPasswordForm button:focus-visible,
+:root[data-theme="dark"] #resetPasswordForm input:focus-visible {
+    outline: 2px solid #8bc9f5;
+    outline-offset: 3px;
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    :root[data-theme="dark"] *,
+    :root[data-theme="dark"] *::before,
+    :root[data-theme="dark"] *::after {
+        transition: none !important;
+    }
+}

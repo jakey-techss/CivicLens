@@ -1,9 +1,3 @@
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvenhzZHN0bmR5d25xYnl0emphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5OTA1MjgsImV4cCI6MjEwNTU2NjUyOH0.IjVL1OhAZlKNxqoHVZ9_BXVnCQU0uL3gsd7j57PeV0Y"
-const SUPABASE_URL = "https://iozxsdstndywnqbytzja.supabase.co"
-const supabaseClient = supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-)
 
 checkSession()
 async function checkSession() {
@@ -290,7 +284,10 @@ loginForm.addEventListener(
                 "Successfully logged into your CivicLens account",
                 "success"
             );
-
+            window.sessionStorage.setItem("loggedIn","1")
+            if(document.getElementById('rememberMe').checked){
+                window.localStorage.setItem("remember","true")
+            }
            window.location.assign("dashboard.html")
 
         }

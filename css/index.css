@@ -1581,3 +1581,448 @@ footer {
     opacity: 1;
     transform: translateY(0);
 }
+/* =========================================
+   CIVICLENS — COMFORTABLE DARK THEME
+   Activated by: <html data-theme="dark">
+========================================= */
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+
+    /* Core surfaces */
+    --background: #1b1f1c;
+    --text: #edf1eb;
+    --muted: #b0b9b0;
+    --white: #252b27;
+    --border: #465047;
+
+    /* Softer, readable accents */
+    --green: #83d18a;
+    --green-dark: #91d999;
+    --yellow: #f4d779;
+    --blue: #91cddd;
+    --pink: #e9a4b8;
+    --purple: #bba9e5;
+
+    /* Extra theme tokens */
+    --surface: #252b27;
+    --surface-raised: #2d342f;
+    --surface-soft: #222823;
+    --border-soft: #39423b;
+    --text-secondary: #b0b9b0;
+    --shadow-color: #111512;
+}
+
+/* Page background */
+:root[data-theme="dark"] body {
+    background: var(--background);
+    color: var(--text);
+}
+
+/* Background decorations */
+:root[data-theme="dark"] .blob-one {
+    background: #29402c;
+}
+
+:root[data-theme="dark"] .blob-two {
+    background: #453e28;
+}
+
+:root[data-theme="dark"] .blob-three {
+    background: #383047;
+}
+
+/* Navbar */
+:root[data-theme="dark"] .nav-links a {
+    color: #c0c8bf;
+}
+
+:root[data-theme="dark"] .nav-links a:hover,
+:root[data-theme="dark"] .login:hover {
+    color: #ffffff;
+}
+
+:root[data-theme="dark"] .nav-button {
+    background: #e7ede5;
+    color: #202620;
+    box-shadow: 3px 3px 0 #5e9c65;
+}
+
+:root[data-theme="dark"] .nav-button:hover {
+    box-shadow: 5px 5px 0 #5e9c65;
+}
+
+/* Section labels and headings */
+:root[data-theme="dark"] .eyebrow {
+    background: #28392b;
+    border-color: #3c5940;
+    color: #a8e3ad;
+}
+
+:root[data-theme="dark"] .eyebrow-dot {
+    background: #83d18a;
+}
+
+:root[data-theme="dark"] .hero h1 span,
+:root[data-theme="dark"] .section-heading h2 span,
+:root[data-theme="dark"] .final-section h2 span {
+    color: #91d999;
+}
+
+:root[data-theme="dark"] .hero-note {
+    color: #aab3a9;
+}
+
+:root[data-theme="dark"] .hero-note span {
+    color: #91d999;
+}
+
+/* Main buttons */
+:root[data-theme="dark"] .primary-button {
+    color: #182019;
+    background: #83d18a;
+    border-color: #465047;
+    box-shadow: 4px 4px 0 #111512;
+}
+
+:root[data-theme="dark"] .primary-button:hover {
+    box-shadow: 7px 7px 0 #111512;
+}
+
+:root[data-theme="dark"] .secondary-button {
+    color: #c0c8bf;
+}
+
+:root[data-theme="dark"] .secondary-button:hover {
+    color: #ffffff;
+}
+
+/* City preview card */
+:root[data-theme="dark"] .city-card,
+:root[data-theme="dark"] .floating-card,
+:root[data-theme="dark"] .experiment-board {
+    background: var(--surface);
+    border-color: var(--border);
+    box-shadow: 7px 8px 0 var(--shadow-color);
+}
+
+:root[data-theme="dark"] .map-label,
+:root[data-theme="dark"] .map-stat small,
+:root[data-theme="dark"] .discovery-card span,
+:root[data-theme="dark"] .tiny-label,
+:root[data-theme="dark"] .board-title,
+:root[data-theme="dark"] .before > span,
+:root[data-theme="dark"] .after > span {
+    color: #aab4aa;
+}
+
+:root[data-theme="dark"] .map-menu {
+    background: #343c35;
+    color: #edf1eb;
+}
+
+:root[data-theme="dark"] .map-footer {
+    border-top-color: var(--border-soft);
+}
+
+/* Miniature map */
+:root[data-theme="dark"] .mini-map {
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(255,255,255,.035),
+            transparent 30%
+        ),
+        #303d31;
+}
+
+:root[data-theme="dark"] .map-road {
+    background: #414a40;
+    border-color: #566052;
+}
+
+:root[data-theme="dark"] .map-block {
+    background: #4a5148;
+}
+
+:root[data-theme="dark"] .map-park {
+    background: #426b47;
+    border-color: #61976a;
+}
+
+:root[data-theme="dark"] .you-marker {
+    border-color: #e8eee6;
+    box-shadow: 0 0 0 2px #83d18a;
+}
+
+/* Discovery strip */
+:root[data-theme="dark"] .discovery-strip {
+    background: #2a312c;
+    color: #edf1eb;
+    border: 1px solid #3b453d;
+}
+
+:root[data-theme="dark"] .discovery-item > span {
+    background: #3b443d;
+}
+
+:root[data-theme="dark"] .discovery-item p {
+    color: #c0c8bf;
+}
+
+/* How it works — toned-down pastel cards */
+:root[data-theme="dark"] .step-one {
+    background: #29382b;
+}
+
+:root[data-theme="dark"] .step-two {
+    background: #3b3625;
+}
+
+:root[data-theme="dark"] .step-three {
+    background: #342d40;
+}
+
+:root[data-theme="dark"] .step-card {
+    border-color: #465047;
+}
+
+:root[data-theme="dark"] .step-card > p {
+    color: #c2cbc1;
+}
+
+:root[data-theme="dark"] .fake-search,
+:root[data-theme="dark"] .experiment-demo,
+:root[data-theme="dark"] .mini-score {
+    background: #252b27;
+    border-color: #465047;
+    color: #e4eae2;
+}
+
+:root[data-theme="dark"] .fake-search {
+    color: #b0b9b0;
+}
+
+:root[data-theme="dark"] .mini-score div + div {
+    border-top-color: #39423b;
+}
+
+:root[data-theme="dark"] .mini-score strong {
+    color: #91d999;
+}
+
+/* Experiment preview */
+:root[data-theme="dark"] .experiment-copy h2 span {
+    color: #e9a4b8;
+}
+
+:root[data-theme="dark"] .experiment-copy .small-copy {
+    color: #aab4aa;
+}
+
+:root[data-theme="dark"] .mini-city {
+    background: #303d31;
+}
+
+:root[data-theme="dark"] .mini-city > div {
+    background: #566052;
+}
+
+:root[data-theme="dark"] .mini-city .tree {
+    background: #609b67;
+}
+
+:root[data-theme="dark"] .experiment-result {
+    background: #29362b;
+}
+
+:root[data-theme="dark"] .experiment-result div + div {
+    border-top-color: #3c4b3d;
+}
+
+:root[data-theme="dark"] .experiment-result strong {
+    color: #91d999;
+}
+
+/* Final call to action */
+:root[data-theme="dark"] .final-bubble {
+    border-color: #465047;
+    box-shadow: 4px 5px 0 #111512;
+}
+
+/* Footer */
+:root[data-theme="dark"] footer {
+    border-top-color: #39423b;
+    color: #aab4aa;
+}
+
+:root[data-theme="dark"] .footer-logo {
+    color: #edf1eb;
+}
+
+/* Accessibility: visible keyboard focus */
+:root[data-theme="dark"] a:focus-visible,
+:root[data-theme="dark"] button:focus-visible {
+    outline: 3px solid #91cddd;
+    outline-offset: 4px;
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    :root[data-theme="dark"] *,
+    :root[data-theme="dark"] *::before,
+    :root[data-theme="dark"] *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+/* =========================================
+   CIVICLENS — NEUTRAL CHARCOAL OVERRIDE
+========================================= */
+
+:root[data-theme="dark"] {
+    --background: #151615;
+    --text: #ededeb;
+    --muted: #aaa9a3;
+    --white: #222321;
+    --border: #3b3c38;
+
+    /* Green is an accent, not the background */
+    --green: #79c982;
+    --green-dark: #82ce8b;
+
+    --surface: #222321;
+    --surface-raised: #292a27;
+    --surface-soft: #1c1d1b;
+    --border-soft: #363733;
+    --text-secondary: #aaa9a3;
+    --shadow-color: #0c0d0c;
+}
+
+/* Main page */
+:root[data-theme="dark"] body {
+    background: #151615;
+    color: #ededeb;
+}
+
+/* Neutralize green-tinted decorations */
+:root[data-theme="dark"] .blob-one {
+    background: #292b28;
+}
+
+:root[data-theme="dark"] .blob-two {
+    background: #302d25;
+}
+
+:root[data-theme="dark"] .blob-three {
+    background: #2c292f;
+}
+
+/* Cards and panels */
+:root[data-theme="dark"] .city-card,
+:root[data-theme="dark"] .floating-card,
+:root[data-theme="dark"] .experiment-board {
+    background: #222321;
+    border-color: #3b3c38;
+    box-shadow: 7px 8px 0 #0c0d0c;
+}
+
+/* Discovery banner */
+:root[data-theme="dark"] .discovery-strip {
+    background: #20211f;
+    border-color: #363733;
+}
+
+/* Make the process cards neutral */
+:root[data-theme="dark"] .step-one,
+:root[data-theme="dark"] .step-two,
+:root[data-theme="dark"] .step-three {
+    background: #242522;
+    border-color: #3b3c38;
+}
+
+:root[data-theme="dark"] .step-card > p {
+    color: #c0c0b9;
+}
+
+/* Map: charcoal canvas, muted gray roads */
+:root[data-theme="dark"] .mini-map {
+    background: #292c29;
+}
+
+:root[data-theme="dark"] .map-road {
+    background: #3a3b37;
+    border-color: #4b4c46;
+}
+
+:root[data-theme="dark"] .map-block {
+    background: #454640;
+}
+
+:root[data-theme="dark"] .map-park {
+    background: #3b5140;
+    border-color: #56745a;
+}
+
+/* Experiment preview */
+:root[data-theme="dark"] .mini-city {
+    background: #292c29;
+}
+
+:root[data-theme="dark"] .mini-city > div {
+    background: #494a44;
+}
+
+:root[data-theme="dark"] .mini-city .tree {
+    background: #609b67;
+}
+
+:root[data-theme="dark"] .experiment-result {
+    background: #272925;
+}
+
+:root[data-theme="dark"] .experiment-result div + div {
+    border-color: #3b3c38;
+}
+
+/* Small UI surfaces */
+:root[data-theme="dark"] .map-menu,
+:root[data-theme="dark"] .fake-search,
+:root[data-theme="dark"] .experiment-demo,
+:root[data-theme="dark"] .mini-score {
+    background: #292a27;
+    border-color: #41423d;
+    color: #ededeb;
+}
+
+:root[data-theme="dark"] .discovery-item > span {
+    background: #30312d;
+}
+
+/* Keep green on meaningful accents only */
+:root[data-theme="dark"] .primary-button {
+    background: #79c982;
+    color: #151615;
+    border-color: #454640;
+    box-shadow: 4px 4px 0 #0c0d0c;
+}
+
+:root[data-theme="dark"] .eyebrow {
+    background: #252724;
+    border-color: #3d403b;
+    color: #91d999;
+}
+
+:root[data-theme="dark"] .hero h1 span,
+:root[data-theme="dark"] .section-heading h2 span,
+:root[data-theme="dark"] .final-section h2 span {
+    color: #82ce8b;
+}
+
+/* Dividers */
+:root[data-theme="dark"] .map-footer,
+:root[data-theme="dark"] footer {
+    border-color: #363733;
+}

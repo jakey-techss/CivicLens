@@ -1,9 +1,4 @@
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvenhzZHN0bmR5d25xYnl0emphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5OTA1MjgsImV4cCI6MjEwNTU2NjUyOH0.IjVL1OhAZlKNxqoHVZ9_BXVnCQU0uL3gsd7j57PeV0Y"
-const SUPABASE_URL = "https://iozxsdstndywnqbytzja.supabase.co"
-const supabaseClient = supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-)
+
 
 const US_STATES = {
     "Alabama": "AL",
@@ -265,9 +260,6 @@ function diffLabel(difficulty) {
 }
 
 
-/* =========================================================
-   AUTH
-========================================================= */
 
 async function initUser() {
 
@@ -853,9 +845,6 @@ function updateStats() {
 }
 
 
-/* =========================================================
-   NOTIFICATIONS
-========================================================= */
 
 function renderNotifications() {
 
@@ -890,7 +879,7 @@ function renderNotifications() {
 
         list.innerHTML = `
 
-            <div class="notification-empty">
+            <div class="notification-empty" style="padding:12px;">
 
                 <strong>
                     You're all caught up.
@@ -1166,9 +1155,6 @@ $$(".view-button")
     });
 
 
-/* =========================================================
-   CREATE WORLD
-========================================================= */
 
 function openCreate() {
 
@@ -1682,7 +1668,7 @@ async function loadCommunities(
 
 
                         return (
-                            place.name
+                        (place.name + " " + place.state)
                                 .toLowerCase()
                                 .includes(search)
                         );
@@ -2764,3 +2750,7 @@ document.addEventListener(
 
 lucide.createIcons();
 initUser();
+renderFriends()
+renderMessages()
+renderShared()
+renderWorlds()

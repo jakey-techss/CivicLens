@@ -1854,3 +1854,438 @@ a {
         font-size: 30px;
     }
 }
+
+/* =========================================================
+   CIVICLENS AUTH — SOFT DARK MODE
+   Works with <html data-theme="dark">
+========================================================= */
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+
+    --bg: #181b20;
+    --text: #e8ebf0;
+    --muted: #a8b0bc;
+
+    --green: #43c98a;
+    --green-dark: #59c98b;
+
+    --yellow: #f0d477;
+    --blue: #8bc9e8;
+    --pink: #e9a3bf;
+    --purple: #b9a7e8;
+
+    --white: #22262d;
+    --border: #3a4049;
+}
+
+/* =========================
+   PAGE AND BACKGROUND
+========================= */
+
+:root[data-theme="dark"] body {
+    background: var(--bg);
+    color: var(--text);
+}
+
+:root[data-theme="dark"] .blob-green {
+    background: #294437;
+}
+
+:root[data-theme="dark"] .blob-yellow {
+    background: #463e29;
+}
+
+:root[data-theme="dark"] .blob-purple {
+    background: #393149;
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
+:root[data-theme="dark"] .back-link {
+    color: var(--muted);
+}
+
+:root[data-theme="dark"] .back-link:hover {
+    color: var(--text);
+}
+
+:root[data-theme="dark"] .logo-mark {
+    background: #51472b;
+    border: 1px solid #71623d;
+    box-shadow: none;
+}
+
+:root[data-theme="dark"] .logo-mark span {
+    background: #f0d477;
+}
+
+/* =========================
+   INTRO TEXT
+========================= */
+
+:root[data-theme="dark"] .intro-eyebrow {
+    background: #23392e;
+    border: 1px solid #38674d;
+    color: #9ce2b8;
+}
+
+:root[data-theme="dark"] .auth-intro h1 span {
+    color: #59c98b;
+}
+
+:root[data-theme="dark"] .auth-intro > p,
+:root[data-theme="dark"] .intro-note {
+    color: var(--muted);
+}
+
+:root[data-theme="dark"] .intro-note span {
+    color: #59c98b;
+}
+
+:root[data-theme="dark"] .sparkle {
+    color: #f0d477;
+}
+
+/* =========================
+   CITY MAP
+   Preserve the illustration's
+   colors, soften its outlines
+========================= */
+
+:root[data-theme="dark"] .auth-map {
+    background: #283d32;
+    border: 1px solid #53665a;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+}
+
+:root[data-theme="dark"] .auth-road {
+    background: #dedbd2;
+    border-color: #aaa69d;
+}
+
+:root[data-theme="dark"] .auth-block {
+    background: #cfc3ad;
+    border-color: #a89b84;
+}
+
+:root[data-theme="dark"] .auth-park {
+    background: #70ad79;
+    border-color: #4d8a5a;
+}
+
+:root[data-theme="dark"] .auth-water {
+    background: #6eafc1;
+    border-left-color: #528fa1;
+}
+
+:root[data-theme="dark"] .auth-pin {
+    background: #f0eee8;
+    color: #242321;
+    border-color: #aaa69d;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.18);
+}
+
+:root[data-theme="dark"] .map-note {
+    background: #262b32;
+    color: #e8ebf0;
+    border: 1px solid #454c57;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.22);
+}
+
+:root[data-theme="dark"] .map-note small {
+    color: #a8b0bc;
+}
+
+:root[data-theme="dark"] .map-note > span {
+    background: #51472b;
+    border: 1px solid #71623d;
+}
+
+/* =========================
+   AUTH CARD
+========================= */
+
+:root[data-theme="dark"] .auth-card {
+    background: #22262d;
+    border: 1px solid #3a4049;
+    border-radius: 25px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.24);
+}
+
+/* Tabs */
+
+:root[data-theme="dark"] .auth-tabs {
+    background: #1e2228;
+    border-bottom: 1px solid #3a4049;
+}
+
+:root[data-theme="dark"] .auth-tab {
+    color: #a8b0bc;
+}
+
+:root[data-theme="dark"] .auth-tab.active {
+    background: #303640;
+    color: #f1f3f6;
+    box-shadow: none;
+}
+
+/* Form heading */
+
+:root[data-theme="dark"] .form-emoji {
+    background: #51472b;
+    border: 1px solid #71623d;
+    box-shadow: none;
+}
+
+:root[data-theme="dark"] .form-heading p {
+    color: var(--muted);
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+:root[data-theme="dark"] .form-group label,
+:root[data-theme="dark"] .label-row label {
+    color: #e8ebf0;
+}
+
+:root[data-theme="dark"] .form-group input {
+    background: #191d23;
+    color: #e8ebf0;
+    border: 1px solid #454c57;
+}
+
+:root[data-theme="dark"] .form-group input::placeholder {
+    color: #858e9b;
+}
+
+:root[data-theme="dark"] .form-group input:focus {
+    background: #1c2128;
+    border-color: #78bda0;
+    box-shadow: 0 0 0 3px rgba(67, 201, 138, 0.13);
+}
+
+:root[data-theme="dark"] .label-row a,
+:root[data-theme="dark"] .terms-row a,
+:root[data-theme="dark"] .switch-button {
+    color: #70d9a0;
+}
+
+:root[data-theme="dark"] .password-toggle {
+    color: #d5d9e0;
+}
+
+/* =========================
+   CHECKBOXES
+========================= */
+
+:root[data-theme="dark"] .checkbox-row {
+    color: var(--muted);
+}
+
+:root[data-theme="dark"] .custom-checkbox {
+    background: #191d23;
+    border: 1px solid #626b78;
+}
+
+:root[data-theme="dark"] .checkbox-row input:checked + .custom-checkbox {
+    background: #43c98a;
+    border-color: #43c98a;
+}
+
+:root[data-theme="dark"] .checkbox-row input:checked + .custom-checkbox::after {
+    color: #14261c;
+}
+
+/* Make keyboard focus visible */
+:root[data-theme="dark"] .checkbox-row input:focus-visible + .custom-checkbox {
+    outline: 2px solid #8bc9e8;
+    outline-offset: 3px;
+}
+
+/* =========================
+   SUBMIT BUTTON
+========================= */
+
+:root[data-theme="dark"] .submit-button,
+:root[data-theme="dark"] .reset-button {
+    background: #287f59;
+    color: #ffffff;
+    border: 1px solid #43a978;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.17);
+}
+
+:root[data-theme="dark"] .submit-button:hover,
+:root[data-theme="dark"] .reset-button:hover {
+    background: #32946a;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-1px);
+}
+
+:root[data-theme="dark"] .switch-text,
+:root[data-theme="dark"] .security-note {
+    color: var(--muted);
+}
+
+/* Password strength */
+
+:root[data-theme="dark"] .strength-bars span {
+    background: #414751;
+}
+
+:root[data-theme="dark"] .password-strength small {
+    color: var(--muted);
+}
+
+/* =========================
+   FORM MESSAGES
+========================= */
+
+:root[data-theme="dark"] .form-message.error,
+:root[data-theme="dark"] .reset-message.error {
+    background: #402b33;
+    border: 1px solid #704352;
+    color: #ffc3d3;
+}
+
+:root[data-theme="dark"] .form-message.success,
+:root[data-theme="dark"] .reset-message.success {
+    background: #203c30;
+    border: 1px solid #356a50;
+    color: #a6f0c8;
+}
+
+:root[data-theme="dark"] .reset-message.loading {
+    background: #253747;
+    border: 1px solid #466982;
+    color: #c2e6fa;
+}
+
+/* =========================================================
+   EMAIL CONFIRMATION POPUP
+========================================================= */
+
+:root[data-theme="dark"] .confirmation-overlay,
+:root[data-theme="dark"] .forgot-popup-overlay {
+    background: rgba(0, 0, 0, 0.68);
+}
+
+:root[data-theme="dark"] .confirmation-popup,
+:root[data-theme="dark"] .forgot-popup {
+    background: #22262d;
+    color: #e8ebf0;
+    border: 1px solid #3a4049;
+    border-radius: 25px;
+    box-shadow: 0 16px 42px rgba(0, 0, 0, 0.3);
+}
+
+/* Confirmation popup */
+
+:root[data-theme="dark"] .confirmation-icon {
+    background: #2b455a;
+    border: 1px solid #496a82;
+    box-shadow: none;
+}
+
+:root[data-theme="dark"] .confirmation-badge {
+    background: #453d28;
+    color: #f5dfa0;
+    border: 1px solid #76663b;
+}
+
+:root[data-theme="dark"] .confirmation-popup h2,
+:root[data-theme="dark"] .confirmation-tip strong {
+    color: #e8ebf0;
+}
+
+:root[data-theme="dark"] .confirmation-popup p {
+    color: #b2bac6;
+}
+
+:root[data-theme="dark"] .email-status,
+:root[data-theme="dark"] .confirmation-tip {
+    background: #191d23;
+    color: #c4cad3;
+    border: 1px solid #454c57;
+}
+
+:root[data-theme="dark"] .status-dot {
+    background: #43c98a;
+}
+
+/* =========================================================
+   FORGOT PASSWORD POPUP
+========================================================= */
+
+:root[data-theme="dark"] .popup-close {
+    background: #303640;
+    color: #e8ebf0;
+    border: 1px solid #454c57;
+}
+
+:root[data-theme="dark"] .popup-close:hover {
+    background: #503544;
+}
+
+:root[data-theme="dark"] .forgot-icon {
+    background: #393149;
+    border: 1px solid #5d5079;
+    box-shadow: none;
+}
+
+:root[data-theme="dark"] .forgot-badge {
+    background: #453d28;
+    color: #f5dfa0;
+    border: 1px solid #76663b;
+}
+
+:root[data-theme="dark"] .forgot-popup h2 {
+    color: #e8ebf0;
+}
+
+:root[data-theme="dark"] .forgot-popup p {
+    color: #b2bac6;
+}
+
+:root[data-theme="dark"] #forgotPasswordForm label {
+    color: #e8ebf0;
+}
+
+:root[data-theme="dark"] #forgotPasswordForm input {
+    background: #191d23;
+    color: #e8ebf0;
+    border: 1px solid #454c57;
+}
+
+:root[data-theme="dark"] #forgotPasswordForm input::placeholder {
+    color: #858e9b;
+}
+
+:root[data-theme="dark"] #forgotPasswordForm input:focus {
+    border-color: #78bda0;
+    box-shadow: 0 0 0 3px rgba(67, 201, 138, 0.13);
+    transform: none;
+}
+
+/* =========================
+   ACCESSIBILITY & MOTION
+========================= */
+
+:root[data-theme="dark"] :focus-visible {
+    outline: 2px solid #8bc9e8;
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root[data-theme="dark"] *,
+    :root[data-theme="dark"] *::before,
+    :root[data-theme="dark"] *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
