@@ -287,6 +287,8 @@ loginForm.addEventListener(
             window.sessionStorage.setItem("loggedIn","1")
             if(document.getElementById('rememberMe').checked){
                 window.localStorage.setItem("remember","true")
+            }else{
+                window.localStorage.removeItem("remember")
             }
            window.location.assign("dashboard.html")
 

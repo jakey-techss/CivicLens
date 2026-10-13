@@ -114,37 +114,7 @@ let sharedWorlds =
 
 
 let friends =
-    JSON.parse(
-        localStorage.getItem("civiclens_friends_v3")
-    ) || [
-        {
-            id: "f1",
-            name: "Maya Johnson",
-            username: "maya.builds",
-            status: "online",
-            code: "MAYA2040"
-        },
-        {
-            id: "f2",
-            name: "Jordan Lee",
-            username: "jordanlens",
-            status: "offline",
-            code: "JORDAN77"
-        },
-        {
-            id: "f3",
-            name: "Chris Mensah",
-            username: "cmensah",
-            status: "online",
-            code: "CHRISLAB"
-        },
-        {
-            id: "f4",
-            name: "Aaliyah Smith",
-            username: "aaliyah.city",
-            status: "offline",
-            code: "AALIYAH9"
-        }
+    [
     ];
 
 
@@ -295,7 +265,19 @@ async function initUser() {
 
     setUser(name);
 
+    const { data: usersInfo, error } = await supabaseClient
+        .from("users")
+        .select("*")
+        .eq("id", session.user.id)
+        .single()
+        ;
 
+    if (error) {
+        console.error("Error fetching user:", error.message);
+    } else {
+        console.log("User information:", usersInfo);
+    }
+    friends = usersInfo.friend_ids
 }
 
 
@@ -1668,7 +1650,7 @@ async function loadCommunities(
 
 
                         return (
-                        (place.name + " " + place.state)
+                            (place.name + " " + place.state)
                                 .toLowerCase()
                                 .includes(search)
                         );
@@ -2415,27 +2397,7 @@ $("#chatForm")
 ========================================================= */
 
 const possiblePeople = [
-    ...friends,
-    {
-        id:
-            "p5",
-        name:
-            "Sam Rivera",
-        username:
-            "sam.maps",
-        code:
-            "SAMMAPS"
-    },
-    {
-        id:
-            "p6",
-        name:
-            "Noah Williams",
-        username:
-            "noahbuilds",
-        code:
-            "NOAH88"
-    }
+
 ];
 
 
@@ -2513,7 +2475,9 @@ function renderFriendSearch(
     if (!container)
         return;
 
-
+    possiblePeople = [
+        ...possiblePeople
+    ]
     const rows =
         possiblePeople.filter(
             person =>
