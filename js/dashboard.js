@@ -182,32 +182,26 @@ let notifications =
     ];
 
 
-function save() {
+//Send All Information To Backend
+async function save() {
+    const { data: { user }, error: authError } =
+        await supabaseClient.auth.getUser();
 
-    localStorage.setItem(
-        "civiclens_worlds_v3",
-        JSON.stringify(worlds)
-    );
+    if (authError || !user) {
+        window.location.assign("login.html")
+        return
+    }
 
-    localStorage.setItem(
-        "civiclens_shared_v3",
-        JSON.stringify(sharedWorlds)
-    );
+    const { error } = await supabaseClient
+        .from("users")
+        .update({ friend_ids: friends})
+        .eq("id", user.id);
 
-    localStorage.setItem(
-        "civiclens_friends_v3",
-        JSON.stringify(friends)
-    );
-
-    localStorage.setItem(
-        "civiclens_messages_v3",
-        JSON.stringify(messages)
-    );
-
-    localStorage.setItem(
-        "civiclens_notifications_v3",
-        JSON.stringify(notifications)
-    );
+    if (error) {
+        console.error("Update failed:", error.message);
+    } else {
+        console.log("Cell updated successfully!");
+    }
 }
 
 
@@ -278,11 +272,12 @@ async function initUser() {
         console.log("User information:", usersInfo);
     }
     friends = usersInfo.friend_ids
+    renderFriends()
 }
 
-
+let universal_username;
 function setUser(name) {
-
+    universal_username = name
     const letter =
         name[0]?.toUpperCase() || "?";
 
@@ -602,7 +597,7 @@ function renderFriends() {
         friends.filter(
             friend =>
                 friend.status ===
-                "online"
+                "Online"
         ).length;
 
 
@@ -615,7 +610,6 @@ function renderFriends() {
         onlineCounter.textContent =
             `${online} online`;
     }
-
 
     grid.innerHTML =
         friends
@@ -632,7 +626,7 @@ function renderFriends() {
                         <span class="profile-avatar">
 
                             ${esc(
-                    friend.name[0]
+                    friend.display_name[0]
                 )}
 
                         </span>
@@ -642,13 +636,13 @@ function renderFriends() {
 
                             <strong>
                                 ${esc(
-                    friend.name
+                    friend.display_name
                 )}
                             </strong>
 
                             <span>
                                 @${esc(
-                    friend.username
+                    friend.display_name
                 )}
                             </span>
 
@@ -661,7 +655,7 @@ function renderFriends() {
                                 ${friend.status ===
                         "online"
                         ? "online"
-                        : ""
+                        : friend.status.toLowerCase() == "requested" ? "Requested" : ""
                     }
                             "
                         >
@@ -672,21 +666,24 @@ function renderFriends() {
                 `
             )
             .join("");
-
-
     $$(".friend-card")
         .forEach(card => {
+            if (friends.find(
+                (friend) => {
+                    return friend.id == card.dataset.friend
+                }
+            ).status != "Requested") {
+                card.onclick = () => {
 
-            card.onclick = () => {
+                    openChat(
+                        card.dataset.friend
+                    );
 
-                openChat(
-                    card.dataset.friend
-                );
-
-                activateSection(
-                    "chatSection"
-                );
-            };
+                    activateSection(
+                        "chatSection"
+                    );
+                };
+            }
         });
 
 
@@ -726,7 +723,7 @@ function renderChatFriends() {
                         <span class="profile-avatar">
 
                             ${esc(
-                        friend.name[0]
+                        friend.display_name[0]
                     )}
 
                         </span>
@@ -736,13 +733,13 @@ function renderChatFriends() {
 
                             <strong>
                                 ${esc(
-                        friend.name
+                        friend.display_name
                     )}
                             </strong>
 
                             <small>
                                 @${esc(
-                        friend.username
+                        friend.display_name
                     )}
                             </small>
 
@@ -1907,45 +1904,44 @@ $("#clearCommunity")?.addEventListener(
     }
 );
 
-$("#findCoordinates")
-    ?.addEventListener(
-        "click",
-        () => {
+$("#findCoordinates")?.addEventListener(
+    "click",
+    () => {
 
-            const latitude =
-                Number(
-                    $("#latitudeInput")
-                        ?.value
-                );
-
-
-            const longitude =
-                Number(
-                    $("#longitudeInput")
-                        ?.value
-                );
+        const latitude =
+            Number(
+                $("#latitudeInput")
+                    ?.value
+            );
 
 
-            if (
-                !Number.isFinite(latitude) ||
-                !Number.isFinite(longitude) ||
-                latitude < -90 ||
-                latitude > 90 ||
-                longitude < -180 ||
-                longitude > 180
-            ) {
+        const longitude =
+            Number(
+                $("#longitudeInput")
+                    ?.value
+            );
 
-                showToast(
-                    "Enter valid coordinates",
-                    "!"
-                );
 
-                return;
-            }
+        if (
+            !Number.isFinite(latitude) ||
+            !Number.isFinite(longitude) ||
+            latitude < -90 ||
+            latitude > 90 ||
+            longitude < -180 ||
+            longitude > 180
+        ) {
 
-            loadCommunities("", [latitude, longitude])
+            showToast(
+                "Enter valid coordinates",
+                "!"
+            );
+
+            return;
         }
-    );
+
+        loadCommunities("", [latitude, longitude])
+    }
+);
 
 
 
@@ -1969,9 +1965,7 @@ function renderCollaborators() {
         friends.filter(
             friend =>
                 (
-                    friend.name +
-                    " " +
-                    friend.username
+                    friend.display_name
                 )
                     .toLowerCase()
                     .includes(query)
@@ -2014,7 +2008,7 @@ function renderCollaborators() {
                         <span class="collab-avatar">
 
                             ${esc(
-                        friend.name[0]
+                        friend.display_name[0]
                     )}
 
                         </span>
@@ -2024,13 +2018,13 @@ function renderCollaborators() {
 
                             <strong>
                                 ${esc(
-                        friend.name
+                        friend.display_name
                     )}
                             </strong>
 
                             <small>
                                 @${esc(
-                        friend.username
+                        friend.display_name
                     )}
                             </small>
 
@@ -2088,10 +2082,6 @@ $("#collabSearch")
         renderCollaborators
     );
 
-
-/* =========================================================
-   CREATE WORLD
-========================================================= */
 
 $("#launchWorld")
     ?.addEventListener(
@@ -2464,7 +2454,7 @@ $("#friendSearch")
     );
 
 
-function renderFriendSearch(
+async function renderFriendSearch(
     query = ""
 ) {
 
@@ -2475,24 +2465,22 @@ function renderFriendSearch(
     if (!container)
         return;
 
-    possiblePeople = [
-        ...possiblePeople
-    ]
+    const possiblePeople = await supabaseClient.rpc("search_users", {
+        search_term: query,
+    });
+    console.log(possiblePeople.data)
     const rows =
-        possiblePeople.filter(
+        possiblePeople.data.filter(
             person =>
                 (
-                    person.name +
-                    " " +
-                    person.username +
-                    " " +
-                    person.code
+                    person.display_name
                 )
                     .toLowerCase()
                     .includes(
                         query.toLowerCase()
                     )
         );
+
 
 
     container.innerHTML =
@@ -2502,8 +2490,8 @@ function renderFriendSearch(
                 const exists =
                     friends.some(
                         friend =>
-                            friend.username ===
-                            person.username
+                            friend.display_name ===
+                            person.display_name
                     );
 
 
@@ -2514,7 +2502,7 @@ function renderFriendSearch(
                         <span class="profile-avatar">
 
                             ${esc(
-                    person.name[0]
+                    person.display_name[0]
                 )}
 
                         </span>
@@ -2524,17 +2512,13 @@ function renderFriendSearch(
 
                             <strong>
                                 ${esc(
-                    person.name
+                    person.display_name
                 )}
                             </strong>
 
                             <small>
                                 @${esc(
-                    person.username
-                )}
-                                ·
-                                ${esc(
-                    person.code
+                    person.display_name
                 )}
                             </small>
 
@@ -2570,7 +2554,7 @@ function renderFriendSearch(
             button.onclick = () => {
 
                 const person =
-                    possiblePeople.find(
+                    possiblePeople.data.find(
                         item =>
                             item.id ===
                             button.dataset.person
@@ -2584,38 +2568,40 @@ function renderFriendSearch(
                 if (
                     friends.some(
                         friend =>
-                            friend.username ===
-                            person.username
+                            friend.display_name ===
+                            person.display_name
                     )
                 ) {
 
                     return;
                 }
 
-
                 friends.push({
 
                     ...person,
 
                     status:
-                        "offline"
+                        "Requested"
                 });
 
 
-                save();
 
 
+                sendFriendRequestNotification(universal_username, friends[friends.length - 1].id)
+
+                renderFriends()
+                save()
 
 
                 button.disabled =
                     true;
 
                 button.textContent =
-                    "Added";
+                    "Request Sent";
 
 
                 showToast(
-                    `${person.name} added`,
+                    `Friend request sent ${person.display_name}`,
                     "✓"
                 );
             };
@@ -2623,9 +2609,29 @@ function renderFriendSearch(
 }
 
 
-/* =========================================================
-   TOAST
-========================================================= */
+async function sendFriendRequestNotification(
+    senderUsername,
+    receiverId
+) {
+    const { error } = await supabaseClient.rpc(
+        "send_friend_request_notification",
+        {
+            sender_username: senderUsername,
+            receiver_id: receiverId
+        }
+    );
+
+    if (error) {
+        console.error(
+            "Failed to send friend request notification:",
+            error.message
+        );
+        return false;
+    }
+
+    return true;
+}
+
 
 function showToast(
     message = "Done",
@@ -2714,7 +2720,6 @@ document.addEventListener(
 
 lucide.createIcons();
 initUser();
-renderFriends()
 renderMessages()
 renderShared()
 renderWorlds()
