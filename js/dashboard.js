@@ -87,10 +87,7 @@ let currentStep = 1;
 let activeFriend = null;
 
 
-let worlds =
-    JSON.parse(
-        localStorage.getItem("civiclens_worlds_v3")
-    ) || [];
+let worlds = [];
 
 
 let sharedWorlds =
@@ -113,9 +110,7 @@ let sharedWorlds =
     ];
 
 
-let friends =
-    [
-    ];
+let friends = [];
 
 
 let messages =
@@ -183,6 +178,7 @@ let notifications =
 
 
 //Send All Information To Backend
+let universal_userInfo;
 async function save() {
     const { data: { user }, error: authError } =
         await supabaseClient.auth.getUser();
@@ -194,7 +190,7 @@ async function save() {
 
     const { error } = await supabaseClient
         .from("users")
-        .update({ friend_ids: friends})
+        .update({ friend_ids: friends })
         .eq("id", user.id);
 
     if (error) {
@@ -249,7 +245,8 @@ async function initUser() {
 
     const metadata =
         session.user.user_metadata || {};
-
+    
+        universal_userInfo = session.user;
 
     const name =
         metadata.display_name ||
@@ -1058,9 +1055,6 @@ document.addEventListener(
 );
 
 
-/* =========================================================
-   NAVIGATION
-========================================================= */
 
 function activateSection(id) {
 
@@ -1097,10 +1091,6 @@ $$(".side-link")
         };
     });
 
-
-/* =========================================================
-   VIEW SWITCHING
-========================================================= */
 
 $$(".view-button")
     .forEach(button => {
@@ -1693,7 +1683,7 @@ function renderCommunityResults(
 
             ? rows
                 .map(place => {
-
+                    
                     const community = {
 
                         name:
@@ -1709,7 +1699,9 @@ function renderCommunityResults(
                             place.type ||
                             "Community",
 
-                        population: place.population
+                        population: place.population,
+                        longitude: place.longitude,
+                        latitude: place.latitude
                     };
 
 
@@ -1779,7 +1771,7 @@ function renderCommunityResults(
         .forEach(element => {
 
             element.onclick = () => {
-
+                console.log(element.dataset.community)
                 selectedCommunity =
                     JSON.parse(
                         element.dataset.community
@@ -2086,7 +2078,19 @@ $("#collabSearch")
 $("#launchWorld")
     ?.addEventListener(
         "click",
-        () => {
+        async () => {
+            console.log(selectedCommunity)
+            const { data: selectedlocationId, error: locationError } = await supabaseClient.rpc(
+                "get_location_id",
+                {
+                    user_lat: selectedCommunity.latitude,
+                    user_lon: selectedCommunity.longitude
+                }
+            );
+            if(locationError){
+                console.error(locationError.message)
+                return;
+            }
 
             const name =
                 $("#worldName")
@@ -2116,70 +2120,35 @@ $("#launchWorld")
 
                 return;
             }
-
-
-            const difficultyStats = {
-
-                freeplay:
-                    [0, 0, 0],
-
-                medium:
-                    [0, 0, 5],
-
-                reallife:
-                    [0, 0, 8],
-
-                hell:
-                    [0, 0, 2]
-            };
-
-
-            const stats =
-                difficultyStats[
-                selectedDifficulty
-                ];
-
-
+            console.log(universal_userInfo)
             const world = {
-
-                id:
-                    crypto.randomUUID(),
-
-                name,
-
-                location:
-                    selectedCommunity
-                        .display_name,
-
-                community:
-                    selectedCommunity,
-
-                description:
-                    selectedType === "improve"
-
-                        ? "Investigating an existing community using public data and local observations."
-
-                        : "A fictional CivicLens world anchored to a real community.",
-
-                mode:
-                    selectedType,
-
-                difficulty:
-                    selectedDifficulty,
-
-                problems:
-                    stats[0],
-
-                analyses:
-                    stats[1],
-
-                progress:
-                    stats[2],
-
-                collaborators:
-                    [...selectedCollaborators]
+                creator_id: universal_userInfo.id,
+                world_name: name,
+                assist_id: selectedCollaborators,
+                visibility: "Private",
+                published_at: null,
+                world_type: selectedType,
+                game_mode: selectedDifficulty,
+                map_data: {},
+                world_settings: {},
+                statistics: {},
+                views: 0,
+                comments: [],
+                likes: 0,
+                location_id: selectedlocationId
             };
 
+            const { data, error } = await supabaseClient
+                .from('worlds')
+                .insert([world])
+                .select();
+            console.log(data)
+
+            if (error) {
+                console.error('Insert failed:', error.message);
+            } else {
+                console.log('Inserted row:', data);
+            }
 
             worlds.unshift(
                 world
