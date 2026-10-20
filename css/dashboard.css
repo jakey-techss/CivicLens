@@ -872,8 +872,65 @@ h1 span:after {
 .world-description {
     color: #666;
     font-size: 12px;
-    line-height: 1.5;
-    min-height: 38px
+
+    min-height: 3px
+}
+.more-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 36px;
+    height: 36px;
+    padding: 0;
+
+    background: #f8f7f2;
+    color: #171717;
+
+    border: 2px solid #171717;
+    border-radius: 8px;
+
+    cursor: pointer;
+    flex-shrink: 0;
+
+    box-shadow: 3px 3px 0 #171717;
+
+    transition:
+        background 0.18s ease,
+        color 0.18s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.more-button svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+}
+
+.more-button:hover {
+    background: #ff815f;
+    color: #171717;
+
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 #171717;
+}
+
+.more-button:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 #171717;
+}
+
+.more-button:focus-visible {
+    outline: 3px solid #20b26b;
+    outline-offset: 3px;
+}
+
+.more-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
 .world-tags {
@@ -2642,6 +2699,44 @@ h1 span:after {
 :root[data-theme="dark"] .toast small {
     color: #a0aab2;
 }
+
+.notification-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.friend-request-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.friend-request-actions button {
+    padding: 6px 14px;
+    border: 2px solid #171717;
+    border-radius: 6px;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 2px 2px 0 #171717;
+    transition: transform 0.15s ease;
+}
+
+.friend-request-actions button:hover {
+    transform: translateY(-2px);
+}
+
+.accept-request {
+    background: #20b26b;
+    color: #171717;
+}
+
+.decline-request {
+    background: #f8f7f2;
+    color: #171717;
+}
+
 
 /* ---------- SHARED BORDER REFINEMENTS ---------- */
 

@@ -1,5 +1,3 @@
-
-
 const US_STATES = {
     "Alabama": "AL",
     "Alaska": "AK",
@@ -142,39 +140,7 @@ let messages =
 
 
 let notifications =
-    JSON.parse(
-        localStorage.getItem(
-            "civiclens_notifications_v3"
-        )
-    ) || [
-        {
-            id: "n1",
-            icon: "◈",
-            title:
-                "Maya shared a world with you",
-            text:
-                "Newark 2040 is ready to explore.",
-            unread: true
-        },
-        {
-            id: "n2",
-            icon: "◎",
-            title:
-                "Chris is online",
-            text:
-                "You can invite them to collaborate.",
-            unread: true
-        },
-        {
-            id: "n3",
-            icon: "✓",
-            title:
-                "Welcome back",
-            text:
-                "Your CivicLens workspace is ready.",
-            unread: false
-        }
-    ];
+    [];
 
 
 //Send All Information To Backend
@@ -190,7 +156,7 @@ async function save() {
 
     const { error } = await supabaseClient
         .from("users")
-        .update({ friend_ids: friends })
+        .update({ friend_ids: friends, world_ids: worlds, notification: notifications })
         .eq("id", user.id);
 
     if (error) {
@@ -219,7 +185,7 @@ function diffLabel(difficulty) {
     }[difficulty] || difficulty;
 }
 
-
+let fullUserInfo;
 
 async function initUser() {
 
@@ -245,8 +211,8 @@ async function initUser() {
 
     const metadata =
         session.user.user_metadata || {};
-    
-        universal_userInfo = session.user;
+
+    universal_userInfo = session.user;
 
     const name =
         metadata.display_name ||
@@ -268,8 +234,12 @@ async function initUser() {
     } else {
         console.log("User information:", usersInfo);
     }
+    notifications = usersInfo.notification
     friends = usersInfo.friend_ids
+    worlds = usersInfo.world_ids
     renderFriends()
+    renderNotifications()
+    renderWorlds()
 }
 
 let universal_username;
@@ -338,7 +308,43 @@ function mapPreview(index) {
         </div>
     `;
 }
+async function getLocationById(locid) {
+    if (!locid) {
+        console.error("Missing location ID:", locid);
+        return null;
+    }
 
+    const { data: location, error } = await supabaseClient
+        .from("locations")
+        .select("*")
+        .eq("id", locid)
+        .maybeSingle();
+
+    if (error) {
+        console.error("Error fetching location:", error.message);
+        return null;
+    }
+
+    return location;
+}
+
+async function loadWorldLocations(worlds) {
+    const cards = document.querySelectorAll('.world-card');
+    cards.forEach(async (card) => {
+        let world = worlds.find((item) => {
+            return item.id == card.dataset.world
+        })
+        if (world) {
+            const location = await getLocationById(world.location_id);
+            const locationElement = card.querySelector(
+                ".world-location-name"
+            );
+            locationElement.textContent = location
+                ? location.title + ", " + US_STATES[location.state]
+                : "Location unavailable";
+        }
+    })
+}
 
 function worldCard(
     world,
@@ -361,7 +367,7 @@ function worldCard(
                     <div>
 
                         <h3 class="world-title">
-                            ${esc(world.name)}
+                            ${esc(world.world_name)}
                         </h3>
 
                         <div class="world-location">
@@ -370,21 +376,18 @@ function worldCard(
                                 class="location-dot"
                             ></span>
 
-                            ${esc(
-        world.location ||
-        "Personal World"
-    )}
+                            <span class="world-location-name">Loading location...</span>
 
                         </div>
 
                     </div>
 
 
-                    ${shared
+                    ${!shared
 
             ? `
                                 <span class="shared-owner">
-                                    BY ${esc(world.owner)}
+                                    BY ${esc(world.creator_id)}
                                 </span>
                             `
 
@@ -394,7 +397,24 @@ function worldCard(
                                     data-delete="${esc(world.id)}"
                                     aria-label="Delete world"
                                 >
-                                    ×
+                                    
+<svg
+    viewBox="0 0 24 24"
+    width="20"
+    height="20"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+>
+    <path d="M3 6h18"/>
+    <path d="M8 6V4h8v2"/>
+    <path d="m19 6-1 14H6L5 6"/>
+    <path d="M10 10v6M14 10v6"/>
+</svg>
+
                                 </button>
                             `
         }
@@ -404,10 +424,7 @@ function worldCard(
 
                 <p class="world-description">
 
-                    ${esc(
-            world.description ||
-            "A CivicLens world ready for your next investigation."
-        )}
+
 
                 </p>
 
@@ -435,7 +452,7 @@ function worldCard(
 
                     <span class="world-last">
 
-                        ${shared
+                        ${!shared
             ? "Shared with you"
             : "Continue exploring"
         }
@@ -458,7 +475,7 @@ function worldCard(
 }
 
 
-function renderWorlds() {
+async function renderWorlds() {
 
     const grid =
         $("#worldGrid");
@@ -469,12 +486,8 @@ function renderWorlds() {
 
     if (!grid)
         return;
-
-
-    grid.innerHTML =
-        worlds
-            .map(worldCard)
-            .join("");
+    grid.innerHTML = worlds.map(worldCard).join("");
+    await loadWorldLocations(worlds)
 
 
     if (empty) {
@@ -553,10 +566,11 @@ function renderWorlds() {
                 );
             };
         });
+
 }
 
 
-function renderShared() {
+async function renderShared() {
 
     const grid =
         $("#sharedGrid");
@@ -577,6 +591,7 @@ function renderShared() {
                     )
             )
             .join("");
+    //await loadWorldLocations(sharedWorlds)
 }
 
 
@@ -838,14 +853,14 @@ function renderNotifications() {
     const unread =
         notifications.filter(
             notification =>
-                notification.unread
+                notification.hasRead == false
         ).length;
 
 
     if (dot) {
 
         dot.style.display =
-            unread
+            unread > 0
                 ? "block"
                 : "none";
     }
@@ -871,52 +886,204 @@ function renderNotifications() {
 
         return;
     }
+    let friendIcon = `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="20"
+  height="20"
+  viewBox="0 0 32 32"
+  fill="none"
+  aria-label="Friend request"
+  role="img"
+>
+  <!-- Left person -->
+  <circle
+    cx="10"
+    cy="9"
+    r="4"
+    fill="#75BDF4"
+    stroke="#171717"
+    stroke-width="2"
+  />
+  <path
+    d="M2.5 25C2.5 19.8 5.5 16.5 10 16.5C14.5 16.5 17.5 19.8 17.5 25V27H2.5V25Z"
+    fill="#75BDF4"
+    stroke="#171717"
+    stroke-width="2"
+    stroke-linejoin="round"
+  />
+
+  <!-- Right person -->
+  <circle
+    cx="21"
+    cy="12"
+    r="3.5"
+    fill="#20B26B"
+    stroke="#171717"
+    stroke-width="2"
+  />
+  <path
+    d="M17 21C17.8 18.6 19.2 17.5 21 17.5C25 17.5 27 20.2 27 24V25H17"
+    fill="#20B26B"
+    stroke="#171717"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Add friend badge -->
+  <circle
+    cx="25"
+    cy="6"
+    r="5"
+    fill="#FFD84D"
+    stroke="#171717"
+    stroke-width="1.5"
+  />
+  <path
+    d="M25 3.5V8.5M22.5 6H27.5"
+    stroke="#171717"
+    stroke-width="1.8"
+    stroke-linecap="round"
+  />
+</svg>`
+    let regIcon = `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="20"
+  height="20"
+  viewBox="0 0 32 32"
+  fill="none"
+  aria-label="Notifications"
+  role="img"
+>
+  <!-- Bell body -->
+  <path
+    d="M8 13C8 8.6 11.1 5.5 16 5.5C20.9 5.5 24 8.6 24 13V19L27 23H5L8 19V13Z"
+    fill="#20B26B"
+    stroke="#171717"
+    stroke-width="2"
+    stroke-linejoin="round"
+  />
+
+  <!-- Bell clapper -->
+  <path
+    d="M13 26C13.5 27.5 14.5 28.5 16 28.5C17.5 28.5 18.5 27.5 19 26"
+    stroke="#171717"
+    stroke-width="2"
+    stroke-linecap="round"
+  />
+
+  <!-- Notification accent -->
+  <path
+    d="M24 4L26 2M28 9H30"
+    stroke="#FFD84D"
+    stroke-width="2"
+    stroke-linecap="round"
+  />
+</svg>`
+    let i = 0;
+    list.innerHTML = notifications
+        .map(notification => `
+        <div
+            class="
+                notification-item
+                ${notification.unread ? "unread" : ""}
+            "
+        >
+            <span class="notif-icon">
+                ${notification.header.includes("friend request")
+                ? friendIcon
+                : regIcon
+            }
+            </span>
+
+            <div class="notification-content">
+                <strong>
+                    ${esc(
+                notification.type === "request"
+                    ? notification.header.includes("friend request")
+                        ? "New Friend Request"
+                        : notification.type.substring(0, 1).toUpperCase() +
+                        notification.type.substring(1)
+                    : "New Message"
+            )}
+                </strong>
+
+                <small>${esc(notification.header)}</small>
+
+                ${notification.type === "request" &&
+                notification.header.toLowerCase().includes("friend request")
+                ? `
+                            <div class="friend-request-actions">
+                                <button
+                                    class="accept-request"
+                                    data-id="${i}"
+                                >
+                                    Accept
+                                </button>
+
+                                <button
+                                    class="decline-request"
+                                    data-id="${i++}"
+                                >
+                                    Decline
+                                </button>
+                            </div>
+                        `
+                : ""
+            }
+            </div>
+        </div>
+    `
+        )
+
+        .join("");
+
+    list.querySelectorAll(".accept-request").forEach(button => {
+        button.addEventListener("click", async () => {
+            const notificationId = button.dataset.id;
+            addFriend(notifications[notificationId].header, notificationId)
+
+        });
+    });
+
+    list.querySelectorAll(".decline-request").forEach(button => {
+        button.addEventListener("click", async () => {
+            const notificationId = button.dataset.id;
+
+        });
+    });
+
+}
+
+async function addFriend(notifName, notificationId) {
+    let query = notifName.substring(0, notifName.indexOf(" sent"))
+
+    const possiblePeople = await supabaseClient.rpc("search_users", {
+        search_term: query,
+    });
+
+    const { data } = await supabaseClient.rpc("accept_friend_request", { p_friend_id: possiblePeople.data[0].id });
+    notifications.splice(notificationId, 1)
+    console.log(notifications)
+    save()
+    renderNotifications()
+
+}
 
 
-    list.innerHTML =
-        notifications
-            .map(
-                notification => `
+async function declineFriend(notifName, notificationId) {
+    let query = notifName.substring(0, notifName.indexOf(" sent"))
 
-                    <div
-                        class="
-                            notification-item
-                            ${notification.unread
-                        ? "unread"
-                        : ""
-                    }
-                        "
-                    >
+    const possiblePeople = await supabaseClient.rpc("search_users", {
+        search_term: query,
+    });
 
-                        <span class="notif-icon">
+    const { data } = await supabaseClient.rpc("decline_friend_request", { p_friend_id: possiblePeople.data[0].id });
+    notifications.splice(notificationId, 1)
+    console.log(notifications)
+    save()
+    renderNotifications()
 
-                            ${esc(
-                        notification.icon
-                    )}
-
-                        </span>
-
-
-                        <div>
-
-                            <strong>
-                                ${esc(
-                        notification.title
-                    )}
-                            </strong>
-
-                            <small>
-                                ${esc(
-                        notification.text
-                    )}
-                            </small>
-
-                        </div>
-
-                    </div>
-                `
-            )
-            .join("");
 }
 
 
@@ -961,7 +1128,7 @@ function openNotifications() {
         notifications.map(
             notification => ({
                 ...notification,
-                unread: false
+                hasRead: true
             })
         );
 
@@ -1683,7 +1850,7 @@ function renderCommunityResults(
 
             ? rows
                 .map(place => {
-                    
+
                     const community = {
 
                         name:
@@ -2087,7 +2254,7 @@ $("#launchWorld")
                     user_lon: selectedCommunity.longitude
                 }
             );
-            if(locationError){
+            if (locationError) {
                 console.error(locationError.message)
                 return;
             }
@@ -2142,7 +2309,7 @@ $("#launchWorld")
                 .from('worlds')
                 .insert([world])
                 .select();
-            console.log(data)
+
 
             if (error) {
                 console.error('Insert failed:', error.message);
@@ -2151,7 +2318,7 @@ $("#launchWorld")
             }
 
             worlds.unshift(
-                world
+                data[0]
             );
 
 
@@ -2691,4 +2858,3 @@ lucide.createIcons();
 initUser();
 renderMessages()
 renderShared()
-renderWorlds()
