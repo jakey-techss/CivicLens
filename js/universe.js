@@ -4,6 +4,7 @@ const supabaseClient = supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 )
+window.supabaseClient = supabaseClient;
 
 if(window.sessionStorage.getItem("loggedIn") == null && window.localStorage.getItem("remember") == null){
     signOut()

@@ -327,6 +327,24 @@ async function getLocationById(locid) {
 
     return location;
 }
+async function getCreatorById(userId) {
+    if (!userId) {
+        console.error("Missing creator user ID");
+        return null;
+    }
+
+    const { data, error } = await supabaseClient.rpc(
+        "get_display_name",
+        { p_user_id: userId }
+    );
+
+    if (error) {
+        console.error("Error fetching creator name:", error.message);
+        return null;
+    }
+
+    return data;
+}
 
 async function loadWorldLocations(worlds) {
     const cards = document.querySelectorAll('.world-card');
@@ -336,9 +354,17 @@ async function loadWorldLocations(worlds) {
         })
         if (world) {
             const location = await getLocationById(world.location_id);
+            const creatorName = await getCreatorById(world.creator_id);
             const locationElement = card.querySelector(
                 ".world-location-name"
             );
+            const creatorElement = card.querySelector(
+                ".shared-owner"
+            );
+            if(creatorElement){
+                creatorElement.textContent = creatorName
+            }
+            
             locationElement.textContent = location
                 ? location.title + ", " + US_STATES[location.state]
                 : "Location unavailable";
@@ -436,7 +462,7 @@ function worldCard(
                     </span>
 
                     <span class="world-tag">
-                        ${diffLabel(world.difficulty)}
+                        ${diffLabel(world.game_mode)}
                     </span>
 
                     <span class="world-tag">
@@ -533,7 +559,7 @@ async function renderWorlds() {
 
 
                 showToast(
-                    `Opening ${world.name}`,
+                    `Opening ${world.world_name}`,
                     "→"
                 );
             };
