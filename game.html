@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f7f2">
+  <title>CivicLens — Community Challenge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="css/game.css">
+</head>
+
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="dashboard.html"><span class="brand-mark">C</span><span>Civic<span
+            class="brand-accent">Lens</span></span></a>
+      <div class="world-identity"><span class="live-dot"></span>
+        <div><strong id="world-name">Community Challenge</strong><small id="world-location">Your selected
+            community</small></div>
+      </div>
+      <div class="topbar-actions"><button class="turn-pill" id="advance-turn" title="Advance the simulation">◷ <span
+            id="turn-label">Year 1 · Turn 1</span> <b>→</b></button><button class="icon-button" id="help-button"
+          aria-label="How to play">?</button><a class="exit-button" href="dashboard.html">Exit world ↗</a></div>
+    </header>
+    <main class="game-layout">
+      <section class="main-column">
+        <section class="welcome-panel">
+          <div class="welcome-copy"><span class="eyebrow"><i></i> YOUR COMMUNITY, YOUR CALL</span>
+            <h1>Make a plan.<br><span>Change the numbers.</span></h1>
+            <p>Real challenges. Tough trade-offs. Every decision moves your community forward—or backward.</p>
+            <div class="welcome-meta"><span class="meta-chip">◈ <b id="mode-label">Real Life Mode</b></span><span
+                class="meta-chip">⌁ Evidence-led strategy</span></div>
+          </div>
+          <div class="community-score">
+            <div class="score-ring" id="score-ring">
+              <div><strong id="community-score">62</strong><span>/100</span></div>
+            </div><b>Community health</b><span class="score-status" id="score-status">Room to grow</span>
+          </div><i class="shape shape-one"></i><i class="shape shape-two"></i>
+        </section>
+        <section class="stats-section">
+          <div class="section-heading">
+            <div><span class="eyebrow">THE BIG PICTURE</span>
+              <h2>Your community at a glance</h2>
+            </div><span class="data-badge"><i></i><span id="data-status">Illustrative starting data</span></span>
+          </div>
+          <div class="stat-grid">
+            <article class="stat-card housing">
+              <div class="stat-top"><span class="stat-icon">⌂</span><small id="housing-trend">Baseline</small></div>
+              <label>Housing access</label><strong id="housing-stat">64<span>/100</span></strong>
+              <div class="mini-track"><i id="housing-bar" style="width:64%"></i></div><small
+                class="stat-note">Affordability & availability</small>
+            </article>
+            <article class="stat-card jobs">
+              <div class="stat-top"><span class="stat-icon">↗</span><small id="jobs-trend">Baseline</small></div>
+              <label>Jobs & opportunity</label><strong id="jobs-stat">58<span>/100</span></strong>
+              <div class="mini-track"><i id="jobs-bar" style="width:58%"></i></div><small class="stat-note">Employment &
+                access to work</small>
+            </article>
+            <article class="stat-card education">
+              <div class="stat-top"><span class="stat-icon">✳</span><small id="education-trend">Baseline</small></div>
+              <label>Education access</label><strong id="education-stat">71<span>/100</span></strong>
+              <div class="mini-track"><i id="education-bar" style="width:71%"></i></div><small
+                class="stat-note">Learning & digital access</small>
+            </article>
+            <article class="stat-card mobility">
+              <div class="stat-top"><span class="stat-icon">⇄</span><small id="mobility-trend">Baseline</small></div>
+              <label>Mobility</label><strong id="mobility-stat">53<span>/100</span></strong>
+              <div class="mini-track"><i id="mobility-bar" style="width:53%"></i></div><small class="stat-note">Transit
+                & safe connections</small>
+            </article>
+          </div>
+          <div class="secondary-stats">
+            <div><i class="air">✺</i><span><small>Environment</small><strong id="environment-stat">67 /
+                  100</strong></span></div>
+            <div><i class="safety">♡</i><span><small>Safety & wellbeing</small><strong id="safety-stat">61 /
+                  100</strong></span></div>
+            <div><i class="budget">$</i><span><small>Available budget</small><strong
+                  id="budget-stat">$12.0M</strong></span></div>
+            <div><i class="trust">◎</i><span><small>Public trust</small><strong id="trust-stat">60 / 100</strong></span>
+            </div>
+          </div>
+        </section>
+        <section class="problem-section">
+          <div class="section-heading problem-heading">
+            <div><span class="eyebrow">PICK YOUR NEXT MOVE</span>
+              <h2>What needs attention?</h2>
+              <p>Choose a challenge. Understand it before trying to fix it.</p>
+            </div>
+            <div class="filters"><button class="active" data-filter="all">All</button><button
+                data-filter="people">People</button><button data-filter="systems">Systems</button><button
+                data-filter="planet">Planet</button></div>
+          </div>
+          <div class="problem-grid" id="problem-grid"></div>
+        </section>
+      </section>
+      <aside class="strategy-column">
+        <section class="strategy-card selected-challenge">
+          <div class="card-kicker"><span class="eyebrow">CURRENT CHALLENGE</span><b class="sparkle">✦</b></div>
+          <div class="selected-illustration" id="selected-illustration"><span>⌂</span><i></i><b></b></div><small
+            class="selected-category" id="selected-category">PEOPLE & HOUSING</small>
+          <h2 id="selected-title">Housing is out of reach</h2>
+          <p id="selected-description">Too many residents are spending too much of their income on housing. Choose an
+            approach that balances immediate relief with lasting supply.</p>
+          <div class="evidence-box"><small>WHY IT MATTERS</small><strong id="selected-evidence">Housing pressure can
+              affect health, stability, and access to work.</strong></div>
+          <div class="evidence-box"><small>WHAT SUCCESS LOOKS LIKE</small><strong id="selected-success">More affordable
+              homes without exhausting the city budget.</strong></div><button class="primary-button"
+            id="jump-actions">Build a response ↓</button>
+        </section>
+        <section class="strategy-card" id="action-card">
+          <div class="section-heading compact">
+            <div><span class="eyebrow">YOUR STRATEGY</span>
+              <h2>Choose an action</h2>
+            </div><span class="action-count" id="action-count">0 used</span>
+          </div>
+          <p class="action-intro">Every action costs resources and changes more than one part of the community.</p>
+          <div class="action-list" id="action-list"></div>
+          <div class="strategy-footer"><span><i></i>Trade-offs are part of the game</span><strong
+              id="remaining-budget">$12.0M left</strong></div>
+        </section>
+        <section class="strategy-card evaluator-card">
+          <div class="section-heading compact">
+            <div><span class="eyebrow">CIVICLENS REVIEW</span>
+              <h2>How's your plan doing?</h2>
+            </div><b class="sparkle">✦</b>
+          </div>
+          <div class="review-score-row"><strong id="review-score">62</strong><span><b id="review-verdict">Promising
+                start</b><small id="review-subtitle">Make a few smart moves to build momentum.</small></span></div>
+          <div class="review-meter"><i id="review-meter-fill" style="width:62%"></i></div>
+          <div class="criteria">
+            <div><span>Community wellbeing</span><b id="review-wellbeing">62</b></div>
+            <div><span>Budget discipline</span><b id="review-budget">80</b></div>
+            <div><span>Fairness & access</span><b id="review-fairness">65</b></div>
+            <div><span>Long-term thinking</span><b id="review-longterm">60</b></div>
+          </div><button class="secondary-button" id="evaluate-button">Evaluate my strategy ✦</button>
+          <p class="fine-print">The reviewer uses transparent game rules—not an unexplained magic score.</p>
+        </section>
+        <section class="strategy-card">
+          <div class="section-heading compact">
+            <div><span class="eyebrow">YOUR FOOTPRINT</span>
+              <h2>Recent decisions</h2>
+            </div><button class="text-button" id="clear-activity">Clear</button>
+          </div>
+          <div class="activity-list" id="activity-list">
+            <div class="empty-activity">✧ <p>Your choices and their effects will show up here.</p>
+            </div>
+          </div>
+        </section>
+      </aside>
+    </main>
+  </div>
+  <div class="modal-backdrop" id="action-modal" hidden>
+    <section class="modal-window" role="dialog" aria-modal="true" aria-labelledby="action-modal-title"><button
+        class="modal-close" data-close>×</button><span class="eyebrow">ACTION PREVIEW</span>
+      <div class="modal-icon" id="modal-action-icon">⌂</div>
+      <h2 id="action-modal-title">Build affordable homes</h2>
+      <p id="action-modal-description"></p>
+      <div class="cost-row"><span>Project cost</span><strong id="modal-action-cost">$4.0M</strong></div>
+      <div class="impact-preview" id="impact-preview"></div>
+      <div class="warning" id="modal-warning" hidden></div>
+      <div class="modal-actions"><button class="secondary-button" data-close>Not now</button><button
+          class="primary-button" id="confirm-action">Commit action →</button></div>
+    </section>
+  </div>
+  <div class="modal-backdrop" id="custom-modal" hidden>
+    <section class="modal-window" role="dialog" aria-modal="true" aria-labelledby="custom-title-heading"><button
+        class="modal-close" data-close>×</button><span class="eyebrow">MAKE IT YOURS</span>
+      <h2 id="custom-title-heading">Create a community challenge</h2>
+      <p>Custom challenges are player-created, not verified public data.</p>
+      <form id="custom-form" class="custom-form"><label for="custom-title">Challenge name</label><input
+          id="custom-title" maxlength="70" required placeholder="e.g. Too few safe bike routes"><label
+          for="custom-category">Category</label><select id="custom-category">
+          <option value="systems">Systems</option>
+          <option value="people">People</option>
+          <option value="planet">Planet</option>
+        </select><label for="custom-description">What's happening?</label><textarea id="custom-description" rows="3"
+          maxlength="280" required placeholder="Describe the issue and who it affects."></textarea><button
+          class="primary-button" type="submit">Add challenge →</button></form>
+    </section>
+  </div>
+  <div class="modal-backdrop" id="help-modal" hidden>
+    <section class="modal-window" role="dialog" aria-modal="true" aria-labelledby="help-title"><button
+        class="modal-close" data-close>×</button><span class="eyebrow">HOW CIVICLENS WORKS</span>
+      <h2 id="help-title">Every choice has a ripple.</h2>
+      <div class="help-steps">
+        <div><b>01</b><span><strong>Pick a problem</strong><small>Explore what's happening and what success looks
+              like.</small></span></div>
+        <div><b>02</b><span><strong>Compare trade-offs</strong><small>Projects cost money, take time, and affect
+              multiple stats.</small></span></div>
+        <div><b>03</b><span><strong>Commit your move</strong><small>Stats update and future effects are
+              scheduled.</small></span></div>
+        <div><b>04</b><span><strong>Review your strategy</strong><small>The rubric scores wellbeing, budget, fairness,
+              and long-term thinking.</small></span></div>
+      </div>
+      <p class="fine-print">Starter values and action effects are illustrative game data, not real-world measurements or
+        calibrated predictions.</p>
+    </section>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="js/theme.js"></script>
+  <script src="js/universe.js"></script>
+  <script src="js/game.js"></script>
+</body>
+
+</html>

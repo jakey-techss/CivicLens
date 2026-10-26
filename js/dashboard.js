@@ -1,80 +1,77 @@
 const US_STATES = {
-    "Alabama": "AL",
-    "Alaska": "AK",
-    "Arizona": "AZ",
-    "Arkansas": "AR",
-    "California": "CA",
-    "Colorado": "CO",
-    "Connecticut": "CT",
-    "Delaware": "DE",
-    "Florida": "FL",
-    "Georgia": "GA",
-    "Hawaii": "HI",
-    "Idaho": "ID",
-    "Illinois": "IL",
-    "Indiana": "IN",
-    "Iowa": "IA",
-    "Kansas": "KS",
-    "Kentucky": "KY",
-    "Louisiana": "LA",
-    "Maine": "ME",
-    "Maryland": "MD",
-    "Massachusetts": "MA",
-    "Michigan": "MI",
-    "Minnesota": "MN",
-    "Mississippi": "MS",
-    "Missouri": "MO",
-    "Montana": "MT",
-    "Nebraska": "NE",
-    "Nevada": "NV",
+    Alabama: "AL",
+    Alaska: "AK",
+    Arizona: "AZ",
+    Arkansas: "AR",
+    California: "CA",
+    Colorado: "CO",
+    Connecticut: "CT",
+    Delaware: "DE",
+    Florida: "FL",
+    Georgia: "GA",
+    Hawaii: "HI",
+    Idaho: "ID",
+    Illinois: "IL",
+    Indiana: "IN",
+    Iowa: "IA",
+    Kansas: "KS",
+    Kentucky: "KY",
+    Louisiana: "LA",
+    Maine: "ME",
+    Maryland: "MD",
+    Massachusetts: "MA",
+    Michigan: "MI",
+    Minnesota: "MN",
+    Mississippi: "MS",
+    Missouri: "MO",
+    Montana: "MT",
+    Nebraska: "NE",
+    Nevada: "NV",
     "New Hampshire": "NH",
     "New Jersey": "NJ",
     "New Mexico": "NM",
     "New York": "NY",
     "North Carolina": "NC",
     "North Dakota": "ND",
-    "Ohio": "OH",
-    "Oklahoma": "OK",
-    "Oregon": "OR",
-    "Pennsylvania": "PA",
+    Ohio: "OH",
+    Oklahoma: "OK",
+    Oregon: "OR",
+    Pennsylvania: "PA",
     "Rhode Island": "RI",
     "South Carolina": "SC",
     "South Dakota": "SD",
-    "Tennessee": "TN",
-    "Texas": "TX",
-    "Utah": "UT",
-    "Vermont": "VT",
-    "Virginia": "VA",
-    "Washington": "WA",
+    Tennessee: "TN",
+    Texas: "TX",
+    Utah: "UT",
+    Vermont: "VT",
+    Virginia: "VA",
+    Washington: "WA",
     "West Virginia": "WV",
-    "Wisconsin": "WI",
-    "Wyoming": "WY"
+    Wisconsin: "WI",
+    Wyoming: "WY",
 };
 
-checkSession()
+checkSession();
 async function checkSession() {
-    const { data: { session } } = await supabaseClient.auth.getSession();
+    const {
+        data: { session },
+    } = await supabaseClient.auth.getSession();
     if (!session) {
-        window.location.assign("index.html")
+        window.location.assign("index.html");
     }
 }
 
+const $ = (selector) => document.querySelector(selector);
 
+const $$ = (selector) => [...document.querySelectorAll(selector)];
 
-const $ = selector =>
-    document.querySelector(selector);
-
-const $$ = selector =>
-    [...document.querySelectorAll(selector)];
-
-const esc = value =>
+const esc = (value) =>
     String(value ?? "")
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
-
 
 let selectedType = "scratch";
 let selectedDifficulty = "freeplay";
@@ -84,79 +81,68 @@ let currentStep = 1;
 
 let activeFriend = null;
 
-
 let worlds = [];
 
-
-let sharedWorlds =
-    JSON.parse(
-        localStorage.getItem("civiclens_shared_v3")
-    ) || [
-        {
-            id: crypto.randomUUID(),
-            name: "Newark 2040",
-            location: "Newark, NJ",
-            owner: "Maya Johnson",
-            description:
-                "A collaborative future-city experiment.",
-            mode: "scratch",
-            difficulty: "medium",
-            problems: 6,
-            analyses: 9,
-            progress: 31
-        }
-    ];
-
+let sharedWorlds = JSON.parse(localStorage.getItem("civiclens_shared_v3")) || [
+    {
+        id: crypto.randomUUID(),
+        name: "Newark 2040",
+        location: "Newark, NJ",
+        owner: "Maya Johnson",
+        description: "A collaborative future-city experiment.",
+        mode: "scratch",
+        difficulty: "medium",
+        problems: 6,
+        analyses: 9,
+        progress: 31,
+    },
+];
 
 let friends = [];
 
+let messages = JSON.parse(localStorage.getItem("civiclens_messages_v3")) || {
+    f1: [
+        {
+            me: false,
+            text: "Want to collaborate on Newark 2040?",
+        },
+        {
+            me: true,
+            text: "Absolutely. I'll join.",
+        },
+    ],
+    f2: [
+        {
+            me: false,
+            text: "Did you see the new community map?",
+        },
+    ],
+    f3: [],
+    f4: [],
+};
 
-let messages =
-    JSON.parse(
-        localStorage.getItem("civiclens_messages_v3")
-    ) || {
-        f1: [
-            {
-                me: false,
-                text:
-                    "Want to collaborate on Newark 2040?"
-            },
-            {
-                me: true,
-                text:
-                    "Absolutely. I'll join."
-            }
-        ],
-        f2: [
-            {
-                me: false,
-                text:
-                    "Did you see the new community map?"
-            }
-        ],
-        f3: [],
-        f4: []
-    };
-
-
-let notifications =
-    [];
-
+let notifications = [];
 
 //Send All Information To Backend
 let universal_userInfo;
 async function save() {
-    const { data: { user }, error: authError } =
-        await supabaseClient.auth.getUser();
+    const {
+        data: { user },
+        error: authError,
+    } = await supabaseClient.auth.getUser();
 
     if (authError || !user) {
-        window.location.assign("login.html")
-        return
+        window.location.assign("login.html");
+        return;
     }
 
     const { error } = await supabaseClient
         .from("users")
-        .update({ friend_ids: friends, world_ids: worlds, notification: notifications })
+        .update({
+            friend_ids: friends,
+            world_ids: worlds,
+            notification: notifications,
+        })
         .eq("id", user.id);
 
     if (error) {
@@ -166,59 +152,46 @@ async function save() {
     }
 }
 
-
 function modeLabel(mode) {
-
     return mode === "improve"
         ? "Improve Existing Community"
         : "Start From Scratch";
 }
 
-
 function diffLabel(difficulty) {
-
-    return {
-        freeplay: "Free-play",
-        medium: "Medium",
-        reallife: "Real Life",
-        hell: "Hell Mode"
-    }[difficulty] || difficulty;
+    return (
+        {
+            freeplay: "Free-play",
+            medium: "Medium",
+            reallife: "Real Life",
+            hell: "Hell Mode",
+        }[difficulty] || difficulty
+    );
 }
 
 let fullUserInfo;
 
 async function initUser() {
-
     if (!supabaseClient) {
         return;
     }
 
-
     const {
-        data: { session }
-    } =
-        await supabaseClient.auth.getSession();
-
+        data: { session },
+    } = await supabaseClient.auth.getSession();
 
     if (!session) {
-
-        window.location.href =
-            "login.html";
+        window.location.href = "login.html";
 
         return;
     }
 
-
-    const metadata =
-        session.user.user_metadata || {};
+    const metadata = session.user.user_metadata || {};
 
     universal_userInfo = session.user;
 
     const name =
-        metadata.display_name ||
-        session.user.email?.split("@")[0] ||
-        "Explorer";
-
+        metadata.display_name || session.user.email?.split("@")[0] || "Explorer";
 
     setUser(name);
 
@@ -226,63 +199,38 @@ async function initUser() {
         .from("users")
         .select("*")
         .eq("id", session.user.id)
-        .single()
-        ;
-
+        .single();
     if (error) {
         console.error("Error fetching user:", error.message);
     } else {
         console.log("User information:", usersInfo);
     }
-    notifications = usersInfo.notification
-    friends = usersInfo.friend_ids
-    worlds = usersInfo.world_ids
-    renderFriends()
-    renderNotifications()
-    renderWorlds()
+    notifications = usersInfo.notification;
+    friends = usersInfo.friend_ids;
+    worlds = usersInfo.world_ids;
+    renderFriends();
+    renderNotifications();
+    renderWorlds();
 }
 
 let universal_username;
 function setUser(name) {
-    universal_username = name
-    const letter =
-        name[0]?.toUpperCase() || "?";
+    universal_username = name;
+    const letter = name[0]?.toUpperCase() || "?";
 
+    $$(".profile-name, .top-profile-name").forEach((element) => {
+        element.textContent = name;
+    });
 
-    $$(".profile-name, .top-profile-name")
-        .forEach(element => {
-
-            element.textContent =
-                name;
-        });
-
-
-    $$(".profile-avatar, .top-avatar")
-        .forEach(element => {
-
-            element.textContent =
-                letter;
-        });
+    $$(".profile-avatar, .top-avatar").forEach((element) => {
+        element.textContent = letter;
+    });
 }
 
-
-
-
 function mapPreview(index) {
+    const types = ["city", "coast", "mountain", "wilderness", "desert", "chaos"];
 
-    const types = [
-        "city",
-        "coast",
-        "mountain",
-        "wilderness",
-        "desert",
-        "chaos"
-    ];
-
-
-    const type =
-        types[index % types.length];
-
+    const type = types[index % types.length];
 
     return `
         <div class="world-map map-${type}">
@@ -333,10 +281,9 @@ async function getCreatorById(userId) {
         return null;
     }
 
-    const { data, error } = await supabaseClient.rpc(
-        "get_display_name",
-        { p_user_id: userId }
-    );
+    const { data, error } = await supabaseClient.rpc("get_display_name", {
+        p_user_id: userId,
+    });
 
     if (error) {
         console.error("Error fetching creator name:", error.message);
@@ -347,37 +294,28 @@ async function getCreatorById(userId) {
 }
 
 async function loadWorldLocations(worlds) {
-    const cards = document.querySelectorAll('.world-card');
+    const cards = document.querySelectorAll(".world-card");
     cards.forEach(async (card) => {
         let world = worlds.find((item) => {
-            return item.id == card.dataset.world
-        })
+            return item.id == card.dataset.world;
+        });
         if (world) {
             const location = await getLocationById(world.location_id);
             const creatorName = await getCreatorById(world.creator_id);
-            const locationElement = card.querySelector(
-                ".world-location-name"
-            );
-            const creatorElement = card.querySelector(
-                ".shared-owner"
-            );
-            if(creatorElement){
-                creatorElement.textContent = creatorName
+            const locationElement = card.querySelector(".world-location-name");
+            const creatorElement = card.querySelector(".shared-owner");
+            if (creatorElement) {
+                creatorElement.textContent = creatorName;
             }
-            
+
             locationElement.textContent = location
                 ? location.title + ", " + US_STATES[location.state]
                 : "Location unavailable";
         }
-    })
+    });
 }
 
-function worldCard(
-    world,
-    index,
-    shared = false
-) {
-
+function worldCard(world, index, shared = false) {
     return `
         <article
             class="world-card"
@@ -410,13 +348,11 @@ function worldCard(
 
 
                     ${!shared
-
             ? `
                                 <span class="shared-owner">
                                     BY ${esc(world.creator_id)}
                                 </span>
                             `
-
             : `
                                 <button
                                     class="more-button"
@@ -466,9 +402,7 @@ function worldCard(
                     </span>
 
                     <span class="world-tag">
-                        ${Number(
-            world.problems || 0
-        )} problems
+                        ${Number(world.problems || 0)} problems
                     </span>
 
                 </div>
@@ -478,10 +412,7 @@ function worldCard(
 
                     <span class="world-last">
 
-                        ${!shared
-            ? "Shared with you"
-            : "Continue exploring"
-        }
+                        ${!shared ? "Shared with you" : "Continue exploring"}
 
                     </span>
 
@@ -500,172 +431,85 @@ function worldCard(
     `;
 }
 
-
 async function renderWorlds() {
+    const grid = $("#worldGrid");
 
-    const grid =
-        $("#worldGrid");
+    const empty = $("#emptyState");
 
-    const empty =
-        $("#emptyState");
-
-
-    if (!grid)
-        return;
+    if (!grid) return;
     grid.innerHTML = worlds.map(worldCard).join("");
-    await loadWorldLocations(worlds)
-
+    await loadWorldLocations(worlds);
 
     if (empty) {
-
-        empty.style.display =
-            worlds.length
-                ? "none"
-                : "block";
+        empty.style.display = worlds.length ? "none" : "block";
     }
 
+    grid.style.display = worlds.length ? "grid" : "none";
 
-    grid.style.display =
-        worlds.length
-            ? "grid"
-            : "none";
+    $$("#worldGrid .world-card").forEach((card) => {
+        card.onclick = (event) => {
+            if (event.target.closest("[data-delete]")) {
+                return;
+            }
 
+            const world = worlds.find((item) => item.id === card.dataset.world);
 
-    $$("#worldGrid .world-card")
-        .forEach(card => {
+            if (!world) return;
 
-            card.onclick = event => {
+            showToast(`Opening ${world.world_name}`, "→");
+        };
+    });
 
-                if (
-                    event.target.closest(
-                        "[data-delete]"
-                    )
-                ) {
+    $$("[data-delete]").forEach((button) => {
+        button.onclick = (event) => {
+            event.stopPropagation();
 
-                    return;
-                }
+            worlds = worlds.filter((world) => world.id !== button.dataset.delete);
 
+            save();
 
-                const world =
-                    worlds.find(
-                        item =>
-                            item.id ===
-                            card.dataset.world
-                    );
-
-
-                if (!world)
-                    return;
-
-
-                showToast(
-                    `Opening ${world.world_name}`,
-                    "→"
-                );
-            };
-        });
-
-
-    $$("[data-delete]")
-        .forEach(button => {
-
-            button.onclick = event => {
-
-                event.stopPropagation();
-
-
-                worlds =
-                    worlds.filter(
-                        world =>
-                            world.id !==
-                            button.dataset.delete
-                    );
-
-
-                save();
-
-
-
-                showToast(
-                    "World deleted",
-                    "×"
-                );
-            };
-        });
-
+            showToast("World deleted", "×");
+            renderWorlds();
+        };
+    });
 }
 
-
 async function renderShared() {
+    const grid = $("#sharedGrid");
 
-    const grid =
-        $("#sharedGrid");
+    if (!grid) return;
 
-
-    if (!grid)
-        return;
-
-
-    grid.innerHTML =
-        sharedWorlds
-            .map(
-                (world, index) =>
-                    worldCard(
-                        world,
-                        index,
-                        true
-                    )
-            )
-            .join("");
+    grid.innerHTML = sharedWorlds
+        .map((world, index) => worldCard(world, index, true))
+        .join("");
     //await loadWorldLocations(sharedWorlds)
 }
 
-
 function renderFriends() {
+    const grid = $("#friendsGrid");
 
-    const grid =
-        $("#friendsGrid");
+    if (!grid) return;
 
+    const online = friends.filter((friend) => friend.status === "Online").length;
 
-    if (!grid)
-        return;
-
-
-    const online =
-        friends.filter(
-            friend =>
-                friend.status ===
-                "Online"
-        ).length;
-
-
-    const onlineCounter =
-        $("#friendsOnlineCount");
-
+    const onlineCounter = $("#friendsOnlineCount");
 
     if (onlineCounter) {
-
-        onlineCounter.textContent =
-            `${online} online`;
+        onlineCounter.textContent = `${online} online`;
     }
 
-    grid.innerHTML =
-        friends
-            .map(
-                friend => `
+    grid.innerHTML = friends
+        .map(
+            (friend) => `
 
                     <div
                         class="friend-card"
-                        data-friend="${esc(
-                    friend.id
-                )}"
+                        data-friend="${esc(friend.id)}"
                     >
 
                         <span class="profile-avatar">
 
-                            ${esc(
-                    friend.display_name[0]
-                )}
+                            ${esc(friend.display_name[0])}
 
                         </span>
 
@@ -673,15 +517,11 @@ function renderFriends() {
                         <div class="friend-info">
 
                             <strong>
-                                ${esc(
-                    friend.display_name
-                )}
+                                ${esc(friend.display_name)}
                             </strong>
 
                             <span>
-                                @${esc(
-                    friend.display_name
-                )}
+                                @${esc(friend.display_name)}
                             </span>
 
                         </div>
@@ -690,79 +530,58 @@ function renderFriends() {
                         <span
                             class="
                                 friend-status
-                                ${friend.status ===
-                        "online"
-                        ? "online"
-                        : friend.status.toLowerCase() == "requested" ? "Requested" : ""
-                    }
+                                ${friend.status === "online"
+                    ? "online"
+                    : friend.status.toLowerCase() == "requested"
+                        ? "Requested"
+                        : ""
+                }
                             "
                         >
                             ${friend.status}
                         </span>
 
                     </div>
-                `
-            )
-            .join("");
-    $$(".friend-card")
-        .forEach(card => {
-            if (friends.find(
-                (friend) => {
-                    return friend.id == card.dataset.friend
-                }
-            ).status != "Requested") {
-                card.onclick = () => {
+                `,
+        )
+        .join("");
+    $$(".friend-card").forEach((card) => {
+        if (
+            friends.find((friend) => {
+                return friend.id == card.dataset.friend;
+            }).status != "Requested"
+        ) {
+            card.onclick = () => {
+                openChat(card.dataset.friend);
 
-                    openChat(
-                        card.dataset.friend
-                    );
-
-                    activateSection(
-                        "chatSection"
-                    );
-                };
-            }
-        });
-
+                activateSection("chatSection");
+            };
+        }
+    });
 
     renderChatFriends();
 }
 
-
 function renderChatFriends() {
+    const container = $("#chatFriends");
 
-    const container =
-        $("#chatFriends");
+    if (!container) return;
 
-
-    if (!container)
-        return;
-
-
-    container.innerHTML =
-        friends
-            .map(
-                friend => `
+    container.innerHTML = friends
+        .map(
+            (friend) => `
 
                     <div
                         class="
                             chat-friend
-                            ${activeFriend?.id ===
-                        friend.id
-                        ? "active"
-                        : ""
-                    }
+                            ${activeFriend?.id === friend.id ? "active" : ""}
                         "
-                        data-friend="${esc(
-                        friend.id
-                    )}"
+                        data-friend="${esc(friend.id)}"
                     >
 
                         <span class="profile-avatar">
 
-                            ${esc(
-                        friend.display_name[0]
-                    )}
+                            ${esc(friend.display_name[0])}
 
                         </span>
 
@@ -770,130 +589,68 @@ function renderChatFriends() {
                         <div>
 
                             <strong>
-                                ${esc(
-                        friend.display_name
-                    )}
+                                ${esc(friend.display_name)}
                             </strong>
 
                             <small>
-                                @${esc(
-                        friend.display_name
-                    )}
+                                @${esc(friend.display_name)}
                             </small>
 
                         </div>
 
                     </div>
-                `
-            )
-            .join("");
+                `,
+        )
+        .join("");
 
-
-    $$(".chat-friend")
-        .forEach(element => {
-
-            element.onclick = () =>
-                openChat(
-                    element.dataset.friend
-                );
-        });
+    $$(".chat-friend").forEach((element) => {
+        element.onclick = () => openChat(element.dataset.friend);
+    });
 }
-
 
 function updateStats() {
+    const problems = worlds.reduce(
+        (total, world) => total + Number(world.problems || 0),
+        0,
+    );
 
-    const problems =
-        worlds.reduce(
-            (total, world) =>
-                total +
-                Number(
-                    world.problems || 0
-                ),
-            0
-        );
+    const analyses = worlds.reduce(
+        (total, world) => total + Number(world.analyses || 0),
+        0,
+    );
 
+    if ($("#worldCount")) $("#worldCount").textContent = worlds.length;
 
-    const analyses =
-        worlds.reduce(
-            (total, world) =>
-                total +
-                Number(
-                    world.analyses || 0
-                ),
-            0
-        );
+    if ($("#problemCount")) $("#problemCount").textContent = problems;
 
+    if ($("#analysisCount")) $("#analysisCount").textContent = analyses;
 
-    if ($("#worldCount"))
-        $("#worldCount").textContent =
-            worlds.length;
+    if ($("#friendCount")) $("#friendCount").textContent = friends.length;
 
+    if ($("#sharedBadge")) $("#sharedBadge").textContent = sharedWorlds.length;
 
-    if ($("#problemCount"))
-        $("#problemCount").textContent =
-            problems;
-
-
-    if ($("#analysisCount"))
-        $("#analysisCount").textContent =
-            analyses;
-
-
-    if ($("#friendCount"))
-        $("#friendCount").textContent =
-            friends.length;
-
-
-    if ($("#sharedBadge"))
-        $("#sharedBadge").textContent =
-            sharedWorlds.length;
-
-
-    if ($("#friendBadge"))
-        $("#friendBadge").textContent =
-            friends.length;
-
+    if ($("#friendBadge")) $("#friendBadge").textContent = friends.length;
 
     if ($("#messageBadge"))
-        $("#messageBadge").textContent =
-            Object.values(messages)
-                .flat()
-                .length;
+        $("#messageBadge").textContent = Object.values(messages).flat().length;
 }
 
-
-
 function renderNotifications() {
+    const list = $("#notificationList");
 
-    const list =
-        $("#notificationList");
+    const dot = $("#notificationDot");
 
-    const dot =
-        $("#notificationDot");
+    if (!list) return;
 
-
-    if (!list)
-        return;
-
-
-    const unread =
-        notifications.filter(
-            notification =>
-                notification.hasRead == false
-        ).length;
-
+    const unread = notifications.filter(
+        (notification) => notification.hasRead == false,
+    ).length;
 
     if (dot) {
-
-        dot.style.display =
-            unread > 0
-                ? "block"
-                : "none";
+        dot.style.display = unread > 0 ? "block" : "none";
     }
 
-
     if (!notifications.length) {
-
         list.innerHTML = `
 
             <div class="notification-empty" style="padding:12px;">
@@ -971,7 +728,7 @@ function renderNotifications() {
     stroke-width="1.8"
     stroke-linecap="round"
   />
-</svg>`
+</svg>`;
     let regIcon = `<svg
   xmlns="http://www.w3.org/2000/svg"
   width="20"
@@ -1005,10 +762,11 @@ function renderNotifications() {
     stroke-width="2"
     stroke-linecap="round"
   />
-</svg>`
+</svg>`;
     let i = 0;
     list.innerHTML = notifications
-        .map(notification => `
+        .map(
+            (notification) => `
         <div
             class="
                 notification-item
@@ -1017,28 +775,28 @@ function renderNotifications() {
         >
             <span class="notif-icon">
                 ${notification.header.includes("friend request")
-                ? friendIcon
-                : regIcon
-            }
+                    ? friendIcon
+                    : regIcon
+                }
             </span>
 
             <div class="notification-content">
                 <strong>
                     ${esc(
-                notification.type === "request"
-                    ? notification.header.includes("friend request")
-                        ? "New Friend Request"
-                        : notification.type.substring(0, 1).toUpperCase() +
-                        notification.type.substring(1)
-                    : "New Message"
-            )}
+                    notification.type === "request"
+                        ? notification.header.includes("friend request")
+                            ? "New Friend Request"
+                            : notification.type.substring(0, 1).toUpperCase() +
+                            notification.type.substring(1)
+                        : "New Message",
+                )}
                 </strong>
 
                 <small>${esc(notification.header)}</small>
 
                 ${notification.type === "request" &&
-                notification.header.toLowerCase().includes("friend request")
-                ? `
+                    notification.header.toLowerCase().includes("friend request")
+                    ? `
                             <div class="friend-request-actions">
                                 <button
                                     class="accept-request"
@@ -1055,355 +813,208 @@ function renderNotifications() {
                                 </button>
                             </div>
                         `
-                : ""
-            }
+                    : ""
+                }
             </div>
         </div>
-    `
+    `,
         )
 
         .join("");
 
-    list.querySelectorAll(".accept-request").forEach(button => {
+    list.querySelectorAll(".accept-request").forEach((button) => {
         button.addEventListener("click", async () => {
             const notificationId = button.dataset.id;
-            addFriend(notifications[notificationId].header, notificationId)
-
+            addFriend(notifications[notificationId].header, notificationId);
         });
     });
 
-    list.querySelectorAll(".decline-request").forEach(button => {
+    list.querySelectorAll(".decline-request").forEach((button) => {
         button.addEventListener("click", async () => {
             const notificationId = button.dataset.id;
-
         });
     });
-
 }
 
 async function addFriend(notifName, notificationId) {
-    let query = notifName.substring(0, notifName.indexOf(" sent"))
+    let query = notifName.substring(0, notifName.indexOf(" sent"));
 
     const possiblePeople = await supabaseClient.rpc("search_users", {
         search_term: query,
     });
 
-    const { data } = await supabaseClient.rpc("accept_friend_request", { p_friend_id: possiblePeople.data[0].id });
-    notifications.splice(notificationId, 1)
-    console.log(notifications)
-    save()
-    renderNotifications()
-
+    const { data } = await supabaseClient.rpc("accept_friend_request", {
+        p_friend_id: possiblePeople.data[0].id,
+    });
+    notifications.splice(notificationId, 1);
+    console.log(notifications);
+    save();
+    renderNotifications();
 }
-
 
 async function declineFriend(notifName, notificationId) {
-    let query = notifName.substring(0, notifName.indexOf(" sent"))
+    let query = notifName.substring(0, notifName.indexOf(" sent"));
 
     const possiblePeople = await supabaseClient.rpc("search_users", {
         search_term: query,
     });
 
-    const { data } = await supabaseClient.rpc("decline_friend_request", { p_friend_id: possiblePeople.data[0].id });
-    notifications.splice(notificationId, 1)
-    console.log(notifications)
-    save()
-    renderNotifications()
-
+    const { data } = await supabaseClient.rpc("decline_friend_request", {
+        p_friend_id: possiblePeople.data[0].id,
+    });
+    notifications.splice(notificationId, 1);
+    console.log(notifications);
+    save();
+    renderNotifications();
 }
 
-
 function openNotifications() {
+    const popover = $("#notificationPopover");
 
-    const popover =
-        $("#notificationPopover");
+    if (!popover) return;
 
-
-    if (!popover)
-        return;
-
-
-    const isOpen =
-        popover.classList.contains(
-            "open"
-        );
-
+    const isOpen = popover.classList.contains("open");
 
     if (isOpen) {
-
-        popover.classList.remove(
-            "open"
-        );
+        popover.classList.remove("open");
 
         return;
     }
 
+    popover.classList.add("open");
 
-    popover.classList.add(
-        "open"
-    );
+    popover.setAttribute("aria-hidden", "false");
 
-
-    popover.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-
-    notifications =
-        notifications.map(
-            notification => ({
-                ...notification,
-                hasRead: true
-            })
-        );
-
+    notifications = notifications.map((notification) => ({
+        ...notification,
+        hasRead: true,
+    }));
 
     save();
 
     renderNotifications();
 }
 
-
 function closeNotifications() {
+    const popover = $("#notificationPopover");
 
-    const popover =
-        $("#notificationPopover");
+    if (!popover) return;
 
+    popover.classList.remove("open");
 
-    if (!popover)
-        return;
-
-
-    popover.classList.remove(
-        "open"
-    );
-
-
-    popover.setAttribute(
-        "aria-hidden",
-        "true"
-    );
+    popover.setAttribute("aria-hidden", "true");
 }
 
-
-const notificationButton =
-    $("#notificationButton");
-
+const notificationButton = $("#notificationButton");
 
 if (notificationButton) {
+    notificationButton.onclick = (event) => {
+        event.stopPropagation();
 
-    notificationButton.onclick =
-        event => {
-
-            event.stopPropagation();
-
-            openNotifications();
-        };
+        openNotifications();
+    };
 }
 
-
-const clearNotifications =
-    $("#clearNotifications");
-
+const clearNotifications = $("#clearNotifications");
 
 if (clearNotifications) {
+    clearNotifications.onclick = (event) => {
+        event.stopPropagation();
 
-    clearNotifications.onclick =
-        event => {
+        notifications = [];
 
-            event.stopPropagation();
+        save();
 
+        renderNotifications();
 
-            notifications = [];
-
-            save();
-
-            renderNotifications();
-
-            showToast(
-                "Notifications cleared",
-                "✓"
-            );
-        };
+        showToast("Notifications cleared", "✓");
+    };
 }
 
-
-document.addEventListener(
-    "click",
-    event => {
-
-        if (
-            !event.target.closest(
-                "#notificationPopover"
-            ) &&
-            !event.target.closest(
-                "#notificationButton"
-            )
-        ) {
-
-            closeNotifications();
-        }
+document.addEventListener("click", (event) => {
+    if (
+        !event.target.closest("#notificationPopover") &&
+        !event.target.closest("#notificationButton")
+    ) {
+        closeNotifications();
     }
-);
-
-
+});
 
 function activateSection(id) {
+    $$(".side-link").forEach((button) => {
+        button.classList.toggle("active", button.dataset.section === id);
+    });
 
-    $$(".side-link")
-        .forEach(button => {
-
-            button.classList.toggle(
-                "active",
-                button.dataset.section ===
-                id
-            );
-        });
-
-
-    $$(".dashboard-section")
-        .forEach(section => {
-
-            section.classList.toggle(
-                "active",
-                section.id === id
-            );
-        });
+    $$(".dashboard-section").forEach((section) => {
+        section.classList.toggle("active", section.id === id);
+    });
 }
 
+$$(".side-link").forEach((button) => {
+    button.onclick = () => {
+        activateSection(button.dataset.section);
+    };
+});
 
-$$(".side-link")
-    .forEach(button => {
+$$(".view-button").forEach((button) => {
+    button.onclick = () => {
+        $$(".view-button").forEach((item) => item.classList.remove("active"));
 
-        button.onclick = () => {
+        button.classList.add("active");
 
-            activateSection(
-                button.dataset.section
-            );
-        };
-    });
+        const listView = button.dataset.view === "list";
 
-
-$$(".view-button")
-    .forEach(button => {
-
-        button.onclick = () => {
-
-            $$(".view-button")
-                .forEach(item =>
-                    item.classList.remove(
-                        "active"
-                    )
-                );
-
-
-            button.classList.add(
-                "active"
-            );
-
-
-            const listView =
-                button.dataset.view ===
-                "list";
-
-
-            $("#worldGrid")
-                ?.classList.toggle(
-                    "list-view",
-                    listView
-                );
-        };
-    });
-
-
+        $("#worldGrid")?.classList.toggle("list-view", listView);
+    };
+});
 
 function openCreate() {
-
     resetCreate();
 
-    $("#createModal")
-        ?.classList.add("open");
+    $("#createModal")?.classList.add("open");
 
-    document.body.style.overflow =
-        "hidden";
+    document.body.style.overflow = "hidden";
 
-    getLocation()
+    getLocation();
 }
-
 
 function closeCreate() {
+    $("#createModal")?.classList.remove("open");
 
-    $("#createModal")
-        ?.classList.remove("open");
-
-    document.body.style.overflow =
-        "";
+    document.body.style.overflow = "";
 }
 
-
 function resetCreate() {
+    selectedType = "scratch";
 
-    selectedType =
-        "scratch";
+    selectedDifficulty = "freeplay";
 
-    selectedDifficulty =
-        "freeplay";
+    selectedCommunity = null;
 
-    selectedCommunity =
-        null;
+    selectedCollaborators = [];
 
-    selectedCollaborators =
-        [];
+    currentStep = 1;
 
-    currentStep =
-        1;
-
-
-    if ($("#worldName"))
-        $("#worldName").value =
-            "";
-
+    if ($("#worldName")) $("#worldName").value = "";
 
     if ($("#selectedCommunityName"))
-        $("#selectedCommunityName")
-            .textContent =
-            "No community selected";
-
+        $("#selectedCommunityName").textContent = "No community selected";
 
     if ($("#selectedCommunityMeta"))
-        $("#selectedCommunityMeta")
-            .textContent =
-            "Choose a place above.";
+        $("#selectedCommunityMeta").textContent = "Choose a place above.";
 
+    if ($("#communityContinue")) $("#communityContinue").disabled = true;
 
-    if ($("#communityContinue"))
-        $("#communityContinue")
-            .disabled =
-            true;
+    $$(".world-type").forEach((button) => {
+        button.classList.toggle("selected", button.dataset.type === "scratch");
+    });
 
-
-    $$(".world-type")
-        .forEach(button => {
-
-            button.classList.toggle(
-                "selected",
-                button.dataset.type ===
-                "scratch"
-            );
-        });
-
-
-    $$(".difficulty")
-        .forEach(button => {
-
-            button.classList.toggle(
-                "selected",
-                button.dataset.difficulty ===
-                "freeplay"
-            );
-        });
-
+    $$(".difficulty").forEach((button) => {
+        button.classList.toggle(
+            "selected",
+            button.dataset.difficulty === "freeplay",
+        );
+    });
 
     showCreateStep(1);
 
@@ -1412,308 +1023,147 @@ function resetCreate() {
     updateSummary();
 }
 
-
 function showCreateStep(step) {
+    currentStep = step;
 
-    currentStep =
-        step;
+    $$(".modal-step").forEach((section) => {
+        section.classList.toggle("active", Number(section.dataset.step) === step);
+    });
 
-
-    $$(".modal-step")
-        .forEach(section => {
-
-            section.classList.toggle(
-                "active",
-                Number(
-                    section.dataset.step
-                ) === step
-            );
-        });
-
-
-    $$(".create-progress button")
-        .forEach(button => {
-
-            button.classList.toggle(
-                "active",
-                Number(
-                    button.dataset.createStep
-                ) === step
-            );
-        });
-
+    $$(".create-progress button").forEach((button) => {
+        button.classList.toggle(
+            "active",
+            Number(button.dataset.createStep) === step,
+        );
+    });
 
     updateSummary();
 }
 
-
 /* CREATE BUTTONS */
 
-$("#openCreate")?.addEventListener(
-    "click",
-    openCreate
-);
+$("#openCreate")?.addEventListener("click", openCreate);
 
-$("#sideCreate")?.addEventListener(
-    "click",
-    openCreate
-);
+$("#sideCreate")?.addEventListener("click", openCreate);
 
-$("#emptyCreate")?.addEventListener(
-    "click",
-    openCreate
-);
+$("#emptyCreate")?.addEventListener("click", openCreate);
 
-$("#closeCreate")?.addEventListener(
-    "click",
-    closeCreate
-);
+$("#closeCreate")?.addEventListener("click", closeCreate);
 
-
-$("#createModal")?.addEventListener(
-    "click",
-    event => {
-
-        if (
-            event.target.id ===
-            "createModal"
-        ) {
-
-            closeCreate();
-        }
+$("#createModal")?.addEventListener("click", (event) => {
+    if (event.target.id === "createModal") {
+        closeCreate();
     }
-);
-
+});
 
 /* =========================================================
    CREATE STEPS
 ========================================================= */
 
-$$("[data-next]")
-    .forEach(button => {
+$$("[data-next]").forEach((button) => {
+    button.onclick = () => {
+        const next = Number(button.dataset.next);
 
-        button.onclick = () => {
+        if (next >= 4 && !selectedCommunity) {
+            showToast("Select a community first", "!");
 
-            const next =
-                Number(
-                    button.dataset.next
-                );
+            return;
+        }
 
+        showCreateStep(next);
+    };
+});
 
-            if (
-                next >= 4 &&
-                !selectedCommunity
-            ) {
+$$("[data-back]").forEach((button) => {
+    button.onclick = () => {
+        showCreateStep(Number(button.dataset.back));
+    };
+});
 
-                showToast(
-                    "Select a community first",
-                    "!"
-                );
+$$("[data-create-step]").forEach((button) => {
+    button.onclick = () => {
+        const step = Number(button.dataset.createStep);
+
+        if (step > currentStep) {
+            if (step >= 4 && !selectedCommunity) {
+                showToast("Select a community first", "!");
 
                 return;
             }
+        }
 
-
-            showCreateStep(next);
-        };
-    });
-
-
-$$("[data-back]")
-    .forEach(button => {
-
-        button.onclick = () => {
-
-            showCreateStep(
-                Number(
-                    button.dataset.back
-                )
-            );
-        };
-    });
-
-
-$$("[data-create-step]")
-    .forEach(button => {
-
-        button.onclick = () => {
-
-            const step =
-                Number(
-                    button.dataset.createStep
-                );
-
-
-            if (
-                step > currentStep
-            ) {
-
-                if (
-                    step >= 4 &&
-                    !selectedCommunity
-                ) {
-
-                    showToast(
-                        "Select a community first",
-                        "!"
-                    );
-
-                    return;
-                }
-            }
-
-
-            showCreateStep(step);
-        };
-    });
-
+        showCreateStep(step);
+    };
+});
 
 /* =========================================================
    WORLD TYPE / DIFFICULTY
 ========================================================= */
 
-$$(".world-type")
-    .forEach(button => {
+$$(".world-type").forEach((button) => {
+    button.onclick = () => {
+        selectedType = button.dataset.type;
 
-        button.onclick = () => {
+        $$(".world-type").forEach((item) => {
+            item.classList.toggle("selected", item === button);
+        });
 
-            selectedType =
-                button.dataset.type;
+        updateSummary();
+    };
+});
 
+$$(".difficulty").forEach((button) => {
+    button.onclick = () => {
+        selectedDifficulty = button.dataset.difficulty;
 
-            $$(".world-type")
-                .forEach(item => {
+        $$(".difficulty").forEach((item) => {
+            item.classList.toggle("selected", item === button);
+        });
 
-                    item.classList.toggle(
-                        "selected",
-                        item === button
-                    );
-                });
-
-
-            updateSummary();
-        };
-    });
-
-
-$$(".difficulty")
-    .forEach(button => {
-
-        button.onclick = () => {
-
-            selectedDifficulty =
-                button.dataset.difficulty;
-
-
-            $$(".difficulty")
-                .forEach(item => {
-
-                    item.classList.toggle(
-                        "selected",
-                        item === button
-                    );
-                });
-
-
-            updateSummary();
-        };
-    });
-
+        updateSummary();
+    };
+});
 
 function updateSummary() {
+    const name = $("#worldName")?.value.trim() || "Untitled world";
 
-    const name =
-        $("#worldName")
-            ?.value
-            .trim() ||
-        "Untitled world";
-
-
-    if ($("#summaryWorldName"))
-        $("#summaryWorldName")
-            .textContent =
-            name;
-
+    if ($("#summaryWorldName")) $("#summaryWorldName").textContent = name;
 
     if ($("#summaryMode"))
-        $("#summaryMode")
-            .textContent =
-            modeLabel(
-                selectedType
-            );
-
+        $("#summaryMode").textContent = modeLabel(selectedType);
 
     if ($("#summaryDifficulty"))
-        $("#summaryDifficulty")
-            .textContent =
-            diffLabel(
-                selectedDifficulty
-            );
-
+        $("#summaryDifficulty").textContent = diffLabel(selectedDifficulty);
 
     if ($("#summaryCommunity"))
-        $("#summaryCommunity")
-            .textContent =
-            selectedCommunity
-                ?.display_name ||
-            selectedCommunity
-                ?.name ||
+        $("#summaryCommunity").textContent =
+            selectedCommunity?.display_name ||
+            selectedCommunity?.name ||
             "Community required";
 
-
     if ($("#summaryCollaborators"))
-        $("#summaryCollaborators")
-            .textContent =
-            selectedCollaborators.length
-                ? `${selectedCollaborators.length} friend${selectedCollaborators.length > 1
-                    ? "s"
-                    : ""
-                }`
-                : "Just you";
+        $("#summaryCollaborators").textContent = selectedCollaborators.length
+            ? `${selectedCollaborators.length} friend${selectedCollaborators.length > 1 ? "s" : ""
+            }`
+            : "Just you";
 
-
-    if ($("#reviewMode"))
-        $("#reviewMode")
-            .textContent =
-            modeLabel(
-                selectedType
-            );
-
+    if ($("#reviewMode")) $("#reviewMode").textContent = modeLabel(selectedType);
 
     if ($("#reviewDifficulty"))
-        $("#reviewDifficulty")
-            .textContent =
-            diffLabel(
-                selectedDifficulty
-            );
-
+        $("#reviewDifficulty").textContent = diffLabel(selectedDifficulty);
 
     if ($("#reviewCommunity"))
-        $("#reviewCommunity")
-            .textContent =
-            selectedCommunity
-                ?.display_name ||
-            "Not selected";
-
+        $("#reviewCommunity").textContent =
+            selectedCommunity?.display_name || "Not selected";
 
     if ($("#reviewCollaborators"))
-        $("#reviewCollaborators")
-            .textContent =
-            selectedCollaborators.length
-                ? `${selectedCollaborators.length} friend${selectedCollaborators.length > 1
-                    ? "s"
-                    : ""
-                }`
-                : "Just you";
+        $("#reviewCollaborators").textContent = selectedCollaborators.length
+            ? `${selectedCollaborators.length} friend${selectedCollaborators.length > 1 ? "s" : ""
+            }`
+            : "Just you";
 }
 
-
-$("#worldName")?.addEventListener(
-    "input",
-    updateSummary
-);
-
-
+$("#worldName")?.addEventListener("input", updateSummary);
 
 let communityTimer;
 
@@ -1727,14 +1177,12 @@ function getLocation() {
     }
 
     navigator.geolocation.getCurrentPosition(
-
         function (position) {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
-            showToast("Got Location")
-            userLoc = [latitude, longitude]
-            loadCommunities("", userLoc)
-
+            showToast("Got Location");
+            userLoc = [latitude, longitude];
+            loadCommunities("", userLoc);
         },
         function (error) {
             switch (error.code) {
@@ -1755,158 +1203,97 @@ function getLocation() {
         {
             enableHighAccuracy: true,
             timeout: 10000,
-            maximumAge: 0
-        }
+            maximumAge: 0,
+        },
     );
-    return userLoc
+    return userLoc;
 }
 
-async function loadCommunities(
-    query = "", userLoc = []
-) {
-
+async function loadCommunities(query = "", userLoc = []) {
     if (query == "") {
-        const { data, error } = await supabaseClient
-            .rpc("find_nearby_cities", {
-                user_lat: userLoc[0],
-                user_lon: userLoc[1],
-                max_results: 10
-            });
-        let demoCommunities = data
+        const { data, error } = await supabaseClient.rpc("find_nearby_cities", {
+            user_lat: userLoc[0],
+            user_lon: userLoc[1],
+            max_results: 10,
+        });
+        let demoCommunities = data;
         let rows = [];
 
         if (!rows.length) {
-            console.log(demoCommunities)
-            rows =
-                demoCommunities.filter(
-                    place => {
+            console.log(demoCommunities);
+            rows = demoCommunities.filter((place) => {
+                if (!query) return true;
 
-                        if (!query)
-                            return true;
+                const search = query.toLowerCase();
 
-
-                        const search =
-                            query.toLowerCase();
-
-
-                        return (
-                            place.title
-                                .toLowerCase()
-                                .includes(search)
-                        );
-                    }
-                );
-        }
-        renderCommunityResults(rows)
-    } else if (query != "") {
-
-        const { data, error } = await supabaseClient
-            .rpc("search_communities", {
-                search_text: query,
-                max_results: 80,
+                return place.title.toLowerCase().includes(search);
             });
+        }
+        renderCommunityResults(rows);
+    } else if (query != "") {
+        const { data, error } = await supabaseClient.rpc("search_communities", {
+            search_text: query,
+            max_results: 80,
+        });
 
         if (error) {
             console.error("Community search failed:", error);
             return;
         }
 
-        console.log(data)
-        let demoCommunities = data
+        console.log(data);
+        let demoCommunities = data;
         let rows = [];
 
         if (!rows.length) {
-            console.log(demoCommunities)
-            rows =
-                demoCommunities.filter(
-                    place => {
+            console.log(demoCommunities);
+            rows = demoCommunities.filter((place) => {
+                if (!query) return true;
 
-                        if (!query)
-                            return true;
+                const search = query.toLowerCase();
 
-
-                        const search =
-                            query.toLowerCase();
-
-
-                        return (
-                            (place.name + " " + place.state)
-                                .toLowerCase()
-                                .includes(search)
-                        );
-                    }
-                );
+                return (place.name + " " + place.state).toLowerCase().includes(search);
+            });
         }
-        renderCommunityResults(rows)
+        renderCommunityResults(rows);
     }
-
-
 }
 function formatNumber(number) {
     return Number(number).toLocaleString("en-US");
 }
 
+function renderCommunityResults(rows) {
+    const count = $("#communityResultCount");
 
-function renderCommunityResults(
-    rows
-) {
-
-
-    const count =
-        $("#communityResultCount");
-
-
-    const list =
-        $("#communityResultList");
-
+    const list = $("#communityResultList");
 
     if (count) {
-
-        count.textContent =
-            `${rows.length} places`;
+        count.textContent = `${rows.length} places`;
     }
 
+    if (!list) return;
 
-    if (!list)
-        return;
+    list.innerHTML = rows.length
+        ? rows
+            .map((place) => {
+                const community = {
+                    name: place.name || place.display_name,
+                    state: place.state,
 
+                    display_name: place.display_name || place.name,
 
-    list.innerHTML =
-        rows.length
+                    type: place.type || "Community",
 
-            ? rows
-                .map(place => {
+                    population: place.population,
+                    longitude: place.longitude,
+                    latitude: place.latitude,
+                };
 
-                    const community = {
-
-                        name:
-                            place.name ||
-                            place.display_name,
-                        state: place.state,
-
-                        display_name:
-                            place.display_name ||
-                            place.name,
-
-                        type:
-                            place.type ||
-                            "Community",
-
-                        population: place.population,
-                        longitude: place.longitude,
-                        latitude: place.latitude
-                    };
-
-
-                    return `
+                return `
 
                         <div
                             class="community-result"
-                            data-community='${esc(
-                        JSON.stringify(
-                            community
-                        )
-                    )}'
+                            data-community='${esc(JSON.stringify(community))}'
                         >
 
                             <span class="community-icon">
@@ -1927,9 +1314,7 @@ function renderCommunityResults(
 
                                 <small>
 
-                                    ${esc(
-                        community.type
-                    )}
+                                    ${esc(community.type)}
 
                                     ·
 
@@ -1941,10 +1326,9 @@ function renderCommunityResults(
 
                         </div>
                     `;
-                })
-                .join("")
-
-            : `
+            })
+            .join("")
+        : `
 
                 <div class="notification-empty">
 
@@ -1959,242 +1343,121 @@ function renderCommunityResults(
                 </div>
             `;
 
+    $$(".community-result").forEach((element) => {
+        element.onclick = () => {
+            console.log(element.dataset.community);
+            selectedCommunity = JSON.parse(element.dataset.community);
 
-    $$(".community-result")
-        .forEach(element => {
+            $("#selectedCommunityName").textContent = selectedCommunity.display_name;
 
-            element.onclick = () => {
-                console.log(element.dataset.community)
-                selectedCommunity =
-                    JSON.parse(
-                        element.dataset.community
-                    );
+            $("#selectedCommunityMeta").textContent =
+                formatNumber(selectedCommunity.population) + " People";
 
+            $("#communityContinue").disabled = false;
 
-                $("#selectedCommunityName")
-                    .textContent =
-                    selectedCommunity
-                        .display_name;
-
-
-                $("#selectedCommunityMeta")
-                    .textContent = formatNumber(selectedCommunity.population) + " People"
-
-
-                $("#communityContinue")
-                    .disabled =
-                    false;
-
-
-                updateSummary();
-            };
-        });
+            updateSummary();
+        };
+    });
 }
 
+$("#communitySearch")?.addEventListener("input", (event) => {
+    clearTimeout(communityTimer);
 
-$("#communitySearch")
-    ?.addEventListener(
-        "input",
-        event => {
-
-            clearTimeout(
-                communityTimer
-            );
-
-
-            communityTimer =
-                setTimeout(
-                    () =>
-                        loadCommunities(
-                            event.target.value.trim()
-                        ),
-                    150
-                );
-        }
+    communityTimer = setTimeout(
+        () => loadCommunities(event.target.value.trim()),
+        150,
     );
+});
 
-
-$$(".community-tab").forEach(button => {
-
+$$(".community-tab").forEach((button) => {
     button.onclick = () => {
+        $$(".community-tab").forEach((item) => item.classList.remove("active"));
 
-        $$(".community-tab")
-            .forEach(item =>
-                item.classList.remove(
-                    "active"
-                )
-            );
+        button.classList.add("active");
 
+        const coordinates = button.dataset.searchMode === "coords";
 
-        button.classList.add(
-            "active"
-        );
+        $("#nameSearchRow")?.classList.toggle("hidden", coordinates);
 
-
-        const coordinates =
-            button.dataset.searchMode ===
-            "coords";
-
-
-        $("#nameSearchRow")
-            ?.classList.toggle(
-                "hidden",
-                coordinates
-            );
-
-
-        $("#coordsSearchRow")
-            ?.classList.toggle(
-                "hidden",
-                !coordinates
-            );
-
+        $("#coordsSearchRow")?.classList.toggle("hidden", !coordinates);
 
         if (!coordinates) {
-
-            loadCommunities(
-                $("#communitySearch")
-                    ?.value
-                    .trim() || ""
-            );
+            loadCommunities($("#communitySearch")?.value.trim() || "");
         }
     };
 });
 
+$("#clearCommunity")?.addEventListener("click", () => {
+    selectedCommunity = null;
 
-$("#clearCommunity")?.addEventListener(
-    "click",
-    () => {
+    $("#selectedCommunityName").textContent = "No community selected";
 
-        selectedCommunity =
-            null;
+    $("#selectedCommunityMeta").textContent = "Choose a place above.";
 
+    $("#communityContinue").disabled = true;
 
-        $("#selectedCommunityName")
-            .textContent =
-            "No community selected";
+    updateSummary();
+});
 
+$("#findCoordinates")?.addEventListener("click", () => {
+    const latitude = Number($("#latitudeInput")?.value);
 
-        $("#selectedCommunityMeta")
-            .textContent =
-            "Choose a place above.";
+    const longitude = Number($("#longitudeInput")?.value);
 
+    if (
+        !Number.isFinite(latitude) ||
+        !Number.isFinite(longitude) ||
+        latitude < -90 ||
+        latitude > 90 ||
+        longitude < -180 ||
+        longitude > 180
+    ) {
+        showToast("Enter valid coordinates", "!");
 
-        $("#communityContinue")
-            .disabled =
-            true;
-
-
-        updateSummary();
+        return;
     }
-);
 
-$("#findCoordinates")?.addEventListener(
-    "click",
-    () => {
-
-        const latitude =
-            Number(
-                $("#latitudeInput")
-                    ?.value
-            );
-
-
-        const longitude =
-            Number(
-                $("#longitudeInput")
-                    ?.value
-            );
-
-
-        if (
-            !Number.isFinite(latitude) ||
-            !Number.isFinite(longitude) ||
-            latitude < -90 ||
-            latitude > 90 ||
-            longitude < -180 ||
-            longitude > 180
-        ) {
-
-            showToast(
-                "Enter valid coordinates",
-                "!"
-            );
-
-            return;
-        }
-
-        loadCommunities("", [latitude, longitude])
-    }
-);
-
-
+    loadCommunities("", [latitude, longitude]);
+});
 
 function renderCollaborators() {
+    const container = $("#collaboratorList");
 
-    const container =
-        $("#collaboratorList");
+    if (!container) return;
 
+    const query = $("#collabSearch")?.value.toLowerCase() || "";
 
-    if (!container)
-        return;
+    const rows = friends.filter((friend) =>
+        friend.display_name.toLowerCase().includes(query),
+    );
 
-
-    const query =
-        $("#collabSearch")
-            ?.value
-            .toLowerCase() || "";
-
-
-    const rows =
-        friends.filter(
-            friend =>
-                (
-                    friend.display_name
-                )
-                    .toLowerCase()
-                    .includes(query)
-        );
-
-
-    container.innerHTML =
-        rows
-            .map(
-                friend => `
+    container.innerHTML = rows
+        .map(
+            (friend) => `
 
                     <label
                         class="
                             collab-row
-                            ${selectedCollaborators
-                        .includes(
-                            friend.id
-                        )
-                        ? "selected"
-                        : ""
-                    }
+                            ${selectedCollaborators.includes(friend.id)
+                    ? "selected"
+                    : ""
+                }
                         "
                     >
 
                         <input
                             type="checkbox"
-                            value="${esc(
-                        friend.id
-                    )}"
-                            ${selectedCollaborators
-                        .includes(
-                            friend.id
-                        )
-                        ? "checked"
-                        : ""
-                    }
+                            value="${esc(friend.id)}"
+                            ${selectedCollaborators.includes(friend.id)
+                    ? "checked"
+                    : ""
+                }
                         >
 
 
                         <span class="collab-avatar">
 
-                            ${esc(
-                        friend.display_name[0]
-                    )}
+                            ${esc(friend.display_name[0])}
 
                         </span>
 
@@ -2202,255 +1465,154 @@ function renderCollaborators() {
                         <span>
 
                             <strong>
-                                ${esc(
-                        friend.display_name
-                    )}
+                                ${esc(friend.display_name)}
                             </strong>
 
                             <small>
-                                @${esc(
-                        friend.display_name
-                    )}
+                                @${esc(friend.display_name)}
                             </small>
 
                         </span>
 
                     </label>
-                `
-            )
-            .join("");
+                `,
+        )
+        .join("");
 
-
-    $$("#collaboratorList input")
-        .forEach(input => {
-
-            input.onchange = () => {
-
-                if (input.checked) {
-
-                    if (
-                        !selectedCollaborators
-                            .includes(
-                                input.value
-                            )
-                    ) {
-
-                        selectedCollaborators
-                            .push(
-                                input.value
-                            );
-                    }
-
-                } else {
-
-                    selectedCollaborators =
-                        selectedCollaborators
-                            .filter(
-                                id =>
-                                    id !==
-                                    input.value
-                            );
+    $$("#collaboratorList input").forEach((input) => {
+        input.onchange = () => {
+            if (input.checked) {
+                if (!selectedCollaborators.includes(input.value)) {
+                    selectedCollaborators.push(input.value);
                 }
+            } else {
+                selectedCollaborators = selectedCollaborators.filter(
+                    (id) => id !== input.value,
+                );
+            }
 
+            renderCollaborators();
 
-                renderCollaborators();
-
-                updateSummary();
-            };
-        });
+            updateSummary();
+        };
+    });
 }
 
+$("#collabSearch")?.addEventListener("input", renderCollaborators);
 
-$("#collabSearch")
-    ?.addEventListener(
-        "input",
-        renderCollaborators
-    );
+$("#launchWorld")?.addEventListener("click", async () => {
+    showLoading({
+        title: "Welcome to your community!",
+        message: loadingMessages[0],
+        status: "Loading community data",
+    });
+    closeCreate();
+    const { data: selectedlocationId, error: locationError } =
+        await supabaseClient.rpc("get_location_id", {
+            user_lat: selectedCommunity.latitude,
+            user_lon: selectedCommunity.longitude,
+        });
+    if (locationError) {
+        console.error(locationError.message);
+        return;
+    }
 
+    const name = $("#worldName")?.value.trim();
 
-$("#launchWorld")
-    ?.addEventListener(
-        "click",
-        async () => {
-            console.log(selectedCommunity)
-            const { data: selectedlocationId, error: locationError } = await supabaseClient.rpc(
-                "get_location_id",
-                {
-                    user_lat: selectedCommunity.latitude,
-                    user_lon: selectedCommunity.longitude
-                }
-            );
-            if (locationError) {
-                console.error(locationError.message)
-                return;
-            }
+    if (!name) {
+        showToast("Give your world a name", "!");
 
-            const name =
-                $("#worldName")
-                    ?.value
-                    .trim();
+        return;
+    }
 
+    if (!selectedCommunity) {
+        showCreateStep(3);
 
-            if (!name) {
+        showToast("Community selection is required", "!");
 
-                showToast(
-                    "Give your world a name",
-                    "!"
-                );
+        return;
+    }
+    
+    const world = {
+        creator_id: universal_userInfo.id,
+        world_name: name,
+        assist_id: selectedCollaborators,
+        visibility: "Private",
+        published_at: null,
+        world_type: selectedType,
+        game_mode: selectedDifficulty,
+        problems: [],
+        statistics: {},
+        views: 0,
+        comments: [],
+        likes: 0,
+        location_id: selectedlocationId,
+    };
 
-                return;
-            }
+    const { data, error } = await supabaseClient
+        .from("worlds")
+        .insert([world])
+        .select();
 
+    if (error) {
+        console.error("Insert failed:", error.message);
+    } else {
+        console.log("Inserted row:", data);
+    }
 
-            if (!selectedCommunity) {
+    worlds.unshift(data[0]);
 
-                showCreateStep(3);
+    save();
 
-                showToast(
-                    "Community selection is required",
-                    "!"
-                );
-
-                return;
-            }
-            console.log(universal_userInfo)
-            const world = {
-                creator_id: universal_userInfo.id,
-                world_name: name,
-                assist_id: selectedCollaborators,
-                visibility: "Private",
-                published_at: null,
-                world_type: selectedType,
-                game_mode: selectedDifficulty,
-                map_data: {},
-                world_settings: {},
-                statistics: {},
-                views: 0,
-                comments: [],
-                likes: 0,
-                location_id: selectedlocationId
-            };
-
-            const { data, error } = await supabaseClient
-                .from('worlds')
-                .insert([world])
-                .select();
-
-
-            if (error) {
-                console.error('Insert failed:', error.message);
-            } else {
-                console.log('Inserted row:', data);
-            }
-
-            worlds.unshift(
-                data[0]
-            );
-
-
-            save();
-
-
-            closeCreate();
-
-            showToast(
-                "World created",
-                "✓"
-            );
-        }
-    );
-
+    showToast("World created", "✓");
+    renderWorlds();
+    hideLoading()
+});
 
 /* =========================================================
    CHAT
 ========================================================= */
 
 function openChat(id) {
+    activeFriend = friends.find((friend) => friend.id === id);
 
-    activeFriend =
-        friends.find(
-            friend =>
-                friend.id === id
-        );
+    if (!activeFriend) return;
 
-
-    if (!activeFriend)
-        return;
-
-
-    if ($("#chatTitle"))
-        $("#chatTitle")
-            .textContent =
-            activeFriend.name;
-
+    if ($("#chatTitle")) $("#chatTitle").textContent = activeFriend.name;
 
     if ($("#chatStatus"))
-        $("#chatStatus")
-            .textContent =
-            activeFriend.status ===
-                "online"
-                ? "Online"
-                : "Offline";
+        $("#chatStatus").textContent =
+            activeFriend.status === "online" ? "Online" : "Offline";
 
+    if ($("#chatAvatar")) $("#chatAvatar").textContent = activeFriend.name[0];
 
-    if ($("#chatAvatar"))
-        $("#chatAvatar")
-            .textContent =
-            activeFriend.name[0];
+    if ($("#chatInput")) $("#chatInput").disabled = false;
 
-
-    if ($("#chatInput"))
-        $("#chatInput")
-            .disabled =
-            false;
-
-
-    if ($("#chatForm button"))
-        $("#chatForm button")
-            .disabled =
-            false;
-
+    if ($("#chatForm button")) $("#chatForm button").disabled = false;
 
     renderFriends();
 
     renderMessages();
 }
 
-
 function renderMessages() {
+    if (!activeFriend) return;
 
-    if (!activeFriend)
-        return;
+    const container = $("#chatMessages");
 
+    if (!container) return;
 
-    const container =
-        $("#chatMessages");
+    const list = messages[activeFriend.id] || [];
 
-
-    if (!container)
-        return;
-
-
-    const list =
-        messages[
-        activeFriend.id
-        ] || [];
-
-
-    container.innerHTML =
-        list.length
-
-            ? list
-                .map(
-                    message => `
+    container.innerHTML = list.length
+        ? list
+            .map(
+                (message) => `
 
                         <div
                             class="
                                 message
-                                ${message.me
-                            ? "me"
-                            : ""
-                        }
+                                ${message.me ? "me" : ""}
                             "
                         >
 
@@ -2459,213 +1621,109 @@ function renderMessages() {
                                     message-bubble
                                 "
                             >
-                                ${esc(
-                            message.text
-                        )}
+                                ${esc(message.text)}
                             </div>
 
                         </div>
-                    `
-                )
-                .join("")
-
-            : `
+                    `,
+            )
+            .join("")
+        : `
 
                 <div class="chat-empty">
                     Start the conversation.
                 </div>
             `;
 
-
-    container.scrollTop =
-        container.scrollHeight;
+    container.scrollTop = container.scrollHeight;
 }
 
+$("#chatForm")?.addEventListener("submit", (event) => {
+    event.preventDefault();
 
-$("#chatForm")
-    ?.addEventListener(
-        "submit",
-        event => {
+    if (!activeFriend) return;
 
-            event.preventDefault();
+    const input = $("#chatInput");
 
+    const text = input?.value.trim();
 
-            if (!activeFriend)
-                return;
+    if (!text) return;
 
+    if (!messages[activeFriend.id]) {
+        messages[activeFriend.id] = [];
+    }
 
-            const input =
-                $("#chatInput");
+    messages[activeFriend.id].push({
+        me: true,
 
+        text,
+    });
 
-            const text =
-                input
-                    ?.value
-                    .trim();
+    input.value = "";
 
+    save();
 
-            if (!text)
-                return;
+    renderMessages();
 
-
-            if (
-                !messages[
-                activeFriend.id
-                ]
-            ) {
-
-                messages[
-                    activeFriend.id
-                ] = [];
-            }
-
-
-            messages[
-                activeFriend.id
-            ].push({
-
-                me:
-                    true,
-
-                text
-            });
-
-
-            input.value =
-                "";
-
-
-            save();
-
-            renderMessages();
-
-            updateStats();
-        }
-    );
-
+    updateStats();
+});
 
 /* =========================================================
    ADD FRIEND
 ========================================================= */
 
-const possiblePeople = [
+const possiblePeople = [];
 
-];
+$("#openAddFriend")?.addEventListener("click", () => {
+    $("#friendModal")?.classList.add("open");
 
+    document.body.style.overflow = "hidden";
 
-$("#openAddFriend")
-    ?.addEventListener(
-        "click",
-        () => {
+    renderFriendSearch("");
+});
 
-            $("#friendModal")
-                ?.classList.add(
-                    "open"
-                );
+$("#closeFriend")?.addEventListener("click", () => {
+    $("#friendModal")?.classList.remove("open");
 
-            document.body.style.overflow =
-                "hidden";
+    document.body.style.overflow = "";
+});
 
-            renderFriendSearch("");
-        }
-    );
+$("#friendModal")?.addEventListener("click", (event) => {
+    if (event.target.id === "friendModal") {
+        $("#closeFriend")?.click();
+    }
+});
 
+$("#friendSearch")?.addEventListener("input", (event) => {
+    renderFriendSearch(event.target.value);
+});
 
-$("#closeFriend")
-    ?.addEventListener(
-        "click",
-        () => {
+async function renderFriendSearch(query = "") {
+    const container = $("#friendSearchResults");
 
-            $("#friendModal")
-                ?.classList.remove(
-                    "open"
-                );
-
-            document.body.style.overflow =
-                "";
-        }
-    );
-
-
-$("#friendModal")
-    ?.addEventListener(
-        "click",
-        event => {
-
-            if (
-                event.target.id ===
-                "friendModal"
-            ) {
-
-                $("#closeFriend")
-                    ?.click();
-            }
-        }
-    );
-
-
-$("#friendSearch")
-    ?.addEventListener(
-        "input",
-        event => {
-
-            renderFriendSearch(
-                event.target.value
-            );
-        }
-    );
-
-
-async function renderFriendSearch(
-    query = ""
-) {
-
-    const container =
-        $("#friendSearchResults");
-
-
-    if (!container)
-        return;
+    if (!container) return;
 
     const possiblePeople = await supabaseClient.rpc("search_users", {
         search_term: query,
     });
-    console.log(possiblePeople.data)
-    const rows =
-        possiblePeople.data.filter(
-            person =>
-                (
-                    person.display_name
-                )
-                    .toLowerCase()
-                    .includes(
-                        query.toLowerCase()
-                    )
-        );
+    console.log(possiblePeople.data);
+    const rows = possiblePeople.data.filter((person) =>
+        person.display_name.toLowerCase().includes(query.toLowerCase()),
+    );
 
+    container.innerHTML = rows
+        .map((person) => {
+            const exists = friends.some(
+                (friend) => friend.display_name === person.display_name,
+            );
 
-
-    container.innerHTML =
-        rows
-            .map(person => {
-
-                const exists =
-                    friends.some(
-                        friend =>
-                            friend.display_name ===
-                            person.display_name
-                    );
-
-
-                return `
+            return `
 
                     <div class="search-person">
 
                         <span class="profile-avatar">
 
-                            ${esc(
-                    person.display_name[0]
-                )}
+                            ${esc(person.display_name[0])}
 
                         </span>
 
@@ -2673,214 +1731,170 @@ async function renderFriendSearch(
                         <div>
 
                             <strong>
-                                ${esc(
-                    person.display_name
-                )}
+                                ${esc(person.display_name)}
                             </strong>
 
                             <small>
-                                @${esc(
-                    person.display_name
-                )}
+                                @${esc(person.display_name)}
                             </small>
 
                         </div>
 
 
                         <button
-                            data-person="${esc(
-                    person.id
-                )}"
-                            ${exists
-                        ? "disabled"
-                        : ""
-                    }
+                            data-person="${esc(person.id)}"
+                            ${exists ? "disabled" : ""}
                         >
 
-                            ${exists
-                        ? "Added"
-                        : "Add"
-                    }
+                            ${exists ? "Added" : "Add"}
 
                         </button>
 
                     </div>
                 `;
-            })
-            .join("");
+        })
+        .join("");
 
+    $$("[data-person]").forEach((button) => {
+        button.onclick = () => {
+            const person = possiblePeople.data.find(
+                (item) => item.id === button.dataset.person,
+            );
 
-    $$("[data-person]")
-        .forEach(button => {
+            if (!person) return;
 
-            button.onclick = () => {
+            if (
+                friends.some((friend) => friend.display_name === person.display_name)
+            ) {
+                return;
+            }
 
-                const person =
-                    possiblePeople.data.find(
-                        item =>
-                            item.id ===
-                            button.dataset.person
-                    );
+            friends.push({
+                ...person,
 
+                status: "Requested",
+            });
 
-                if (!person)
-                    return;
+            sendFriendRequestNotification(
+                universal_username,
+                friends[friends.length - 1].id,
+            );
 
+            renderFriends();
+            save();
 
-                if (
-                    friends.some(
-                        friend =>
-                            friend.display_name ===
-                            person.display_name
-                    )
-                ) {
+            button.disabled = true;
 
-                    return;
-                }
+            button.textContent = "Request Sent";
 
-                friends.push({
-
-                    ...person,
-
-                    status:
-                        "Requested"
-                });
-
-
-
-
-                sendFriendRequestNotification(universal_username, friends[friends.length - 1].id)
-
-                renderFriends()
-                save()
-
-
-                button.disabled =
-                    true;
-
-                button.textContent =
-                    "Request Sent";
-
-
-                showToast(
-                    `Friend request sent ${person.display_name}`,
-                    "✓"
-                );
-            };
-        });
+            showToast(`Friend request sent ${person.display_name}`, "✓");
+        };
+    });
 }
 
-
-async function sendFriendRequestNotification(
-    senderUsername,
-    receiverId
-) {
+async function sendFriendRequestNotification(senderUsername, receiverId) {
     const { error } = await supabaseClient.rpc(
         "send_friend_request_notification",
         {
             sender_username: senderUsername,
-            receiver_id: receiverId
-        }
+            receiver_id: receiverId,
+        },
     );
 
     if (error) {
-        console.error(
-            "Failed to send friend request notification:",
-            error.message
-        );
+        console.error("Failed to send friend request notification:", error.message);
         return false;
     }
 
     return true;
 }
 
+function showToast(message = "Done", icon = "✓") {
+    const toast = $("#toast");
 
-function showToast(
-    message = "Done",
-    icon = "✓"
-) {
+    if (!toast) return;
 
-    const toast =
-        $("#toast");
+    const iconElement = toast.querySelector(".toast-icon");
 
+    const messageElement = toast.querySelector("strong");
 
-    if (!toast)
-        return;
+    if (iconElement) iconElement.textContent = icon;
 
+    if (messageElement) messageElement.textContent = message;
 
-    const iconElement =
-        toast.querySelector(
-            ".toast-icon"
-        );
+    toast.classList.add("show");
 
+    clearTimeout(window.civicToast);
 
-    const messageElement =
-        toast.querySelector(
-            "strong"
-        );
-
-
-    if (iconElement)
-        iconElement.textContent =
-            icon;
-
-
-    if (messageElement)
-        messageElement.textContent =
-            message;
-
-
-    toast.classList.add(
-        "show"
-    );
-
-
-    clearTimeout(
-        window.civicToast
-    );
-
-
-    window.civicToast =
-        setTimeout(
-            () => {
-
-                toast.classList.remove(
-                    "show"
-                );
-
-            },
-            2600
-        );
+    window.civicToast = setTimeout(() => {
+        toast.classList.remove("show");
+    }, 2600);
 }
-
 
 /* =========================================================
    KEYBOARD
 ========================================================= */
 
-document.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key !==
-            "Escape"
-        ) {
-
-            return;
-        }
-
-
-        closeCreate();
-
-        $("#closeFriend")
-            ?.click();
-
-        closeNotifications();
+document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") {
+        return;
     }
-);
 
+    closeCreate();
+
+    $("#closeFriend")?.click();
+
+    closeNotifications();
+});
+const loadingOverlay = document.getElementById("loadingOverlay");
+const loadingTitle = document.getElementById("loadingTitle");
+const loadingMessage = document.getElementById("loadingMessage");
+
+const loadingMessages = [
+    "Getting everything ready for you!",
+    "Checking in on your community...",
+    "Making your dashboard shine...",
+    "Almost ready to make a difference!",
+];
+
+let loadingMessageTimer;
+
+function showLoading({
+    title = "Building a better community...",
+    message = "Getting everything ready for you!",
+    status = "Preparing your world",
+} = {}) {
+    clearInterval(loadingMessageTimer);
+
+    loadingTitle.textContent = title;
+    loadingMessage.textContent = message;
+
+    loadingOverlay.hidden = false;
+    document.body.style.overflow = "hidden";
+}
+
+function updateLoading(percent, status, message) {
+    const value = Math.max(0, Math.min(100, percent));
+
+    loadingProgress.style.width = `${value}%`;
+    loadingPercent.textContent = `${Math.round(value)}%`;
+
+    if (status) loadingStatus.textContent = status;
+    if (message) loadingMessage.textContent = message;
+}
+
+function hideLoading() {
+    clearInterval(loadingMessageTimer);
+    loadingOverlay.hidden = true;
+    document.body.style.overflow = "";
+}
+showLoading({
+    title: "Welcome to your community!",
+    message: loadingMessages[0],
+    status: "Loading community data"
+});
 lucide.createIcons();
 initUser();
-renderMessages()
-renderShared()
+renderMessages();
+renderShared();
+hideLoading()

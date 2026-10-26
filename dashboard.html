@@ -394,6 +394,42 @@
     <div class="toast" id="toast"><span class="toast-icon">✦</span>
         <div><strong>Done!</strong><small>Updated in CivicLens.</small></div>
     </div>
+
+<!-- CivicLens Loading Popup -->
+<div class="loading-overlay" id="loadingOverlay" role="dialog"
+     aria-modal="true" aria-labelledby="loadingTitle"
+     aria-describedby="loadingMessage" hidden>
+  <div class="loading-popup">
+    <div class="loading-art" aria-hidden="true">
+      <div class="loading-sun"></div>
+      <div class="loading-block block-green"></div>
+      <div class="loading-block block-blue"></div>
+      <div class="loading-block block-yellow"></div>
+      <div class="loading-center">
+        <span>CL</span>
+      </div>
+      <span class="loading-spark spark-one">✦</span>
+      <span class="loading-spark spark-two">✳</span>
+    </div>
+
+    <div class="loading-brand">
+      <span class="brand-dot"></span>
+      CIVIC<span>LENS</span>
+    </div>
+
+    <h2 id="loadingTitle">Building a better community...</h2>
+    <p id="loadingMessage" aria-live="polite">
+      Getting everything ready for you!
+    </p>
+
+
+
+    <div class="loading-dots" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</div>
+
     <script src="js/theme.js"></script>
       <script src="js/universe.js"></script>
     <script src="js/dashboard.js"></script>
